@@ -1,0 +1,28 @@
+.boton-accion {
+    color: #1976d2;
+    border: none;
+    background: none;
+    cursor: pointer;
+}
+
+.boton-accion.eliminar {
+    color: #f44336;
+}
+
+.etiqueta-estado {
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-weight: bold;
+    text-align: center;
+    min-width: 80px;
+}
+
+.etiqueta-estado.activo {
+    color: #4caf50;
+    background-color: #e8f5e9;
+}
+
+.etiqueta-estado.inactivo {
+    color: #f44336;
+    background-color: #ffebee;
+}

@@ -1,0 +1,15 @@
+.diseño-principal {
+    display: flex;
+}
+
+.navegacion-lateral {
+    flex: 0 0 230px;
+    height: 100vh;
+    overflow-y: hidden;
+}
+
+.contenido-principal {
+    flex: 1;
+    padding: 20px;
+    overflow-y: hidden;
+}

@@ -1,0 +1,29 @@
+.tarjeta-resumen {
+    border-radius: 12px;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-right: 20px;
+}
+
+.titulo-resumen {
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.valor-resumen {
+    font-size: 24px;
+    font-weight: 700;
+    color: #1976d2;
+}
+
+.porcentaje-resumen {
+    font-size: 12px;
+    color: #888;
+    margin-top: 10px;
+}
+
+.descripcion-resumen {
+    font-size: 12px;
+    color: #888;
+}

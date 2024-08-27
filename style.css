@@ -1,0 +1,8 @@
+body {
+  font-family: 'Poppins', sans-serif;
+}
+
+.contenido-principal {
+  height: 100vh;
+  padding-top: 40px;
+}
