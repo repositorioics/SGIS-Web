@@ -1,19 +1,17 @@
-import { useState, useEffect } from 'react';
-import { obtenerToken } from '@/utils/almacenamiento';
+import { useNavigate } from 'react-router-dom';
 
 const useFetch = (url, initialOptions = {}, dependencies = []) => {
     const [data, setData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const navigate = useNavigate();
 
     useEffect(() => {
         if (!url) {
-            // Si la URL es null, no hacemos nada
             setLoading(false);
             return;
         }
 
-        // Obtener el token de acceso desde el almacenamiento local
         const token = obtenerToken('accessToken');
 
         const fetchData = async () => {
@@ -28,6 +26,10 @@ const useFetch = (url, initialOptions = {}, dependencies = []) => {
                     },
                 });
                 if (!response.ok) {
+                    if (response.status === 401) {
+                        // Redirige al usuario al login si no está autorizado
+                        navigate('/inicio-sesion');
+                    }
                     throw new Error(`Error: ${response.status} ${response.statusText}`);
                 }
                 const result = await response.json();

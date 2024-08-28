@@ -22,12 +22,12 @@ const CambiarTema = () => {
         background: 'none',
         border: 'none',
         cursor: 'pointer',
-        color: tema.color,
+        color: tema.textoPrimario,
         fontSize: '1.5rem',
       }}
       aria-label="Cambiar tema"
     >
-      {temaActual === 'claro' ? <FaSun /> : <FaMoon />}
+      {temaActual === 'claro' ? <FaMoon /> : <FaSun />}
     </button>
   );
 };

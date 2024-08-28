@@ -1,29 +1,28 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+const initialState = {
+  isAuthenticated: false,
+  usuario: null,
+  token: null,
+};
+
 const autenticacionSlice = createSlice({
   name: 'autenticacion',
-  initialState: {
-    autenticado: false,
-    usuario: null,
-    otpEnviado: false,
-  },
+  initialState,
   reducers: {
-    inicioSesionExitoso: (state, action) => {
-      state.autenticado = true;
-      state.usuario = action.payload;
+    iniciarSesion: (state, action) => {
+      state.isAuthenticated = true;
+      state.usuario = action.payload.usuario;
+      state.token = action.payload.token;
     },
     cerrarSesion: (state) => {
-      state.autenticado = false;
+      state.isAuthenticated = false;
       state.usuario = null;
-    },
-    otpEnviadoExitoso: (state) => {
-      state.otpEnviado = true;
-    },
-    reiniciarOtp: (state) => {
-      state.otpEnviado = false;
+      state.token = null;
     },
   },
 });
 
-export const { inicioSesionExitoso, cerrarSesion, otpEnviadoExitoso, reiniciarOtp } = autenticacionSlice.actions;
+export const { iniciarSesion, cerrarSesion } = autenticacionSlice.actions;
+
 export default autenticacionSlice.reducer;
