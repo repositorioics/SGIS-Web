@@ -1,0 +1,77 @@
+/* formularioUsuario.css */
+
+/* Contenedor principal del formulario */
+.formulario-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem;
+    height: 100vh; /* La altura del viewport */
+    overflow-y: auto; /* Habilitar scroll vertical cuando el contenido sea mayor al 100% del viewport */
+  }
+  
+  /* Personalización del ancho de la barra de scroll */
+  .formulario-container::-webkit-scrollbar {
+    width: 8px; /* Ancho reducido de la barra */
+  }
+  
+  /* Color del fondo de la barra de scroll */
+  .formulario--container::-webkit-scrollbar-track {
+    background: #f1f1f1; /* Color de fondo */
+  }
+  
+  /* Color de la barra */
+  .formulario-container::-webkit-scrollbar-thumb {
+    background-color: #888; /* Color de la barra */
+    border-radius: 10px; /* Redondear la barra */
+  }
+  
+  /* Cambiar el color de la barra al hacer hover */
+  .formulario-container::-webkit-scrollbar-thumb:hover {
+    background: #555; /* Color más oscuro cuando se pasa el ratón por encima */
+  }
+  
+  /* Otros estilos permanecen igual... */
+  
+  /* Título */
+  .formulario-titulo {
+    font-size: 24px !important;
+    margin: 0;
+    font-weight: bold !important;
+    color: #333 !important;
+  }
+  
+  /* Subtítulo */
+  .formulario-subtitulo {
+    font-size: 16px;
+    font-weight: normal!important;
+    color: #555;
+    margin: 0;
+    margin-bottom: 1.5rem;
+  }
+  
+  /* Estilos para los inputs */
+  .formulario-input {
+    height: 40px;
+    font-size: 16px;
+    text-align: center;
+  }
+  
+  /* Estilo del botón */
+  .formulario-boton {
+    width: 30%;
+    padding: 8px;
+    font-size: 14px;
+    font-weight: bold;
+  }
+
+  .Mui-focused {
+    border-color: #007bff !important;
+  }  
+  
+  /* Para pantallas pequeñas */
+  @media (max-width: 600px) {
+    .formulario-boton {
+      width: 100%;
+    }
+  }
+  

@@ -9,7 +9,12 @@ import Cargador from '@/components/Cargador';
 import rutas from '@/config/rutas.jsx';
 
 function App() {
-  const rutasConLayout = ['/inicio', '/supplies', '/supply/create', '/supply/edit/:id?']; // Define aquí las rutas que necesitan el layout
+  const rutasSinLayout = [
+    "/inicio-sesion",
+    "/ingresar-email",
+    "/cambiar-contra",
+  ];
+  
 
   return (
     <Router>
@@ -17,12 +22,12 @@ function App() {
         <ToastContainer autoClose={2500} />
         <Routes>
           {rutas.map((ruta, index) => {
-            const necesitaLayout = rutasConLayout.includes(ruta.path);
+            const necesitaLayout = rutasSinLayout.includes(ruta.path);
             return (
               <Route
                 key={index}
                 path={ruta.path}
-                element={necesitaLayout ? <DisPrincipal>{ruta.element}</DisPrincipal> : ruta.element}
+                element={necesitaLayout ? ruta.element: <DisPrincipal>{ruta.element}</DisPrincipal>}
               />
             );
           })}

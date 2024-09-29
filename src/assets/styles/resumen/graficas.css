@@ -1,0 +1,48 @@
+.graficas {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.grafica {
+  flex: 1 1 0%;
+  background-color: #fff;
+  border: 1px solid #ededed;
+  padding: 10px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease-in-out;
+}
+
+.grafica:hover {
+  transform: translateY(-5px);
+}
+
+.grafica__titulo {
+  text-align: center;
+  margin-bottom: 10px;
+  font-size: 18px;
+  color: #333;
+}
+
+@media (max-width: 1024px) {
+  .graficas {
+    flex-wrap: wrap;
+  }
+
+  .grafica {
+    flex: 1 1 100%;
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .graficas {
+    flex-direction: column;
+  }
+
+  .grafica {
+    flex: 1 1 100%;
+    max-width: 100%;
+  }
+}

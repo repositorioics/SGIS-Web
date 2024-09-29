@@ -1,46 +1,68 @@
-import { faBox, faUser } from '@fortawesome/free-solid-svg-icons';
+import { faHome, faBox, faUser } from "@fortawesome/free-solid-svg-icons";
 
-export const menuOpciones = [
+export const menuItems = [
+  { icono: faHome, texto: "Inicio", path: "/" },
   {
-    index: 0,
-    icon: faBox,
-    text: 'Inventory',
+    icono: faBox,
+    texto: "Inventario",
+    indice: 0,
     subMenu: [
-      { link: '/supplies', text: 'Supplies' },
-      { link: '/brands', text: 'Brands' },
-      { link: '/categories', text: 'Categories' },
-      { link: '/suppliers', text: 'Supplier' },
+      { path: "/bodegas", text: "Bodegas" },
+      { path: "/categorias", text: "Categorías" },
+      { path: "/distribuidores", text: "Distribuidores" },
+      { path: "/donantes", text: "Donantes" },
+      { path: "/estudios", text: "Estudios" },
+      { path: "/insumos", text: "Insumos" },
+      { path: "/inventarios", text: "Inventario" },
+      { path: "/marcas", text: "Marcas" },
+      { path: "/movimientos-inventario", text: "Movimientos de Inventario" },
+      { path: "/presentaciones", text: "Presentaciones" },
+      { path: "/sitios", text: "Sitios" },
+      { path: "/unidades-medida", text: "Unidades de Medida" },
     ],
   },
   {
-    index: 2,
-    icon: faBox,
-    text: 'Order Request',
+    icono: faBox,
+    texto: "Solicitudes",
+    indice: 1,
     subMenu: [
-      { link: '/consolidate-request', text: 'Consolidate Request' },
-      { link: '/authorize-request', text: 'Authorize Request' },
-      { link: '/consolidate-purchase', text: 'Consolidate Purchase' },
+      { path: "/consolidar-solicitud", text: "Solicitud Inicial" },
+      { path: "/gestion-autorizaciones", text: "Gestion Autorizaciones" },
+      { path: "/consolidar-pedido", text: "Pedidos" },
     ],
   },
   {
-    index: 3,
-    icon: faBox,
-    text: 'Order Delivery',
+    icono: faBox,
+    texto: "Compras",
+    indice: 2,
     subMenu: [
-      { link: '/consolidate-delivery', text: 'Consolidate Delivery' },
-      { link: '/create-pallet', text: 'Create Pallet' },
-      { link: '/conduct-survey', text: 'Conduct Survey' },
-      { link: '/create-delivery-note', text: 'Create Delivery Note' },
+      { path: "/comprar", text: "Gestionar Comprar" },
+      { path: "/entregar", text: "Gestionar Entregar" },
     ],
   },
   {
-    index: 1,
-    icon: faUser,
-    text: 'Account',
+    icono: faBox,
+    texto: "Entregas",
+    indice: 3,
     subMenu: [
-      { link: '/profile', text: 'Profile Settings' },
-      { link: '/change-password', text: 'Change Password' },
-      { link: '/notifications', text: 'Notifications' },
+      { path: "/consolidar-entrega", text: "Entregas" },
+      { path: "/crear-paleta", text: "Paletas" },
+      { path: "/requisas", text: "Requisas" },
+      { path: "/salida", text: "Acta de entregas" },
+    ],
+  },
+  {
+    icono: faUser,
+    texto: "Configuraciones",
+    indice: 4,
+    subMenu: [
+      { path: "/usuarios", text: "Gestión de Usuarios" }, // Administración de usuarios
+      { path: "/roles", text: "Gestión de Roles" }, // Administración de roles
+      { path: "/permisos", text: "Gestión de Permisos" }, // Administración de permisos
+      // { path: '/departamentos', text: 'Gestión de Departamentos' },  // Si tu sistema tiene departamentos o áreas
+      // { path: '/notificaciones', text: 'Gestión de Notificaciones' },  // Configuración y envío de notificaciones
+      // { path: '/perfil', text: 'Configuración de Perfil' }, // Cambios de perfil, correo o datos personales
+      // { path: '/cambiar-contrasena', text: 'Cambiar Contraseña' },  // Cambiar contraseña del administrador u otros usuarios
     ],
   },
 ];

@@ -1,26 +1,32 @@
+// src/context/slices/autenticacionSlice.js
 import { createSlice } from '@reduxjs/toolkit';
 
+// Estado inicial de la autenticación
 const initialState = {
-  isAuthenticated: false,
   usuario: null,
-  token: null,
+  roles: [],
+  permisos: [],
+  autenticado: false
 };
 
+// Slice de autenticación
 const autenticacionSlice = createSlice({
   name: 'autenticacion',
   initialState,
   reducers: {
     iniciarSesion: (state, action) => {
-      state.isAuthenticated = true;
-      state.usuario = action.payload.usuario;
-      state.token = action.payload.token;
+      state.usuario = action.payload.email;
+      state.roles = action.payload.roles;
+      state.permisos = action.payload.permisos;
+      state.autenticado = true;
     },
     cerrarSesion: (state) => {
-      state.isAuthenticated = false;
       state.usuario = null;
-      state.token = null;
-    },
-  },
+      state.roles = [];
+      state.permisos = [];
+      state.autenticado = false;
+    }
+  }
 });
 
 export const { iniciarSesion, cerrarSesion } = autenticacionSlice.actions;

@@ -5,7 +5,6 @@ const Cargador = () => {
   return (
     <div className="contenedor-cargador">
       <div className="cargador"></div>
-      <p>Cargando...</p>
     </div>
   );
 };

@@ -1,12 +1,12 @@
 const validarClave = (clave) => {
-  if (!clave || typeof clave !== 'string') {
-    throw new Error('La clave proporcionada no es válida.');
+  if (!clave || typeof clave !== "string") {
+    throw new Error("La clave proporcionada no es válida.");
   }
 };
 
 const validarToken = (token) => {
-  if (!token || typeof token !== 'string') {
-    throw new Error('El token proporcionado no es válido.');
+  if (!token || typeof token !== "string") {
+    throw new Error("El token proporcionado no es válido.");
   }
 };
 
@@ -17,7 +17,7 @@ export const guardarToken = (clave, token) => {
 };
 
 export const obtenerToken = (clave) => {
-  validarClave(clave);
+  // validarClave(clave);
   return localStorage.getItem(clave);
 };
 

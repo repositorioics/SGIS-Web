@@ -1,0 +1,29 @@
+.boton-cambiar-tema {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    padding: 16px;
+    gap: 10px;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+    background-color: transparent;
+    border: none;
+    outline: none;
+    color: #666;
+    width: 100%;
+  }
+  
+  .boton-cambiar-tema:hover {
+    background-color: #E9F2FF;
+  }
+  
+  .boton-cambiar-tema .menu-texto {
+    font-weight: 500;
+    flex-grow: 1;
+    font-weight: 500;
+    flex-grow: 1;
+    font-size: 0.9rem;
+    text-decoration: none;
+    text-align: left;
+    color: #333;
+}  

@@ -1,97 +1,86 @@
 .panel-derecho {
-    flex: 0 0 250px;
-    background-color: #fff;
-    border-left: 1px solid #ededed;
-    padding: 10px;
-    height: 100vh;
-    overflow-y: auto;
+  flex: 0 0 250px;
+  background-color: #fff;
+  border-left: 1px solid #ededed;
+  padding: 10px;
+  height: 100vh;
+  overflow-y: auto;
+}
+
+.panel-derecho__titulo {
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.panel-derecho__subtitulo {
+  font-size: 14px;
+  font-weight: normal;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.lista-requisiciones, .lista-paletas {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.lista-requisiciones__item, .lista-paletas__item {
+  background-color: #fff;
+  border-bottom: 1px solid #ededed;
+  padding: 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+}
+
+.lista-requisiciones__item:hover,
+.lista-paletas__item:hover {
+  background-color: #E9F2FF;
+}
+
+.lista-requisiciones__producto, .lista-requisiciones__fecha, .estado-circulo, 
+.lista-paletas__producto, .lista-paletas__fecha, .estado-circulo {
+  flex: 1;
+  font-size: 12px;
+  color: #555;
+}
+
+.ver-mas{
+  color: #69a1eb;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.ver-mas :hover{
+  color: #0070FF;
+}
+
+@media (max-width: 1024px) {
+  .panel-derecho {
+    flex: 1 0 100%;
+    border-left: none;
+    border-top: 1px solid #ededed;
   }
-  
-  .titulo-panel {
-    font-size: 16px;
-    font-weight: bold;
-    color: #333;
-    margin-bottom: 20px;
-    text-align: center;
+
+  .lista-requisiciones__item, .lista-paletas__item {
+    flex-direction: column;
+    align-items: flex-start;
   }
-  
-  .panel-derecho h3 {
-    font-size: 14px;
-    font-weight: normal;
-    color: #333;
-    margin-bottom: 10px;
+
+  .lista-requisiciones__producto, .lista-requisiciones__fecha, .estado-circulo, 
+  .lista-paletas__producto, .lista-paletas__fecha, .estado-circulo {
+    width: 100%;
+    text-align: left;
+    margin-bottom: 5px;
   }
-  
-  .lista-requisicion, .lista-pallet {
-    list-style: none;
-    padding: 0;
-    margin: 0;
+
+  .estado-circulo {
+    text-align: left;
+    margin-top: 5px;
   }
-  
-  .item-requisicion, .item-pallet {
-    background-color: #fff;
-    border-bottom: 1px solid #ededed;
-    padding: 14px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 14px;
-  }
-  
-  .item-requisicion:hover,
-  .item-pallet:hover {
-    background-color: #E9F2FF;
-  }
-  
-  .producto-requisicion, .fecha-requisicion, .circulo-estado, 
-  .producto-pallet, .fecha-pallet, .circulo-estado {
-    flex: 1;
-    font-size: 12px;
-    color: #555;
-  }
-  
-  .circulo-estado {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-  }
-  
-  .circulo-estado .circulo {
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    display: inline-block;
-  }
-  
-  .circulo-estado.completada .circulo {
-    background-color: #0eb17f;
-  }
-  
-  .circulo-estado.en-proceso .circulo {
-    background-color: #ffc12e;
-  }
-  
-  @media (max-width: 1024px) {
-    .panel-derecho {
-      flex: 1 0 100%;
-      border-left: none;
-      border-top: 1px solid #ededed;
-    }
-  
-    .item-requisicion, .item-pallet {
-      flex-direction: column;
-      align-items: flex-start;
-    }
-  
-    .producto-requisicion, .fecha-requisicion, .circulo-estado, 
-    .producto-pallet, .fecha-pallet, .circulo-estado {
-      width: 100%;
-      text-align: left;
-      margin-bottom: 5px;
-    }
-  
-    .circulo-estado {
-      text-align: left;
-      margin-top: 5px;
-    }
-  }  
+}

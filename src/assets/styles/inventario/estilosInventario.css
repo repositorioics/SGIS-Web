@@ -1,28 +1,141 @@
-.boton-accion {
-    color: #1976d2;
+.seccion-principal {
+    margin-top: 3rem;
+}
+.cabecera-inicio {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: center;
+    gap: 5px;
+  }
+.titulo-inicio {
+  font-size: 24px;
+  margin: 0;
+  font-weight: bold;
+  color: #333;
+}
+
+.subtitulo-inicio {
+  font-size: 16px;
+  font-weight: normal;
+  color: #555;
+  margin: 0;
+}
+.seccion-inventario{
+    margin-top: 10px;
+}
+  
+  .contenedor-resumen {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 15px;
+    gap: 10px;
+  }
+  
+  .tarjeta-resumen {
+    width: 18%;
+    padding: 10px;
+    border-radius: 8px;
+    background-color: #fff;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 0;
+  }
+  
+  .icono-resumen {
+    font-size: .7rem;
+    color: #007bff;
+    display: flex;
+    gap: 5px;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .texto-resumen p {
+    font-size: 0.7rem;
+    color: #6c757d;
+    margin: 0;
+  }
+  .valor-resumen{
+    font-size: 1.2rem;
+    margin: 7px;
+  }
+  
+  .cabecera-tabla p {
+    font-size: 0.7rem;
+    padding: 5px;
+    color: #6c757d;
+  }
+  
+  .etiqueta-estado {
+    padding: 2px 4px; 
+    border-radius: 5px; 
+    font-weight: bold;
+    font-size: 0.7rem;
+  }
+  
+  .etiqueta-estado.activo {
+    background-color: #d4edda;
+    color: #155724;
+  }
+  
+  .etiqueta-estado.inactivo {
+    background-color: #f8d7da;
+    color: #721c24;
+  }
+  
+  .boton-accion {
     border: none;
     background: none;
     cursor: pointer;
-}
-
-.boton-accion.eliminar {
-    color: #f44336;
-}
-
-.etiqueta-estado {
-    padding: 4px 8px;
-    border-radius: 12px;
-    font-weight: bold;
-    text-align: center;
-    min-width: 80px;
-}
-
-.etiqueta-estado.activo {
-    color: #4caf50;
-    background-color: #e8f5e9;
-}
-
-.etiqueta-estado.inactivo {
-    color: #f44336;
-    background-color: #ffebee;
-}
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .boton-accion .icono {
+    font-size: 0.5rem;
+  }
+  
+  .editar {
+    color: #28a745;
+  }
+  
+  .eliminar {
+    color: #dc3545;
+  }
+  
+  .MuiDataGrid-root .MuiDataGrid-cell,
+  .MuiDataGrid-root .MuiDataGrid-columnHeader {
+    height: 30px;
+    line-height: 1;
+    padding: 0 5px;
+  }
+  
+  .MuiDataGrid-root .MuiDataGrid-columnSeparator {
+    display: none;
+  }
+  
+  .MuiDataGrid-root .MuiDataGrid-row {
+    min-height: 30px;
+    padding: 0 5px;
+  }
+  
+  @media (max-width: 768px) {
+    .contenedor-resumen {
+      flex-direction: column;
+    }
+  
+    .tarjeta-resumen {
+      width: 100%;
+      margin-bottom: 10px;
+    }
+  
+    .cabecera h2 {
+      font-size: 1.25rem;
+    }
+}  
