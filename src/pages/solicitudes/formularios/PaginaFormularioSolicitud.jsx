@@ -1,6 +1,7 @@
 import React from 'react';
 import { Box, Button, Grid, TextField, Typography, Select, MenuItem, FormControl, InputLabel } from '@mui/material';
 import TablaGenerica from '@/components/inventario/TablaGenerica';
+import '@/assets/styles/formularios.css'; // Importar el archivo CSS
 
 const PaginaFormularioSolicitud = ({
   solicitud,
@@ -29,9 +30,11 @@ const PaginaFormularioSolicitud = ({
 
   return (
     <Box className="formulario-container">
-      <Typography component="h1" variant="h4" mb={1}>Crear Solicitud</Typography>
+      <Typography component="h1" variant="h4" mb={1} className="formulario-titulo">
+        Crear Solicitud
+      </Typography>
 
-      <Grid container spacing={2}>
+      <Grid container spacing={2} className="formulario-grid">
         <Grid item xs={12} sm={6}>
           <TextField
             label="Número de Solicitud"
@@ -40,11 +43,12 @@ const PaginaFormularioSolicitud = ({
             onChange={onInputChange}
             fullWidth
             margin="normal"
+            className="formulario-input"
           />
         </Grid>
 
         <Grid item xs={12} sm={6}>
-          <FormControl fullWidth margin="normal">
+          <FormControl fullWidth margin="normal" className="formulario-select">
             <InputLabel>Usuario</InputLabel>
             <Select name="usuarioId" value={solicitud.usuarioId} onChange={onInputChange}>
               {Array.isArray(usuarios) && usuarios.map(usuario => (
@@ -55,7 +59,7 @@ const PaginaFormularioSolicitud = ({
         </Grid>
 
         <Grid item xs={12} sm={6}>
-          <FormControl fullWidth margin="normal">
+          <FormControl fullWidth margin="normal" className="formulario-select">
             <InputLabel>Donante</InputLabel>
             <Select name="donanteId" value={solicitud.donanteId} onChange={onInputChange}>
               {Array.isArray(donantes) && donantes.map(donante => (
@@ -66,17 +70,24 @@ const PaginaFormularioSolicitud = ({
         </Grid>
 
         <Grid item xs={12} sm={6}>
-          <TextField
-            label="Estado"
-            name="estado"
-            value={solicitud.estado}
-            onChange={onInputChange}
-            fullWidth
-            margin="normal"
-          />
+          <FormControl fullWidth margin="normal" className="formulario-select">
+            <InputLabel>Estado</InputLabel>
+            <Select
+              name="estado"
+              value={solicitud.estado ? 1 : 0} // Muestra 1 si está activo, 0 si no
+              onChange={(e) =>
+                onInputChange({
+                  target: { name: "estado", value: e.target.value === 1 },
+                })
+              }
+            >
+              <MenuItem value={1}>Activo</MenuItem>
+              <MenuItem value={0}>Desactivado</MenuItem>
+            </Select>
+          </FormControl>
         </Grid>
 
-        <Grid item xs={12}>
+        <Grid item xs={12} style={{ marginBottom: '20px' }}> {/* Se agrega marginBottom */}
           <TextField
             label="Observaciones"
             name="observaciones"
@@ -86,15 +97,18 @@ const PaginaFormularioSolicitud = ({
             margin="normal"
             multiline
             rows={3}
+            className="formulario-input"
           />
         </Grid>
       </Grid>
 
-      <Typography component="h2" variant="h5" mt={3}>Agregar Detalles</Typography>
+      <Typography component="h2" variant="h5" mt={7} className="formulario-titulo">
+        Agregar Detalles
+      </Typography>
 
-      <Grid container spacing={2}>
+      <Grid container spacing={2} className="formulario-grid">
         <Grid item xs={12} sm={6}>
-          <FormControl fullWidth margin="normal">
+          <FormControl fullWidth margin="normal" className="formulario-select">
             <InputLabel>Insumo</InputLabel>
             <Select name="insumoId" value={detalleActual.insumoId} onChange={onDetalleChange}>
               {Array.isArray(insumos) && insumos.map(insumo => (
@@ -105,7 +119,7 @@ const PaginaFormularioSolicitud = ({
         </Grid>
 
         <Grid item xs={12} sm={6}>
-          <FormControl fullWidth margin="normal">
+          <FormControl fullWidth margin="normal" className="formulario-select">
             <InputLabel>Marca</InputLabel>
             <Select name="marcaId" value={detalleActual.marcaId} onChange={onDetalleChange}>
               {Array.isArray(marcas) && marcas.map(marca => (
@@ -116,7 +130,7 @@ const PaginaFormularioSolicitud = ({
         </Grid>
 
         <Grid item xs={12} sm={6}>
-          <FormControl fullWidth margin="normal">
+          <FormControl fullWidth margin="normal" className="formulario-select">
             <InputLabel>Distribuidor</InputLabel>
             <Select name="distribuidorId" value={detalleActual.distribuidorId} onChange={onDetalleChange}>
               {Array.isArray(distribuidores) && distribuidores.map(distribuidor => (
@@ -127,7 +141,7 @@ const PaginaFormularioSolicitud = ({
         </Grid>
 
         <Grid item xs={12} sm={6}>
-          <FormControl fullWidth margin="normal">
+          <FormControl fullWidth margin="normal" className="formulario-select">
             <InputLabel>Presentación</InputLabel>
             <Select name="presentacionId" value={detalleActual.presentacionId} onChange={onDetalleChange}>
               {Array.isArray(presentaciones) && presentaciones.map(presentacion => (
@@ -146,6 +160,7 @@ const PaginaFormularioSolicitud = ({
             onChange={onDetalleChange}
             fullWidth
             margin="normal"
+            className="formulario-input"
           />
         </Grid>
 
@@ -157,6 +172,7 @@ const PaginaFormularioSolicitud = ({
             onChange={onDetalleChange}
             fullWidth
             margin="normal"
+            className="formulario-input"
           />
         </Grid>
 
@@ -170,11 +186,12 @@ const PaginaFormularioSolicitud = ({
             margin="normal"
             multiline
             rows={2}
+            className="formulario-input"
           />
         </Grid>
 
-        <Grid item xs={12}>
-          <Button variant="contained" color="secondary" onClick={onAgregarDetalle}>
+        <Grid item xs={12}  mb={3} mt={3}>
+          <Button variant="contained" color="secondary" onClick={onAgregarDetalle} className="formulario-boton">
             Agregar Detalle
           </Button>
         </Grid>
@@ -188,7 +205,7 @@ const PaginaFormularioSolicitud = ({
       />
 
       <Box sx={{ display: 'flex', justifyContent: 'center', mt: 3 }}>
-        <Button variant="contained" color="primary" onClick={onGuardarSolicitud}>
+        <Button variant="contained" color="primary" onClick={onGuardarSolicitud} className="formulario-boton">
           Crear Solicitud
         </Button>
       </Box>

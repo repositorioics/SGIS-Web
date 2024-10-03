@@ -1,8 +1,8 @@
 import React from 'react';
-import { Box, Button, Grid, TextField, Typography } from '@mui/material';
+import { Box, Button, Grid, TextField, Typography, Select, MenuItem, FormControl, InputLabel } from '@mui/material';
 import '@/assets/styles/formularios.css'; // Importar el archivo CSS
 
-const PaginaFormularioBodega = ({ bodega, onChange, onSave, error, isEditing, formik }) => {
+const PaginaFormularioBodega = ({ bodega, onChange, onSave, error, isEditing, formik, sitios, donantes }) => {
   return (
     <Box className="formulario-container">
       <Typography
@@ -99,46 +99,48 @@ const PaginaFormularioBodega = ({ bodega, onChange, onSave, error, isEditing, fo
 
             {/* Campo Sitio */}
             <Grid item xs={12} sm={6}>
-              <TextField
-                label="Sitio ID"
-                name="sitioId"
-                type="number"
-                value={formik.values.sitioId}
-                onChange={onChange}
-                fullWidth
-                margin="normal"
-                error={formik.touched.sitioId && Boolean(formik.errors.sitioId)}
-                helperText={formik.touched.sitioId && formik.errors.sitioId}
-                InputLabelProps={{
-                  sx: { color: 'text.secondary', fontSize: '16px' },
-                  shrink: true,
-                }}
-                InputProps={{
-                  className: 'formulario-input', // Aplicar clase CSS
-                }}
-              />
+              <FormControl fullWidth margin="normal">
+                <InputLabel>Sitio</InputLabel>
+                <Select
+                  name="sitioId"
+                  value={formik.values.sitioId || ''}
+                  onChange={onChange}
+                  error={formik.touched.sitioId && Boolean(formik.errors.sitioId)}
+                >
+                  <MenuItem value="">Seleccionar Sitio</MenuItem>
+                  {sitios.map(sitio => (
+                    <MenuItem key={sitio.id} value={sitio.id}>
+                      {sitio.nombre}
+                    </MenuItem>
+                  ))}
+                </Select>
+                {formik.touched.sitioId && formik.errors.sitioId && (
+                  <Typography color="error">{formik.errors.sitioId}</Typography>
+                )}
+              </FormControl>
             </Grid>
 
             {/* Campo Donante */}
             <Grid item xs={12} sm={6}>
-              <TextField
-                label="Donante ID"
-                name="donanteId"
-                type="number"
-                value={formik.values.donanteId}
-                onChange={onChange}
-                fullWidth
-                margin="normal"
-                error={formik.touched.donanteId && Boolean(formik.errors.donanteId)}
-                helperText={formik.touched.donanteId && formik.errors.donanteId}
-                InputLabelProps={{
-                  sx: { color: 'text.secondary', fontSize: '16px' },
-                  shrink: true,
-                }}
-                InputProps={{
-                  className: 'formulario-input', // Aplicar clase CSS
-                }}
-              />
+              <FormControl fullWidth margin="normal">
+                <InputLabel>Donante</InputLabel>
+                <Select
+                  name="donanteId"
+                  value={formik.values.donanteId || ''}
+                  onChange={onChange}
+                  error={formik.touched.donanteId && Boolean(formik.errors.donanteId)}
+                >
+                  <MenuItem value="">Seleccionar Donante</MenuItem>
+                  {donantes.map(donante => (
+                    <MenuItem key={donante.id} value={donante.id}>
+                      {donante.nombre}
+                    </MenuItem>
+                  ))}
+                </Select>
+                {formik.touched.donanteId && formik.errors.donanteId && (
+                  <Typography color="error">{formik.errors.donanteId}</Typography>
+                )}
+              </FormControl>
             </Grid>
           </Grid>
 

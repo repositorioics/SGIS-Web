@@ -5,6 +5,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import PaginaFormularioRequisa from '@/pages/requisas/formularios/PaginaFormularioRequisa';
 import { URL } from '@/constants/url';
 import useFetch from '@/hooks/useFetch';
+import { obtenerToken } from '@/utils/almacenamiento';
 
 const ContenedorFormularioRequisa = () => {
   const [requisa, setRequisa] = useState({
@@ -24,12 +25,15 @@ const ContenedorFormularioRequisa = () => {
   const [detalles, setDetalles] = useState([]);
   const navigate = useNavigate();
 
-  const maxSize = 1000; // Para intentar obtener la mayor cantidad de datos
+  // Valor alto para intentar traer la mayor cantidad de datos
+  const maxSize = 1000;
+
+  // Peticiones para cargar los datos necesarios
   const { data: sitiosData, error: sitiosError } = useFetch(`${URL}api/v1/sitios?page=0&size=${maxSize}`, {}, []);
   const { data: insumosData, error: insumosError } = useFetch(`${URL}api/v1/insumos?page=0&size=${maxSize}`, {}, []);
   const { data: presentacionesData, error: presentacionesError } = useFetch(`${URL}api/v1/presentaciones?page=0&size=${maxSize}`, {}, []);
 
-  // Manejar cambios en el formulario de requisa
+  // Función para manejar los cambios en los inputs del formulario
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setRequisa({
@@ -38,7 +42,7 @@ const ContenedorFormularioRequisa = () => {
     });
   };
 
-  // Manejar cambios en los detalles
+  // Función para manejar los cambios en los detalles
   const handleDetalleChange = (e) => {
     const { name, value } = e.target;
     setDetalleActual({
@@ -47,7 +51,7 @@ const ContenedorFormularioRequisa = () => {
     });
   };
 
-  // Agregar detalle a la lista de detalles
+  // Función para agregar un detalle a la lista
   const agregarDetalle = () => {
     setDetalles([...detalles, detalleActual]);
     setDetalleActual({
@@ -58,14 +62,15 @@ const ContenedorFormularioRequisa = () => {
     });
   };
 
-  // Manejar la creación de la requisa
+  // Función para manejar la creación de la requisa
   const manejarCrear = async () => {
     const nuevaRequisa = { ...requisa, detallesRequisa: detalles };
 
     try {
+      const token = obtenerToken("accessToken");
       const response = await fetch(`${URL}api/v1/requisas`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
         body: JSON.stringify(nuevaRequisa),
       });
       if (response.ok) {
@@ -79,7 +84,7 @@ const ContenedorFormularioRequisa = () => {
     }
   };
 
-  // Verificar si hay errores en las peticiones
+  // Verifica si hay errores en las peticiones
   if (sitiosError || insumosError || presentacionesError) {
     return <p>Error al cargar los datos</p>;
   }
@@ -89,9 +94,9 @@ const ContenedorFormularioRequisa = () => {
       requisa={requisa}
       detalleActual={detalleActual}
       detalles={detalles}
-      sitios={sitiosData?.data || []}
-      insumos={insumosData?.data || []}
-      presentaciones={presentacionesData?.data || []}
+      sitios={sitiosData?.data?.content || []}
+      insumos={insumosData?.data?.content || []}
+      presentaciones={presentacionesData?.data?.content || []}
       onInputChange={handleInputChange}
       onDetalleChange={handleDetalleChange}
       onAgregarDetalle={agregarDetalle}

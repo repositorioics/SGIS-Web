@@ -7,7 +7,7 @@ import { URL } from '@/constants/url';
 import PaginaFormularioEntrega from '@/pages/requisas/formularios/PaginaFormularioEntrega';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-
+import { obtenerToken } from '@/utils/almacenamiento';
 const ContenedorFormularioEntrega = () => {
   const [entrega, setEntrega] = useState({
     detalleRequisaId: '',
@@ -45,9 +45,10 @@ const ContenedorFormularioEntrega = () => {
       const method = id ? 'PUT' : 'POST';
 
       try {
+        const token = obtenerToken("accessToken");
         const response = await fetch(url, {
           method,
-          headers: { 'Content-Type': 'application/json' },
+          headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`, },
           body: JSON.stringify(values)
         });
         const result = await response.json();

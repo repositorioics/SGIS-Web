@@ -7,6 +7,7 @@ import { URL } from '@/constants/url'; // Constante de la URL
 import PaginaFormularioCategoria from '@/pages/inventario/formularios/PaginaFormularioCategoria'; // Importamos el componente del formulario
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
+import { obtenerToken } from '@/utils/almacenamiento';
 
 const ContenedorFormularioCategoria = () => {
   const [categoria, setCategoria] = useState({
@@ -48,9 +49,10 @@ const ContenedorFormularioCategoria = () => {
       const method = id ? 'PUT' : 'POST';
 
       try {
+        const token = obtenerToken("accessToken");
         const response = await fetch(url, {
           method,
-          headers: { 'Content-Type': 'application/json' },
+          headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`, },
           body: JSON.stringify(values)
         });
         const result = await response.json();

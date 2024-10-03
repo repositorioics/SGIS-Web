@@ -1,6 +1,7 @@
 import React from 'react';
 import { Box, Button, Grid, TextField, Typography, Select, MenuItem, FormControl, InputLabel } from '@mui/material';
 import TablaGenerica from '@/components/inventario/TablaGenerica';
+import '@/assets/styles/formularios.css'; // Importar el archivo CSS
 
 const PaginaFormularioRequisa = ({
   requisa,
@@ -23,11 +24,13 @@ const PaginaFormularioRequisa = ({
 
   return (
     <Box className="formulario-container">
-      <Typography component="h1" variant="h4" mb={1}>Crear Requisa</Typography>
+      <Typography component="h1" variant="h4" mb={1} className="formulario-titulo">
+        Crear Requisa
+      </Typography>
 
-      <Grid container spacing={2}>
+      <Grid container spacing={2} className="formulario-grid">
         <Grid item xs={12} sm={6}>
-          <FormControl fullWidth margin="normal">
+          <FormControl fullWidth margin="normal" className="formulario-select">
             <InputLabel>Sitio</InputLabel>
             <Select name="sitioId" value={requisa.sitioId} onChange={onInputChange}>
               {Array.isArray(sitios) && sitios.map(sitio => (
@@ -46,10 +49,11 @@ const PaginaFormularioRequisa = ({
             onChange={onInputChange}
             fullWidth
             margin="normal"
+            className="formulario-input"
           />
         </Grid>
 
-        <Grid item xs={12}>
+        <Grid item xs={12} style={{ marginBottom: '20px' }}> {/* Se agrega marginBottom para espacio debajo del campo Observaciones */}
           <TextField
             label="Observaciones"
             name="observaciones"
@@ -59,15 +63,18 @@ const PaginaFormularioRequisa = ({
             margin="normal"
             multiline
             rows={3}
+            className="formulario-input"
           />
         </Grid>
       </Grid>
 
-      <Typography component="h2" variant="h5" mt={3}>Agregar Detalles</Typography>
+      <Typography component="h2" variant="h5" mt={7} className="formulario-titulo">
+        Agregar Detalles
+      </Typography>
 
-      <Grid container spacing={2}>
+      <Grid container spacing={2} className="formulario-grid">
         <Grid item xs={12} sm={6}>
-          <FormControl fullWidth margin="normal">
+          <FormControl fullWidth margin="normal" className="formulario-select">
             <InputLabel>Insumo</InputLabel>
             <Select name="insumoId" value={detalleActual.insumoId} onChange={onDetalleChange}>
               {Array.isArray(insumos) && insumos.map(insumo => (
@@ -78,7 +85,7 @@ const PaginaFormularioRequisa = ({
         </Grid>
 
         <Grid item xs={12} sm={6}>
-          <FormControl fullWidth margin="normal">
+          <FormControl fullWidth margin="normal" className="formulario-select">
             <InputLabel>Presentación</InputLabel>
             <Select name="presentacionId" value={detalleActual.presentacionId} onChange={onDetalleChange}>
               {Array.isArray(presentaciones) && presentaciones.map(presentacion => (
@@ -97,6 +104,7 @@ const PaginaFormularioRequisa = ({
             onChange={onDetalleChange}
             fullWidth
             margin="normal"
+            className="formulario-input"
           />
         </Grid>
 
@@ -110,11 +118,12 @@ const PaginaFormularioRequisa = ({
             margin="normal"
             multiline
             rows={2}
+            className="formulario-input"
           />
         </Grid>
 
-        <Grid item xs={12}>
-          <Button variant="contained" color="secondary" onClick={onAgregarDetalle}>
+        <Grid item xs={12} mb={3} mt={3}>
+          <Button variant="contained" color="secondary" onClick={onAgregarDetalle} className="formulario-boton">
             Agregar Detalle
           </Button>
         </Grid>
@@ -128,7 +137,7 @@ const PaginaFormularioRequisa = ({
       />
 
       <Box sx={{ display: 'flex', justifyContent: 'center', mt: 3 }}>
-        <Button variant="contained" color="primary" onClick={onGuardarRequisa}>
+        <Button variant="contained" color="primary" onClick={onGuardarRequisa} className="formulario-boton">
           Crear Requisa
         </Button>
       </Box>

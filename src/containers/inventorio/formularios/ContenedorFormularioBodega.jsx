@@ -7,6 +7,7 @@ import { URL } from '@/constants/url'; // Constante de la URL
 import PaginaFormularioBodega from '@/pages/inventario/formularios/PaginaFormularioBodega'; // Importamos el componente del formulario
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
+import { obtenerToken } from '@/utils/almacenamiento';
 
 const ContenedorFormularioBodega = () => {
   const [bodega, setBodega] = useState({
@@ -27,6 +28,10 @@ const ContenedorFormularioBodega = () => {
     [id]
   );
 
+  // Hook para obtener los sitios y donantes
+  const { data: sitiosData } = useFetch(`${URL}api/v1/sitios?page=0&size=1000`, {}, []);
+  const { data: donantesData } = useFetch(`${URL}api/v1/donantes?page=0&size=1000`, {}, []);
+
   useEffect(() => {
     if (bodegaData) {
       setBodega(bodegaData.data); // Si estamos editando, cargamos los datos de la bodega
@@ -42,8 +47,8 @@ const ContenedorFormularioBodega = () => {
         .matches(/^[A-Za-z\s]+$/, 'El nombre solo puede contener letras y espacios')
         .max(100, 'El nombre no puede exceder 100 caracteres'),
       descripcion: Yup.string()
-      .required('El nombre es obligatorio')
-      .matches(/^[A-Za-z\s]+$/, 'El nombre solo puede contener letras y espacios')
+        .required('El nombre es obligatorio')
+        .matches(/^[A-Za-z\s]+$/, 'El nombre solo puede contener letras y espacios')
         .max(200, 'La descripción no puede exceder 200 caracteres'),
       direccion: Yup.string()
         .required('La dirección es obligatoria')
@@ -66,9 +71,10 @@ const ContenedorFormularioBodega = () => {
       const method = id ? 'PUT' : 'POST';
 
       try {
+        const token = obtenerToken("accessToken");
         const response = await fetch(url, {
           method,
-          headers: { 'Content-Type': 'application/json' },
+          headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`, },
           body: JSON.stringify(values)
         });
         const result = await response.json();
@@ -93,6 +99,8 @@ const ContenedorFormularioBodega = () => {
     <PaginaFormularioBodega
       bodega={formik.values}
       error={error}
+      sitios={sitiosData ? sitiosData.data.content : []}
+      donantes={donantesData ? donantesData.data.content : []}
       onChange={handleChange}
       onSave={formik.handleSubmit}
       isEditing={!!id} // Usamos esto para diferenciar entre crear o editar

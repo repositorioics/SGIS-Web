@@ -12,7 +12,7 @@ const ContenedorLogin = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch(); // Para enviar acciones al store
 
-  const onSubmit = async (valores) => {
+  const manejarInicioSesion = async (valores) => {
     const { username, password } = valores;
     const { data, error } = await useFetch('/api/v1/auth/login', {
       method: 'POST',
@@ -38,7 +38,7 @@ const ContenedorLogin = () => {
     }
   };
 
-  return <PaginaLogin onSubmit={onSubmit} />;
+  return <PaginaLogin onSubmit={manejarInicioSesion} />;
 };
 
 export default ContenedorLogin;

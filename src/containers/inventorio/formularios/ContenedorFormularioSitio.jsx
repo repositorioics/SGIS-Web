@@ -7,6 +7,7 @@ import { URL } from '@/constants/url'; // Constante de la URL
 import PaginaFormularioSitio from '@/pages/inventario/formularios/PaginaFormularioSitio'; // Importamos el componente del formulario
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
+import { obtenerToken } from '@/utils/almacenamiento';
 
 const ContenedorFormularioSitio = () => {
   const [sitio, setSitio] = useState({
@@ -24,6 +25,14 @@ const ContenedorFormularioSitio = () => {
     id ? `${URL}api/v1/sitios/${id}` : null, 
     {}, 
     [id]
+  );
+
+  // Hook para obtener los usuarios con paginación
+  const maxSize = 1000; // Para obtener la mayor cantidad de usuarios
+  const { data: usuariosData, error: usuariosError } = useFetch(
+    `${URL}api/v1/usuarios?page=0&size=${maxSize}`, 
+    {}, 
+    []
   );
 
   useEffect(() => {
@@ -44,21 +53,24 @@ const ContenedorFormularioSitio = () => {
         .required('El nombre es obligatorio')
         .max(50, 'La abreviatura no puede exceder 50 caracteres'),
       direccion: Yup.string()
-      .required('El nombre es obligatorio')
+        .required('El nombre es obligatorio')
         .max(200, 'La dirección no puede exceder 200 caracteres'),
       usuarioContactoId: Yup.number()
         .required('El ID del usuario contacto es obligatorio'),
     }),
+    
     onSubmit: async (values) => {
       const url = id ? `${URL}api/v1/sitios/${id}` : `${URL}api/v1/sitios`;
       const method = id ? 'PUT' : 'POST';
 
       try {
+        const token = obtenerToken("accessToken");
         const response = await fetch(url, {
           method,
-          headers: { 'Content-Type': 'application/json' },
+          headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`, },
           body: JSON.stringify(values)
         });
+
         const result = await response.json();
         
         if (response.ok) {
@@ -81,6 +93,7 @@ const ContenedorFormularioSitio = () => {
     <PaginaFormularioSitio
       sitio={formik.values}
       error={error}
+      usuarios={usuariosData ? usuariosData.data.content : []} // Pasamos los usuarios al componente
       onChange={handleChange}
       onSave={formik.handleSubmit}
       isEditing={!!id} // Usamos esto para diferenciar entre crear o actualizar

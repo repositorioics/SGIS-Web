@@ -29,15 +29,16 @@ const ContenedorFormularioSolicitud = () => {
   const [detalles, setDetalles] = useState([]);
   const navigate = useNavigate();
 
-  const maxSize = 1000; // Valor alto para intentar traer la mayor cantidad de datos
+  // Valor alto para intentar traer la mayor cantidad de datos
+  const maxSize = 1000;
 
-const { data: usuariosData, error: usuariosError } = useFetch(`${URL}api/v1/usuarios?page=0&size=${maxSize}`, {}, []);
-const { data: donantesData, error: donantesError } = useFetch(`${URL}api/v1/donantes?page=0&size=${maxSize}`, {}, []);
-const { data: insumosData, error: insumosError } = useFetch(`${URL}api/v1/insumos?page=0&size=${maxSize}`, {}, []);
-const { data: marcasData, error: marcasError } = useFetch(`${URL}api/v1/marcas?page=0&size=${maxSize}`, {}, []);
-const { data: distribuidoresData, error: distribuidoresError } = useFetch(`${URL}api/v1/distribuidores?page=0&size=${maxSize}`, {}, []);
-const { data: presentacionesData, error: presentacionesError } = useFetch(`${URL}api/v1/presentaciones?page=0&size=${maxSize}`, {}, []);
-
+  // Peticiones para cargar los datos necesarios con maxSize aplicado
+  const { data: usuariosData, error: usuariosError } = useFetch(`${URL}api/v1/usuarios?page=0&size=${maxSize}`, {}, []);
+  const { data: donantesData, error: donantesError } = useFetch(`${URL}api/v1/donantes?page=0&size=${maxSize}`, {}, []);
+  const { data: insumosData, error: insumosError } = useFetch(`${URL}api/v1/insumos?page=0&size=${maxSize}`, {}, []);
+  const { data: marcasData, error: marcasError } = useFetch(`${URL}api/v1/marcas?page=0&size=${maxSize}`, {}, []);
+  const { data: distribuidoresData, error: distribuidoresError } = useFetch(`${URL}api/v1/distribuidores?page=0&size=${maxSize}`, {}, []);
+  const { data: presentacionesData, error: presentacionesError } = useFetch(`${URL}api/v1/presentaciones?page=0&size=${maxSize}`, {}, []);
 
   // Función para manejar los cambios en los inputs del formulario
   const handleInputChange = (e) => {
@@ -102,12 +103,12 @@ const { data: presentacionesData, error: presentacionesError } = useFetch(`${URL
       solicitud={solicitud}
       detalleActual={detalleActual}
       detalles={detalles}
-      usuarios={usuariosData?.data || []}
-      donantes={donantesData?.data || []}
-      insumos={insumosData?.data || []}
-      marcas={marcasData?.data || []}
-      distribuidores={distribuidoresData?.data || []}
-      presentaciones={presentacionesData?.data || []}
+      usuarios={usuariosData?.data?.content || []}
+      donantes={donantesData?.data?.content || []}
+      insumos={insumosData?.data?.content || []}
+      marcas={marcasData?.data?.content || []}
+      distribuidores={distribuidoresData?.data?.content || []}
+      presentaciones={presentacionesData?.data?.content || []}
       onInputChange={handleInputChange}
       onDetalleChange={handleDetalleChange}
       onAgregarDetalle={agregarDetalle}

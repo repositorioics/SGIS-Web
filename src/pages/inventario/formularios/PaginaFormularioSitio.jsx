@@ -1,8 +1,8 @@
 import React from 'react';
-import { Box, Button, Grid, TextField, Typography } from '@mui/material';
+import { Box, Button, Grid, TextField, Typography, Select, MenuItem, FormControl, InputLabel } from '@mui/material';
 import '@/assets/styles/formularios.css'; // Importar el archivo CSS
 
-const PaginaFormularioSitio = ({ sitio, onChange, onSave, error, isEditing, formik }) => {
+const PaginaFormularioSitio = ({ sitio, onChange, onSave, error, isEditing, formik, usuarios }) => {
   return (
     <Box className="formulario-container">
       <Typography
@@ -95,26 +95,30 @@ const PaginaFormularioSitio = ({ sitio, onChange, onSave, error, isEditing, form
               />
             </Grid>
 
-            {/* Campo ID de Usuario de Contacto */}
+            {/* Campo Usuario de Contacto */}
             <Grid item xs={12} sm={6}>
-              <TextField
-                label="ID de Usuario de Contacto"
-                name="usuarioContactoId"
-                type="number"
-                value={formik.values.usuarioContactoId}
-                onChange={onChange}
-                fullWidth
-                margin="normal"
-                error={formik.touched.usuarioContactoId && Boolean(formik.errors.usuarioContactoId)}
-                helperText={formik.touched.usuarioContactoId && formik.errors.usuarioContactoId}
-                InputLabelProps={{
-                  sx: { color: 'text.secondary', fontSize: '16px' },
-                  shrink: true,
-                }}
-                InputProps={{
-                  className: 'formulario-input', // Aplicar clase CSS
-                }}
-              />
+              <FormControl fullWidth margin="normal">
+                <InputLabel>Usuario de Contacto</InputLabel>
+                <Select
+                  name="usuarioContactoId"
+                  value={formik.values.usuarioContactoId}
+                  onChange={onChange}
+                  fullWidth
+                  InputProps={{
+                    className: 'formulario-input', // Aplicar clase CSS
+                  }}
+                  error={formik.touched.usuarioContactoId && Boolean(formik.errors.usuarioContactoId)}
+                >
+                  {usuarios.map(usuario => (
+                    <MenuItem key={usuario.id} value={usuario.id}>
+                      {`${usuario.nombre} ${usuario.apellido} (${usuario.usuario})`}
+                    </MenuItem>
+                  ))}
+                </Select>
+                {formik.touched.usuarioContactoId && formik.errors.usuarioContactoId && (
+                  <Typography color="error">{formik.errors.usuarioContactoId}</Typography>
+                )}
+              </FormControl>
             </Grid>
           </Grid>
 
