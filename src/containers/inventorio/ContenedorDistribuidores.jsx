@@ -22,12 +22,12 @@ const ContenedorDistribuidores = () => {
   );
 
   const manejarCrear = () => {
-    navigate('/distribuidor/crear');
+    navigate('/inventario/distribuidor/crear');
   };
 
   const manejarActualizar = (distribuidor) => {
     if (distribuidor && distribuidor.id) {
-      navigate(`/distribuidor/actualizar/${distribuidor.id}`);
+      navigate(`/inventario/distribuidor/actualizar/${distribuidor.id}`);
     } else {
       toast.error('No se puede actualizar el distribuidor porque no tiene un ID válido.');
     }

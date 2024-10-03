@@ -12,7 +12,7 @@ const ContenedorPresentaciones = () => {
   const [pageSize, setPageSize] = useState(10);
   const navigate = useNavigate();
 
-  // Hook personalizado useFetch para obtener los datos
+  // Hook personalizado para obtener los datos de las presentaciones
   const { data, loading, error } = useFetch(
     `${URL}api/v1/presentaciones?page=${paginaActual}&size=${pageSize}`,
     {},
@@ -20,12 +20,12 @@ const ContenedorPresentaciones = () => {
   );
 
   const manejarCrear = () => {
-    navigate('/presentaciones/crear');
+    navigate('/inventario/presentaciones/crear');
   };
 
   const manejarActualizar = (presentacion) => {
     if (presentacion && presentacion.id) {
-      navigate(`/presentaciones/actualizar/${presentacion.id}`);
+      navigate(`/inventario/presentaciones/actualizar/${presentacion.id}`);
     } else {
       toast.error('No se puede actualizar la presentación porque no tiene un ID válido.');
     }
@@ -35,12 +35,14 @@ const ContenedorPresentaciones = () => {
     toast.success(`Presentación ${presentacion.nombre} desactivada correctamente`);
     if (data) {
       const presentacionesFiltradas = data.data.content.filter(p => p.id !== presentacion.id);
+      // Aquí podrías manejar la actualización de datos si es necesario
     }
   };
 
   const columnas = [
     { field: 'nombre', headerName: 'Nombre', flex: 2 },
     { field: 'descripcion', headerName: 'Descripción', flex: 3 },
+    { field: 'unidadesPresentacion', headerName: 'Unidades por Presentación', flex: 2 },
     { field: 'activo', headerName: 'Estado', flex: 1 },
     { field: 'acciones', headerName: 'Acciones', flex: 1, sortable: false },
   ];

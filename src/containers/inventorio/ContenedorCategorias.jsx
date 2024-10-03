@@ -20,12 +20,12 @@ const ContenedorCategorias = () => {
   );
 
   const manejarCrear = () => {
-    navigate('/categoria/crear');
+    navigate('/inventario/categoria/crear');
   };
 
   const manejarActualizar = (categoria) => {
     if (categoria && categoria.id) {
-      navigate(`/categoria/actualizar/${categoria.id}`);
+      navigate(`/inventario/categoria/actualizar/${categoria.id}`);
     } else {
       toast.error('No se puede actualizar la categoría porque no tiene un ID válido.');
     }

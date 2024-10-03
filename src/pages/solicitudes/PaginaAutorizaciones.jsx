@@ -38,6 +38,7 @@ const PaginaAutorizaciones = ({
           setPageSize={setPageSize}
           manejarAutorizar={manejarAutorizar}
           manejarRechazar={manejarRechazar}
+          mostrarCrear={false}
         />
       </div>
     </div>

@@ -7,18 +7,18 @@ export const menuItems = [
     texto: "Inventario",
     indice: 0,
     subMenu: [
-      { path: "/bodegas", text: "Bodegas" },
-      { path: "/categorias", text: "Categorías" },
-      { path: "/distribuidores", text: "Distribuidores" },
-      { path: "/donantes", text: "Donantes" },
-      { path: "/estudios", text: "Estudios" },
-      { path: "/insumos", text: "Insumos" },
-      { path: "/inventarios", text: "Inventario" },
-      { path: "/marcas", text: "Marcas" },
-      { path: "/movimientos-inventario", text: "Movimientos de Inventario" },
-      { path: "/presentaciones", text: "Presentaciones" },
-      { path: "/sitios", text: "Sitios" },
-      { path: "/unidades-medida", text: "Unidades de Medida" },
+      { path: "/inventario/bodegas", text: "Bodegas" },
+      { path: "/inventario/categorias", text: "Categorías" },
+      { path: "/inventario/distribuidores", text: "Distribuidores" },
+      { path: "/inventario/donantes", text: "Donantes" },
+      { path: "/inventario/estudios", text: "Estudios" },
+      { path: "/inventario/insumos", text: "Insumos" },
+      { path: "/inventario/inventarios", text: "Inventario" },
+      { path: "/inventario/marcas", text: "Marcas" },
+      { path: "/inventario/movimientos-inventario", text: "Movimientos de Inventario" },
+      { path: "/inventario/presentaciones", text: "Presentaciones" },
+      { path: "/inventario/sitios", text: "Sitios" },
+      { path: "/inventario/unidades", text: "Unidades de Medida" },
     ],
   },
   {
@@ -26,9 +26,9 @@ export const menuItems = [
     texto: "Solicitudes",
     indice: 1,
     subMenu: [
-      { path: "/consolidar-solicitud", text: "Solicitud Inicial" },
-      { path: "/gestion-autorizaciones", text: "Gestion Autorizaciones" },
-      { path: "/consolidar-pedido", text: "Pedidos" },
+      { path: "/solicitudes/consolidar-solicitud", text: "Solicitud Inicial" },
+      { path: "/solicitudes/gestion-autorizaciones", text: "Gestion Autorizaciones" },
+      { path: "/solicitudes/consolidar-pedido", text: "Pedidos" },
     ],
   },
   {
@@ -36,19 +36,18 @@ export const menuItems = [
     texto: "Compras",
     indice: 2,
     subMenu: [
-      { path: "/comprar", text: "Gestionar Comprar" },
-      { path: "/entregar", text: "Gestionar Entregar" },
+      { path: "/compras/comprar", text: "Gestionar Comprar" },
+      { path: "/compras/entregar", text: "Gestionar Entregar" },
     ],
   },
   {
     icono: faBox,
-    texto: "Entregas",
+    texto: "Requisas",
     indice: 3,
     subMenu: [
-      { path: "/consolidar-entrega", text: "Entregas" },
-      { path: "/crear-paleta", text: "Paletas" },
-      { path: "/requisas", text: "Requisas" },
-      { path: "/salida", text: "Acta de entregas" },
+     // { path: "/requisas/crear-paleta", text: "Paletas" },
+      { path: "/requisas/requisas", text: "Requisas" },
+      { path: "/requisas/entregas", text: "Acta de entregas" },
     ],
   },
   {
@@ -56,9 +55,9 @@ export const menuItems = [
     texto: "Configuraciones",
     indice: 4,
     subMenu: [
-      { path: "/usuarios", text: "Gestión de Usuarios" }, // Administración de usuarios
-      { path: "/roles", text: "Gestión de Roles" }, // Administración de roles
-      { path: "/permisos", text: "Gestión de Permisos" }, // Administración de permisos
+      { path: "/configuraciones/usuarios", text: "Gestión de Usuarios" }, // Administración de usuarios
+      { path: "/configuraciones/roles", text: "Gestión de Roles" }, // Administración de roles
+      { path: "/configuraciones/permisos", text: "Gestión de Permisos" }, // Administración de permisos
       // { path: '/departamentos', text: 'Gestión de Departamentos' },  // Si tu sistema tiene departamentos o áreas
       // { path: '/notificaciones', text: 'Gestión de Notificaciones' },  // Configuración y envío de notificaciones
       // { path: '/perfil', text: 'Configuración de Perfil' }, // Cambios de perfil, correo o datos personales

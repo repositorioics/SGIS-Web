@@ -16,7 +16,8 @@ const TablaGenerica = ({
   pageSize, // Recibe el tamaño de página
   setPageSize, // Permite cambiar el tamaño de página
   manejarActualizar, 
-  manejarEliminar 
+  manejarEliminar,
+  mostrarCrear = true 
 }) => {
 
   const manejarCambioPageSize = (newPageSize) => {
@@ -102,21 +103,23 @@ const TablaGenerica = ({
               <span style={{ fontSize: "1.2em", fontWeight: 'bold', color: '#333' }}>{encabezado}</span>
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                 <GridToolbar />
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={manejarCrear}
-                  style={{
-                    backgroundColor: '#1976d2',
-                    color: '#fff',
-                    fontWeight: 'bold',
-                    boxShadow: 'none',
-                    borderRadius: '8px',
-                    marginLeft: 'auto'
-                  }}
-                >
-                  Crear Nuevo
-                </Button>
+                {mostrarCrear && (
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={manejarCrear}
+                    style={{
+                      backgroundColor: '#1976d2',
+                      color: '#fff',
+                      fontWeight: 'bold',
+                      boxShadow: 'none',
+                      borderRadius: '8px',
+                      marginLeft: 'auto'
+                    }}
+                  >
+                    Crear Nuevo
+                  </Button>
+                )}
               </div>
             </div>
           )

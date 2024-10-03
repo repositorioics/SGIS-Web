@@ -75,7 +75,7 @@ const ContenedorFormularioBodega = () => {
         
         if (response.ok) {
           toast.success(id ? 'Bodega actualizada con éxito' : 'Bodega creada con éxito');
-          navigate('/bodegas'); // Redireccionamos a la página de bodegas
+          navigate('/inventario/bodegas'); // Redireccionamos a la página de bodegas
         } else {
           toast.error(result.message || 'Error al guardar la bodega');
         }

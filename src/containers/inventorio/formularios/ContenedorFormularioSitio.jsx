@@ -63,7 +63,7 @@ const ContenedorFormularioSitio = () => {
         
         if (response.ok) {
           toast.success(id ? 'Sitio actualizado con éxito' : 'Sitio creado con éxito');
-          navigate('/sitios'); // Redireccionamos a la página de sitios
+          navigate('/inventario/sitios'); // Redireccionamos a la página de sitios
         } else {
           toast.error(result.message || 'Error al guardar el sitio');
         }

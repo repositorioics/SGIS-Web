@@ -4,13 +4,12 @@ import Cargador from '@/components/Cargador';
 import MensajeError from '@/components/MensajeError';
 import '@/assets/styles/inventario/estilosInventario.css';
 
-const PaginaPedidos = ({
+const PaginaUnidades = ({
   columnas,
   datos,
   cargando,
   error,
   manejarCrear,
-  manejarBusqueda,
   totalPaginas,
   paginaActual,
   setPaginaActual,
@@ -25,16 +24,15 @@ const PaginaPedidos = ({
   return (
     <div className="seccion-principal">
       <div className="cabecera-inicio">
-        <h2 className="titulo-inicio">Gestión de Pedidos</h2>
-        <p className="subtitulo-inicio">Administra los pedidos de insumos en el sistema</p>
+        <h2 className="titulo-inicio">Gestión de Unidades de Medida</h2>
+        <p className="subtitulo-inicio">Administra las unidades de medida del sistema</p>
       </div>
       <div className="seccion-inventario">
         <TablaGenerica
-          encabezado={"Listado de pedidos registrados en el sistema"}
+          encabezado="Listado de unidades de medida registradas en el sistema"
           columnas={columnas}
           datos={datos}
           manejarCrear={manejarCrear}
-          manejarBusqueda={manejarBusqueda}
           totalPaginas={totalPaginas}
           paginaActual={paginaActual}
           setPagina={setPaginaActual}
@@ -42,11 +40,10 @@ const PaginaPedidos = ({
           setPageSize={setPageSize}
           manejarActualizar={manejarActualizar}
           manejarEliminar={manejarEliminar}
-          mostrarCrear={false}
         />
       </div>
     </div>
   );
 };
 
-export default PaginaPedidos;
+export default PaginaUnidades;

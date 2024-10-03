@@ -20,13 +20,13 @@ const ContenedorInventario = () => {
 
   // Manejar la creación de un nuevo registro de inventario
   const manejarCrear = () => {
-    navigate('/inventario/crear');
+    navigate('/inventario/inventario/crear');
   };
 
   // Manejar la actualización de un registro de inventario
   const manejarActualizar = (inventario) => {
     if (inventario && inventario.id) {
-      navigate(`/inventario/actualizar/${inventario.id}`);
+      navigate(`/inventario/inventario/actualizar/${inventario.id}`);
     } else {
       toast.error('No se puede actualizar el inventario porque no tiene un ID válido.');
     }

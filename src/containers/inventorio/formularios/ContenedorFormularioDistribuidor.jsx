@@ -57,7 +57,7 @@ const ContenedorFormularioDistribuidor = () => {
         
         if (response.ok) {
           toast.success(id ? 'Distribuidor actualizado con éxito' : 'Distribuidor creado con éxito');
-          navigate('/distribuidores'); // Redireccionamos a la página de distribuidores
+          navigate('/inventario/distribuidores'); // Redireccionamos a la página de distribuidores
         } else {
           toast.error(result.message || 'Error al guardar el distribuidor');
         }

@@ -1,50 +1,53 @@
+
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import useFetch from '@/hooks/useFetch'; // Importa tu hook de fetch personalizado
+import useFetch from '@/hooks/useFetch'; // Hook personalizado de fetch
 import { URL } from '@/constants/url'; // Constante de la URL
-import PaginaFormularioEstudio from '@/pages/inventario/formularios/PaginaFormularioEstudio'; // Importamos el componente del formulario
+import PaginaFormularioPresentacion from '@/pages/inventario/formularios/PaginaFormularioPresentacion'; // Componente del formulario
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 
-const ContenedorFormularioEstudio = () => {
-  const [estudio, setEstudio] = useState({
+const ContenedorFormularioPresentacion = () => {
+  const [presentacion, setPresentacion] = useState({
     nombre: '',
     descripcion: '',
+    unidadesPresentacion: 0,
   });
   
   const { id } = useParams(); // Obtenemos el ID de los parámetros de la URL para saber si es edición
   const navigate = useNavigate();
   
-  // Hook personalizado para obtener los datos del estudio si estamos en modo edición
-  const { data: estudioData, error } = useFetch(
-    id ? `${URL}api/v1/estudios/${id}` : null, 
+  // Hook personalizado para obtener los datos de la presentación si estamos en modo edición
+  const { data: presentacionData, error } = useFetch(
+    id ? `${URL}api/v1/presentaciones/${id}` : null, 
     {}, 
     [id]
   );
 
   useEffect(() => {
-    if (estudioData) {
-      setEstudio(estudioData.data); // Si estamos editando, cargamos los datos del estudio
+    if (presentacionData) {
+      setPresentacion(presentacionData.data); // Si estamos editando, cargamos los datos de la presentación
     }
-  }, [estudioData]);
+  }, [presentacionData]);
 
   const formik = useFormik({
-    initialValues: estudio,
+    initialValues: presentacion,
     enableReinitialize: true, // Permite reinicializar valores iniciales al recibir nuevos datos
     validationSchema: Yup.object({
       nombre: Yup.string()
         .required('El nombre es obligatorio')
-        .matches(/^[A-Za-z\s]+$/, 'El nombre solo puede contener letras y espacios')
         .max(100, 'El nombre no puede exceder 100 caracteres'),
       descripcion: Yup.string()
-        .required('El nombre es obligatorio')
-        .matches(/^[A-Za-z\s]+$/, 'El nombre solo puede contener letras y espacios')
+        .required('La descripción es obligatoria')
         .max(200, 'La descripción no puede exceder 200 caracteres'),
+      unidadesPresentacion: Yup.number()
+        .required('Las unidades por presentación son obligatorias')
+        .min(1, 'Debe tener al menos 1 unidad'),
     }),
     onSubmit: async (values) => {
-      const url = id ? `${URL}api/v1/estudios/${id}` : `${URL}api/v1/estudios`;
+      const url = id ? `${URL}api/v1/presentaciones/${id}` : `${URL}api/v1/presentaciones`;
       const method = id ? 'PUT' : 'POST';
 
       try {
@@ -56,13 +59,13 @@ const ContenedorFormularioEstudio = () => {
         const result = await response.json();
         
         if (response.ok) {
-          toast.success(id ? 'Estudio actualizado con éxito' : 'Estudio creado con éxito');
-          navigate('/inventario/estudios'); // Redireccionamos a la página de estudios
+          toast.success(id ? 'Presentación actualizada con éxito' : 'Presentación creada con éxito');
+          navigate('/inventario/presentaciones'); // Redireccionamos a la página de presentaciones
         } else {
-          toast.error(result.message || 'Error al guardar el estudio');
+          toast.error(result.message || 'Error al guardar la presentación');
         }
       } catch (err) {
-        toast.error('Ocurrió un error al guardar el estudio');
+        toast.error('Ocurrió un error al guardar la presentación');
       }
     },
   });
@@ -72,8 +75,8 @@ const ContenedorFormularioEstudio = () => {
   };
 
   return (
-    <PaginaFormularioEstudio
-      estudio={formik.values}
+    <PaginaFormularioPresentacion
+      presentacion={formik.values}
       error={error}
       onChange={handleChange}
       onSave={formik.handleSubmit}
@@ -83,4 +86,4 @@ const ContenedorFormularioEstudio = () => {
   );
 };
 
-export default ContenedorFormularioEstudio;
+export default ContenedorFormularioPresentacion;

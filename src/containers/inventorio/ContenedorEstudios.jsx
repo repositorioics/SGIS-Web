@@ -20,12 +20,12 @@ const ContenedorEstudios = () => {
   );
 
   const manejarCrear = () => {
-    navigate('/estudios/crear');
+    navigate('/inventario/estudios/crear');
   };
 
   const manejarActualizar = (estudio) => {
     if (estudio && estudio.id) {
-      navigate(`/estudios/actualizar/${estudio.id}`);
+      navigate(`/inventario/estudios/actualizar/${estudio.id}`);
     } else {
       toast.error('No se puede actualizar el estudio porque no tiene un ID válido.');
     }

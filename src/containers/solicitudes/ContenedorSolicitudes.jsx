@@ -20,12 +20,12 @@ const ContenedorSolicitudes = () => {
   );
 
   const manejarCrear = () => {
-    navigate('/solicitudes/crear');
+    navigate('/solicitudes/solicitudes/crear');
   };
 
   const manejarActualizar = (solicitud) => {
     if (solicitud && solicitud.id) {
-      navigate(`/solicitudes/editar/${solicitud.id}`);
+      navigate(`/solicitudes/actualizar/${solicitud.id}`);
     } else {
       toast.error('No se puede editar la solicitud porque no tiene un ID válido.');
     }

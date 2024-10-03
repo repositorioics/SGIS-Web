@@ -1,131 +1,117 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { URL } from '@/constants/url';
 import PaginaFormularioSolicitud from '@/pages/solicitudes/formularios/PaginaFormularioSolicitud';
+import { URL } from '@/constants/url';
+import useFetch from '@/hooks/useFetch';
 
 const ContenedorFormularioSolicitud = () => {
-  const { id } = useParams(); // Obtener el id de la solicitud si está en la URL
-  const navigate = useNavigate();
-
   const [solicitud, setSolicitud] = useState({
     numeroSolicitud: '',
     usuarioId: '',
     donanteId: '',
-    estado: 'SOLICITADO',
+    estado: '',
     observaciones: '',
-    detalles: [
-      {
-        insumoId: '',
-        marcaId: '',
-        distribuidorId: '',
-        presentacionId: '',
-        cantidadPresentaciones: 1,
-        analistaSolicitante: '',
-        observacion: '',
-      },
-    ],
+    detalles: []
   });
 
-  const [cargando, setCargando] = useState(false);
-  const [error, setError] = useState(null);
+  const [detalleActual, setDetalleActual] = useState({
+    insumoId: '',
+    marcaId: '',
+    distribuidorId: '',
+    presentacionId: '',
+    cantidadPresentaciones: 0,
+    analistaSolicitante: '',
+    observacion: ''
+  });
 
-  // Cargar datos si existe un ID para edición
-  useEffect(() => {
-    if (id) {
-      setCargando(true);
-      fetch(`${URL}api/v1/solicitudes/${id}`)
-        .then((response) => response.json())
-        .then((data) => {
-          setSolicitud(data.data);
-          setCargando(false);
-        })
-        .catch((err) => {
-          setError(err);
-          setCargando(false);
-        });
-    }
-  }, [id]);
+  const [detalles, setDetalles] = useState([]);
+  const navigate = useNavigate();
 
-  // Manejar cambios en los campos generales
-  const manejarCambio = (e) => {
+  const maxSize = 1000; // Valor alto para intentar traer la mayor cantidad de datos
+
+const { data: usuariosData, error: usuariosError } = useFetch(`${URL}api/v1/usuarios?page=0&size=${maxSize}`, {}, []);
+const { data: donantesData, error: donantesError } = useFetch(`${URL}api/v1/donantes?page=0&size=${maxSize}`, {}, []);
+const { data: insumosData, error: insumosError } = useFetch(`${URL}api/v1/insumos?page=0&size=${maxSize}`, {}, []);
+const { data: marcasData, error: marcasError } = useFetch(`${URL}api/v1/marcas?page=0&size=${maxSize}`, {}, []);
+const { data: distribuidoresData, error: distribuidoresError } = useFetch(`${URL}api/v1/distribuidores?page=0&size=${maxSize}`, {}, []);
+const { data: presentacionesData, error: presentacionesError } = useFetch(`${URL}api/v1/presentaciones?page=0&size=${maxSize}`, {}, []);
+
+
+  // Función para manejar los cambios en los inputs del formulario
+  const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setSolicitud({ ...solicitud, [name]: value });
-  };
-
-  // Manejar cambios en los detalles
-  const manejarCambioDetalle = (e, index) => {
-    const { name, value } = e.target;
-    const nuevosDetalles = [...solicitud.detalles];
-    nuevosDetalles[index][name] = value;
-    setSolicitud({ ...solicitud, detalles: nuevosDetalles });
-  };
-
-  // Agregar un nuevo detalle
-  const manejarAgregarDetalle = () => {
     setSolicitud({
       ...solicitud,
-      detalles: [
-        ...solicitud.detalles,
-        {
-          insumoId: '',
-          marcaId: '',
-          distribuidorId: '',
-          presentacionId: '',
-          cantidadPresentaciones: 1,
-          analistaSolicitante: '',
-          observacion: '',
-        },
-      ],
+      [name]: value
     });
   };
 
-  // Eliminar un detalle
-  const manejarEliminarDetalle = (index) => {
-    const nuevosDetalles = solicitud.detalles.filter((_, idx) => idx !== index);
-    setSolicitud({ ...solicitud, detalles: nuevosDetalles });
+  // Función para manejar los cambios en los detalles
+  const handleDetalleChange = (e) => {
+    const { name, value } = e.target;
+    setDetalleActual({
+      ...detalleActual,
+      [name]: value
+    });
   };
 
-  // Manejar envío del formulario
-  const manejarEnviar = async (e) => {
-    e.preventDefault();
-    setCargando(true);
+  // Función para agregar un detalle a la lista
+  const agregarDetalle = () => {
+    setDetalles([...detalles, detalleActual]);
+    setDetalleActual({
+      insumoId: '',
+      marcaId: '',
+      distribuidorId: '',
+      presentacionId: '',
+      cantidadPresentaciones: 0,
+      analistaSolicitante: '',
+      observacion: ''
+    });
+  };
+
+  // Función para manejar la creación de la solicitud
+  const manejarCrear = async () => {
+    const nuevaSolicitud = { ...solicitud, detalles };
 
     try {
-      const metodo = id ? 'PUT' : 'POST'; // Definir si es creación o edición
-      const url = id ? `${URL}api/v1/solicitudes/${id}` : `${URL}api/v1/solicitudes`;
-      const response = await fetch(url, {
-        method: metodo,
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(solicitud),
+      const response = await fetch(`${URL}api/v1/solicitudes`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(nuevaSolicitud),
       });
-
       if (response.ok) {
-        toast.success(`Solicitud ${id ? 'actualizada' : 'creada'} correctamente`);
+        toast.success('Solicitud creada con éxito');
         navigate('/solicitudes');
       } else {
-        toast.error('Error al guardar la solicitud');
+        toast.error('Error al crear la solicitud');
       }
     } catch (error) {
-      toast.error('Error al guardar la solicitud');
-    } finally {
-      setCargando(false);
+      toast.error('Error al crear la solicitud');
     }
   };
+
+  // Verifica si hay errores en las peticiones
+  if (usuariosError || donantesError || insumosError || marcasError || distribuidoresError || presentacionesError) {
+    return <p>Error al cargar los datos</p>;
+  }
 
   return (
     <PaginaFormularioSolicitud
       solicitud={solicitud}
-      cargando={cargando}
-      error={error}
-      manejarCambio={manejarCambio}
-      manejarCambioDetalle={manejarCambioDetalle}
-      manejarAgregarDetalle={manejarAgregarDetalle}
-      manejarEliminarDetalle={manejarEliminarDetalle}
-      manejarEnviar={manejarEnviar}
+      detalleActual={detalleActual}
+      detalles={detalles}
+      usuarios={usuariosData?.data || []}
+      donantes={donantesData?.data || []}
+      insumos={insumosData?.data || []}
+      marcas={marcasData?.data || []}
+      distribuidores={distribuidoresData?.data || []}
+      presentaciones={presentacionesData?.data || []}
+      onInputChange={handleInputChange}
+      onDetalleChange={handleDetalleChange}
+      onAgregarDetalle={agregarDetalle}
+      onGuardarSolicitud={manejarCrear}
     />
   );
 };

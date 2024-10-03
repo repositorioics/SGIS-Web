@@ -57,7 +57,7 @@ const ContenedorFormularioCategoria = () => {
         
         if (response.ok) {
           toast.success(id ? 'Categoría actualizada con éxito' : 'Categoría creada con éxito');
-          navigate('/categorias'); // Redireccionamos a la página de categorías
+          navigate('/inventario/categorias'); // Redireccionamos a la página de categorías
         } else {
           toast.error(result.message || 'Error al guardar la categoría');
         }

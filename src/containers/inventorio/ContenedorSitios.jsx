@@ -20,12 +20,12 @@ const ContenedorSitios = () => {
   );
 
   const manejarCrear = () => {
-    navigate('/sitios/crear');
+    navigate('/inventario/sitios/crear');
   };
 
   const manejarActualizar = (sitio) => {
     if (sitio && sitio.id) {
-      navigate(`/sitios/actualizar/${sitio.id}`);
+      navigate(`/inventario/sitios/actualizar/${sitio.id}`);
     } else {
       toast.error('No se puede actualizar el sitio porque no tiene un ID válido.');
     }

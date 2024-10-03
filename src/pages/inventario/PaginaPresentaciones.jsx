@@ -25,11 +25,11 @@ const PaginaPresentaciones = ({
     <div className="seccion-principal">
       <div className="cabecera-inicio">
         <h2 className="titulo-inicio">Gestión de Presentaciones</h2>
-        <p className="subtitulo-inicio">Administra las presentaciones disponibles en el inventario</p>
+        <p className="subtitulo-inicio">Administra las presentaciones de productos en el sistema</p>
       </div>
       <div className="seccion-inventario">
         <TablaGenerica
-          encabezado="Listado de presentaciones registradas en el inventario"
+          encabezado="Listado de presentaciones registradas en el sistema"
           columnas={columnas}
           datos={datos}
           manejarCrear={manejarCrear}

@@ -57,7 +57,7 @@ const ContenedorFormularioMarca = () => {
         
         if (response.ok) {
           toast.success(id ? 'Marca actualizada con éxito' : 'Marca creada con éxito');
-          navigate('/marcas'); // Redireccionamos a la página de marcas
+          navigate('/inventario/marcas'); // Redireccionamos a la página de marcas
         } else {
           toast.error(result.message || 'Error al guardar la marca');
         }

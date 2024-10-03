@@ -19,12 +19,12 @@ const ContenedorInsumos = () => {
   );
 
   const manejarCrear = () => {
-    navigate('/insumos/crear');
+    navigate('/inventario/insumos/crear');
   };
 
   const manejarActualizar = (insumo) => {
     if (insumo && insumo.id) {
-      navigate(`/insumos/actualizar/${insumo.id}`);
+      navigate(`/inventario/insumos/actualizar/${insumo.id}`);
     } else {
       toast.error('No se puede actualizar el insumo porque no tiene un ID válido.');
     }

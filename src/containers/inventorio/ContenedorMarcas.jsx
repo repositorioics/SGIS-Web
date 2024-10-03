@@ -20,12 +20,12 @@ const ContenedorMarcas = () => {
   );
 
   const manejarCrear = () => {
-    navigate('/marca/crear');
+    navigate('/inventario/marca/crear');
   };
 
   const manejarActualizar = (marca) => {
     if (marca && marca.id) {
-      navigate(`/marca/actualizar/${marca.id}`);
+      navigate(`/inventario/marca/actualizar/${marca.id}`);
     } else {
       toast.error('No se puede actualizar la marca porque no tiene un ID válido.');
     }

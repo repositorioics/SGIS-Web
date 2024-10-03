@@ -18,15 +18,15 @@ const ContenedorInicio = () => {
       ];
 
       const requisiciones = [
-        { id: 1, completada: true, producto: 'Producto A', fecha: '2024-07-15' },
-        { id: 2, completada: false, producto: 'Producto B', fecha: '2024-07-14' },
-        { id: 3, completada: true, producto: 'Producto C', fecha: '2024-07-13' },
+        { id: 1, completada: true, producto: 'Requisa 50001', fecha: '2024-07-15' },
+        { id: 2, completada: false, producto: 'Requisa 50002', fecha: '2024-07-14' },
+        { id: 3, completada: true, producto: 'Requisa 50003', fecha: '2024-07-13' },
       ];
 
       const paletas = [
-        { id: 1, producto: 'Producto D', fecha: '2024-07-16', cantidad: 10, completada: true },
-        { id: 2, producto: 'Producto E', fecha: '2024-07-15', cantidad: 20, completada: false },
-        { id: 3, producto: 'Producto F', fecha: '2024-07-14', cantidad: 15, completada: true },
+        { id: 1, producto: 'Paleta 50001', fecha: '2024-07-16', cantidad: 10, completada: true },
+        { id: 2, producto: 'Paleta 50002', fecha: '2024-07-15', cantidad: 20, completada: false },
+        { id: 3, producto: 'Paleta 50003', fecha: '2024-07-14', cantidad: 15, completada: true },
       ];
 
       setDatosTarjetas(tarjetas);

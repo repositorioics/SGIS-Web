@@ -69,26 +69,6 @@ const ContenedorPedidos = () => {
     { field: 'fechaCreacion', headerName: 'Fecha de Creación', flex: 2, renderCell: (params) => (
       <span>{new Date(params.value).toLocaleDateString()}</span>
     ) },
-    // {
-    //   field: 'detalles', 
-    //   headerName: 'Detalles de Insumos', 
-    //   flex: 4,
-    //   renderCell: (params) => (
-    //     params.value.map(detalle => (
-    //       <div key={detalle.id}>
-    //         <strong>Insumo:</strong> {detalle.insumo.nombre}<br />
-    //         <strong>Marca:</strong> {detalle.marca.nombre}<br />
-    //         <strong>Distribuidor:</strong> {detalle.distribuidor.nombre}<br />
-    //         <strong>Presentación:</strong> {detalle.presentacion.nombre}<br />
-    //         <strong>Cantidad:</strong> {detalle.cantidadPresentaciones}<br />
-    //         <strong>Clasificación:</strong> {detalle.clasificacion}<br />
-    //         <strong>Estado:</strong> {detalle.estado}<br />
-    //         <strong>Analista Solicitante:</strong> {detalle.analistaSolicitante}<br />
-    //         <strong>Observación:</strong> {detalle.observacion}
-    //       </div>
-    //     ))
-    //   )
-    // },
     {
       field: 'acciones', 
       headerName: 'Acciones', 
