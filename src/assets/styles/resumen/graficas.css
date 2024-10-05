@@ -5,13 +5,14 @@
 }
 
 .grafica {
-  flex: 1 1 0%;
+  flex: 1 1 calc(50% - 10px); /* Cada gráfica ocupará el 50% del contenedor menos el gap */
   background-color: #fff;
   border: 1px solid #ededed;
   padding: 10px;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   transition: transform 0.2s ease-in-out;
+  box-sizing: border-box; /* Asegura que el padding y borde se calculen dentro del tamaño */
 }
 
 .grafica:hover {
@@ -26,23 +27,18 @@
 }
 
 @media (max-width: 1024px) {
-  .graficas {
-    flex-wrap: wrap;
-  }
-
   .grafica {
-    flex: 1 1 100%;
-    max-width: 100%;
+    flex: 1 1 calc(50% - 10px); /* Cada gráfica ocupará el 50% en pantallas medianas */
   }
 }
 
 @media (max-width: 768px) {
   .graficas {
-    flex-direction: column;
+    flex-direction: column; /* Apila verticalmente en pantallas pequeñas */
   }
 
   .grafica {
-    flex: 1 1 100%;
+    flex: 1 1 100%; /* Cada gráfica ocupará el 100% en pantallas pequeñas */
     max-width: 100%;
   }
 }

@@ -62,7 +62,6 @@ const PaginaFormularioBodega = ({ bodega, onChange, onSave, error, isEditing, fo
                 onChange={onChange}
                 fullWidth
                 margin="normal"
-                multiline
                 rows={4}
                 error={formik.touched.descripcion && Boolean(formik.errors.descripcion)}
                 helperText={formik.touched.descripcion && formik.errors.descripcion}
@@ -106,6 +105,9 @@ const PaginaFormularioBodega = ({ bodega, onChange, onSave, error, isEditing, fo
                   value={formik.values.sitioId || ''}
                   onChange={onChange}
                   error={formik.touched.sitioId && Boolean(formik.errors.sitioId)}
+                  InputProps={{
+                    className: 'formulario-input',
+                  }}
                 >
                   <MenuItem value="">Seleccionar Sitio</MenuItem>
                   {sitios.map(sitio => (

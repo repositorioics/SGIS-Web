@@ -62,7 +62,6 @@ const PaginaFormularioCategoria = ({ categoria, onChange, onSave, error, isEditi
                 onChange={onChange}
                 fullWidth
                 margin="normal"
-                multiline
                 rows={4}
                 error={formik.touched.descripcion && Boolean(formik.errors.descripcion)}
                 helperText={formik.touched.descripcion && formik.errors.descripcion}

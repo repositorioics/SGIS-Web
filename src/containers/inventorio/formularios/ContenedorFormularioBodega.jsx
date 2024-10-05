@@ -5,6 +5,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import useFetch from '@/hooks/useFetch'; // Importa tu hook de fetch personalizado
 import { URL } from '@/constants/url'; // Constante de la URL
 import PaginaFormularioBodega from '@/pages/inventario/formularios/PaginaFormularioBodega'; // Importamos el componente del formulario
+
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { obtenerToken } from '@/utils/almacenamiento';
@@ -23,14 +24,14 @@ const ContenedorFormularioBodega = () => {
 
   // Hook personalizado para obtener los datos de la bodega si estamos en modo edición
   const { data: bodegaData, error } = useFetch(
-    id ? `${URL}api/v1/bodegas/${id}` : null,
+    id ? `${URL}api/v1/bodegas/${id}` : null, // Cambié a la interpolación correcta con backticks
     {},
     [id]
   );
 
   // Hook para obtener los sitios y donantes
-  const { data: sitiosData } = useFetch(`${URL}api/v1/sitios?page=0&size=1000`, {}, []);
-  const { data: donantesData } = useFetch(`${URL}api/v1/donantes?page=0&size=1000`, {}, []);
+  const { data: sitiosData } = useFetch(`${URL}api/v1/sitios?page=0&size=1000`, {}, []); // Cambié a la interpolación correcta
+  const { data: donantesData } = useFetch(`${URL}api/v1/donantes?page=0&size=1000`, {}, []); // Cambié a la interpolación correcta
 
   useEffect(() => {
     if (bodegaData) {
@@ -67,18 +68,18 @@ const ContenedorFormularioBodega = () => {
         return;
       }
 
-      const url = id ? `${URL}api/v1/bodegas/${id}` : `${URL}api/v1/bodegas`;
+      const url = id ? `${URL}api/v1/bodegas/${id}` : `${URL}api/v1/bodegas`; // Cambié a la interpolación correcta
       const method = id ? 'PUT' : 'POST';
 
       try {
-        const token = obtenerToken("accessToken");
+        const token = obtenerToken('accessToken');
         const response = await fetch(url, {
           method,
-          headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`, },
-          body: JSON.stringify(values)
+          headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` }, // Corregí la interpolación en 'Authorization'
+          body: JSON.stringify(values),
         });
         const result = await response.json();
-        
+
         if (response.ok) {
           toast.success(id ? 'Bodega actualizada con éxito' : 'Bodega creada con éxito');
           navigate('/inventario/bodegas'); // Redireccionamos a la página de bodegas

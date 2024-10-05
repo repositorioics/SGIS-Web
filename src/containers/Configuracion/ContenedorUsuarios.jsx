@@ -22,12 +22,12 @@ const ContenedorUsuarios = () => {
   );
 
   const manejarCrear = () => {
-    navigate('/usuarios/crear');
+    navigate('/configuraciones/usuarios/crear');
   };
 
   const manejarActualizar = (usuario) => {
     if (usuario && usuario.id) {
-      navigate(`/usuarios/actualizar/${usuario.id}`);
+      navigate(`/configuraciones/usuarios/actualizar/${usuario.id}`);
     } else {
       toast.error('No se puede actualizar el usuario porque no tiene un ID válido.');
     }

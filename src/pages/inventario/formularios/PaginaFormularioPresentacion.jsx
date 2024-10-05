@@ -104,7 +104,7 @@ const PaginaFormularioPresentacion = ({ presentacion, onChange, onSave, error, i
               type="submit"
               className="formulario-boton" // Aplicar clase CSS
             >
-              {isEditing ? 'Actualizar Presentación' : 'Crear Presentación'}
+              {isEditing ? 'Actualizar' : 'Crear Presentación'}
             </Button>
           </Box>
         </form>

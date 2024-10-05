@@ -12,9 +12,9 @@ const MenuItem = ({ icono, texto, subMenu, menuActivo, manejarClickMenu, indiceM
     </div>
     {subMenu && (
       <ul className={`sub-menu ${menuActivo === indiceMenu ? 'activo' : ''}`}>
-        {subMenu.map((item, index) => (
-          <li key={index}>
-            <Link to={item.path}>{item.text}</Link>
+        {subMenu.map((item) => (
+          <li key={item.id}>
+            <Link to={item.ruta}>{item.nombre}</Link>
           </li>
         ))}
       </ul>

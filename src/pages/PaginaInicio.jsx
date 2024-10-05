@@ -31,6 +31,7 @@ const PaginaInicio = ({ datosTarjetas = [], datosRequisas = [], datosPaletas = [
           </div>
           <div className="titulo-seccion">Estadísticas de Pedidos y Solicitudes</div>
           <Graficas />
+          
         </div>
         <PanelDerecho requisiciones={datosRequisas} paletas={datosPaletas} />
       </div>

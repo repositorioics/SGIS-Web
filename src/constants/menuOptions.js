@@ -1,11 +1,11 @@
 import { faHome, faBox, faUser } from "@fortawesome/free-solid-svg-icons";
 
 export const menuItems = [
-  { icono: faHome, texto: "Inicio", path: "/" },
+  { icono: faHome, texto: "Inicio", indice: 0, path: "/" },
   {
     icono: faBox,
     texto: "Inventario",
-    indice: 0,
+    indice: 1,
     subMenu: [
       { path: "/inventario/bodegas", text: "Bodegas" },
       { path: "/inventario/categorias", text: "Categorías" },
@@ -24,7 +24,7 @@ export const menuItems = [
   {
     icono: faBox,
     texto: "Solicitudes",
-    indice: 1,
+    indice: 2,
     subMenu: [
       { path: "/solicitudes/consolidar-solicitud", text: "Solicitud Inicial" },
       { path: "/solicitudes/gestion-autorizaciones", text: "Gestion Autorizaciones" },
@@ -34,7 +34,7 @@ export const menuItems = [
   {
     icono: faBox,
     texto: "Compras",
-    indice: 2,
+    indice: 3,
     subMenu: [
       { path: "/compras/comprar", text: "Gestionar Comprar" },
       { path: "/compras/entregar", text: "Gestionar Entregar" },
@@ -43,7 +43,7 @@ export const menuItems = [
   {
     icono: faBox,
     texto: "Requisas",
-    indice: 3,
+    indice: 4,
     subMenu: [
      // { path: "/requisas/crear-paleta", text: "Paletas" },
       { path: "/requisas/requisas", text: "Requisas" },
@@ -53,15 +53,11 @@ export const menuItems = [
   {
     icono: faUser,
     texto: "Configuraciones",
-    indice: 4,
+    indice: 5,
     subMenu: [
       { path: "/configuraciones/usuarios", text: "Gestión de Usuarios" }, // Administración de usuarios
       { path: "/configuraciones/roles", text: "Gestión de Roles" }, // Administración de roles
       { path: "/configuraciones/permisos", text: "Gestión de Permisos" }, // Administración de permisos
-      // { path: '/departamentos', text: 'Gestión de Departamentos' },  // Si tu sistema tiene departamentos o áreas
-      // { path: '/notificaciones', text: 'Gestión de Notificaciones' },  // Configuración y envío de notificaciones
-      // { path: '/perfil', text: 'Configuración de Perfil' }, // Cambios de perfil, correo o datos personales
-      // { path: '/cambiar-contrasena', text: 'Cambiar Contraseña' },  // Cambiar contraseña del administrador u otros usuarios
     ],
   },
 ];
