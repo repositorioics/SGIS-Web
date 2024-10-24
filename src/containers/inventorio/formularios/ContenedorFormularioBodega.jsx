@@ -24,14 +24,14 @@ const ContenedorFormularioBodega = () => {
 
   // Hook personalizado para obtener los datos de la bodega si estamos en modo edición
   const { data: bodegaData, error } = useFetch(
-    id ? `${URL}api/v1/bodegas/${id}` : null, // Cambié a la interpolación correcta con backticks
+    id ? `${URL}api/v1/bodegas/${id}` : null, 
     {},
     [id]
   );
 
   // Hook para obtener los sitios y donantes
-  const { data: sitiosData } = useFetch(`${URL}api/v1/sitios?page=0&size=1000`, {}, []); // Cambié a la interpolación correcta
-  const { data: donantesData } = useFetch(`${URL}api/v1/donantes?page=0&size=1000`, {}, []); // Cambié a la interpolación correcta
+  const { data: sitiosData } = useFetch(`${URL}api/v1/sitios?page=0&size=1000`, {}, []);
+  const { data: donantesData } = useFetch(`${URL}api/v1/donantes?page=0&size=1000`, {}, []);
 
   useEffect(() => {
     if (bodegaData) {

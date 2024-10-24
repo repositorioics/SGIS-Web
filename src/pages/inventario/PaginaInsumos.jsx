@@ -21,6 +21,9 @@ const PaginaInsumos = ({
   if (cargando) return <Cargador />;
   if (error) return <MensajeError mensaje={error.message} />;
 
+  // Validamos que "datos" sea un array y no undefined
+  const datosValidos = Array.isArray(datos) ? datos : [];
+
   return (
     <div className="seccion-principal">
       <div className="cabecera-inicio">
@@ -31,7 +34,7 @@ const PaginaInsumos = ({
         <TablaGenerica
           encabezado="Listado de insumos registrados en el inventario"
           columnas={columnas}
-          datos={datos}
+          datos={datosValidos} // Pasar datos validados
           manejarCrear={manejarCrear}
           totalPaginas={totalPaginas}
           paginaActual={paginaActual}

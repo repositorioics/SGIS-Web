@@ -10,53 +10,23 @@ import {
   FormControl,
   InputLabel,
 } from "@mui/material";
-import TablaGenerica from "@/components/inventario/TablaGenerica";
 import "@/assets/styles/formularios.css"; // Importar el archivo CSS
 
 const PaginaFormularioInsumo = ({
   insumo,
-  varianteActual,
-  variantes,
   categorias,
   unidadesMedida,
   marcas,
   distribuidores,
   presentaciones,
   onInputChange,
-  onVarianteChange,
-  onAgregarVariante,
   onGuardarInsumo,
+  isUpdating
 }) => {
-  const columnasVariantes = [
-    {
-      field: "marcaId",
-      headerName: "Marca",
-      flex: 1,
-      renderCell: (params) =>
-        marcas?.find((m) => m.id === params.value)?.nombre || "",
-    },
-    {
-      field: "distribuidorId",
-      headerName: "Distribuidor",
-      flex: 1,
-      renderCell: (params) =>
-        distribuidores?.find((d) => d.id === params.value)?.nombre || "",
-    },
-    {
-      field: "presentacionId",
-      headerName: "Presentación",
-      flex: 1,
-      renderCell: (params) =>
-        presentaciones?.find((p) => p.id === params.value)?.nombre || "",
-    },
-    { field: "codigoBarra", headerName: "Código de Barra", flex: 1 },
-    { field: "modeloMarca", headerName: "Modelo Marca", flex: 1 },
-  ];
-
   return (
     <Box className="formulario-container">
       <Typography component="h1" variant="h4" mb={1} className="formulario-titulo">
-        Crear Insumo
+        {isUpdating ? 'Actualizar Insumo' : 'Crear Insumo'}
       </Typography>
 
       <Grid container spacing={2} className="formulario-grid">
@@ -127,60 +97,21 @@ const PaginaFormularioInsumo = ({
         </Grid>
 
         <Grid item xs={12} sm={6}>
-          <TextField
-            label="Valor de Unidad de Medida"
-            name="valorUnidadMedida"
-            type="number"
-            value={insumo.valorUnidadMedida}
-            onChange={onInputChange}
-            fullWidth
-            margin="normal"
-            className="formulario-input"
-          />
-        </Grid>
-
-        <Grid item xs={12} sm={6}>
-          <FormControl fullWidth margin="normal" className="formulario-select">
-            <InputLabel>Estado</InputLabel>
-            <Select
-              name="activo"
-              value={insumo.activo ? 1 : 0}
-              onChange={(e) =>
-                onInputChange({
-                  target: { name: "activo", value: e.target.value === 1 },
-                })
-              }
-            >
-              <MenuItem value={1}>Activo</MenuItem>
-              <MenuItem value={0}>Desactivado</MenuItem>
-            </Select>
-          </FormControl>
-        </Grid>
-      </Grid>
-
-      <Box sx={{ display: "flex", justifyContent: "center", mt: 3 }}>
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={onGuardarInsumo}
-          className="formulario-boton"
-        >
-          Crear Insumo
-        </Button>
-      </Box>
-
-      <Typography component="h2" variant="h5" mt={3} className="formulario-titulo">
-        Agregar Variantes
-      </Typography>
-
-      <Grid container spacing={2} className="formulario-grid">
-        <Grid item xs={12} sm={6}>
           <FormControl fullWidth margin="normal" className="formulario-select">
             <InputLabel>Marca</InputLabel>
             <Select
-              name="marcaId"
-              value={varianteActual.marcaId}
-              onChange={onVarianteChange}
+              name="marcasId"
+              value={insumo.marcasId}
+              onChange={onInputChange}
+              multiple
+              MenuProps={{
+                PaperProps: {
+                  style: {
+                    maxHeight: 224, // Limita las opciones visibles a 5 con scroll
+                    width: 250,
+                  },
+                },
+              }}
             >
               {Array.isArray(marcas) && marcas.length > 0 ? (
                 marcas.map((marca) => (
@@ -199,9 +130,18 @@ const PaginaFormularioInsumo = ({
           <FormControl fullWidth margin="normal" className="formulario-select">
             <InputLabel>Distribuidor</InputLabel>
             <Select
-              name="distribuidorId"
-              value={varianteActual.distribuidorId}
-              onChange={onVarianteChange}
+              name="distribuidoresId"
+              value={insumo.distribuidoresId}
+              onChange={onInputChange}
+              multiple
+              MenuProps={{
+                PaperProps: {
+                  style: {
+                    maxHeight: 224,
+                    width: 250,
+                  },
+                },
+              }}
             >
               {Array.isArray(distribuidores) && distribuidores.length > 0 ? (
                 distribuidores.map((distribuidor) => (
@@ -220,9 +160,18 @@ const PaginaFormularioInsumo = ({
           <FormControl fullWidth margin="normal" className="formulario-select">
             <InputLabel>Presentación</InputLabel>
             <Select
-              name="presentacionId"
-              value={varianteActual.presentacionId}
-              onChange={onVarianteChange}
+              name="presentacionesId"
+              value={insumo.presentacionesId}
+              onChange={onInputChange}
+              multiple
+              MenuProps={{
+                PaperProps: {
+                  style: {
+                    maxHeight: 224,
+                    width: 250,
+                  },
+                },
+              }}
             >
               {Array.isArray(presentaciones) && presentaciones.length > 0 ? (
                 presentaciones.map((presentacion) => (
@@ -237,48 +186,37 @@ const PaginaFormularioInsumo = ({
           </FormControl>
         </Grid>
 
-        <Grid item xs={12} sm={6}>
-          <TextField
-            label="Código de Barra"
-            name="codigoBarra"
-            value={varianteActual.codigoBarra}
-            onChange={onVarianteChange}
-            fullWidth
-            margin="normal"
-            className="formulario-input"
-          />
-        </Grid>
-
-        <Grid item xs={12} sm={6}>
-          <TextField
-            label="Modelo Marca"
-            name="modeloMarca"
-            value={varianteActual.modeloMarca}
-            onChange={onVarianteChange}
-            fullWidth
-            margin="normal"
-            className="formulario-input"
-          />
-        </Grid>
-
-        <Grid item xs={12}  mb={1} mt={1}>
-          <Button
-            variant="contained"
-            color="secondary"
-            onClick={onAgregarVariante}
-            className="formulario-boton"
-          >
-            Agregar Variante
-          </Button>
-        </Grid>
+        {isUpdating && (
+          <Grid item xs={12} sm={6}>
+            <FormControl fullWidth margin="normal" className="formulario-select">
+              <InputLabel>Estado</InputLabel>
+              <Select
+                name="activo"
+                value={insumo.activo ? 1 : 0}
+                onChange={(e) =>
+                  onInputChange({
+                    target: { name: 'activo', value: e.target.value === 1 },
+                  })
+                }
+              >
+                <MenuItem value={1}>Activo</MenuItem>
+                <MenuItem value={0}>Desactivado</MenuItem>
+              </Select>
+            </FormControl>
+          </Grid>
+        )}
       </Grid>
 
-      <TablaGenerica
-        encabezado="Variantes Agregadas"
-        columnas={columnasVariantes}
-        datos={variantes}
-        mostrarCrear={false}
-      />
+      <Box sx={{ display: 'flex', justifyContent: 'center', mt: 3 }}>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={onGuardarInsumo}
+          className="formulario-boton"
+        >
+          {isUpdating ? 'Actualizar Insumo' : 'Crear Insumo'}
+        </Button>
+      </Box>
     </Box>
   );
 };

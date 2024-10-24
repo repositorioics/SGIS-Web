@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { cerrarSesion } from '@/context/slices/autenticacionSlice';
-import { eliminarToken } from '@/utils/almacenamiento';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import useFetch from '@/hooks/useFetch'; // Hook personalizado
@@ -15,6 +14,8 @@ export const useNavegacionLateralLogica = () => {
 
   // Usamos el hook personalizado `useFetch` para obtener los menús desde la API
   const { data: menuItems, loading, error } = useFetch(`${URL}api/v1/menus/obtener`, {}, []);
+ 
+  console.info("Fetch desde el componente: useNavegacionLateralLogica");
 
   const manejarClickMenu = (indiceMenu) => {
     setMenuActivo(menuActivo === indiceMenu ? null : indiceMenu);
@@ -22,10 +23,8 @@ export const useNavegacionLateralLogica = () => {
 
   const manejarCerrarSesion = () => {
     dispatch(cerrarSesion());
-    eliminarToken('accessToken');
-    eliminarToken('refreshToken');
     toast.success('Sesión Cerrada');
-    navigate('/login');
+    navigate('/inicio-sesion', { replace: true });
   };
 
   return {

@@ -2,7 +2,7 @@ import React from 'react';
 import DisAutenticacion from '@/layout/DisAutenticacion';
 import FormularioGeneral from '@/components/FormularioGeneral';
 
-const PaginaLogin = ({ onSubmit, onNativate }) => {
+const PaginaLogin = ({ onSubmit }) => {
   return (
     <DisAutenticacion
       titulo="ICS Inventory System"
@@ -14,13 +14,11 @@ const PaginaLogin = ({ onSubmit, onNativate }) => {
       <p className='dis-autenticacion__descripcion'>Enter your email and password to access your account and manage your inventory.</p>
       <FormularioGeneral
         campos={[
-          { name: 'email', type: 'email', placeholder: 'Correo electrónico' },
+          { name: 'usuario', type: 'text', placeholder: 'Correo electrónico' },  // Cambié "username" por "usuario"
           { name: 'password', type: 'password', placeholder: 'Contraseña' }
         ]}
         textoBoton="Iniciar sesión"
         onSubmit={onSubmit}
-        onNativate={onNativate}
-        mostrarEnlace={true}
       />
     </DisAutenticacion>
   );

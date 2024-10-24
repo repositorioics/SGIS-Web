@@ -8,7 +8,7 @@ import logo from '@/assets/images/logo.png';
 import CambiarTema from '@/components/CambiarTema';
 import { useNavegacionLateralLogica } from './NavegacionLateralLogica';
 
-const NavegacionLateral = () => {
+const NavegacionLateral =  React.memo(() => {
   const { menuActivo, manejarClickMenu, manejarCerrarSesion, menuItems, loading, error } = useNavegacionLateralLogica(); // Hook actualizado
 
   if (loading) {
@@ -17,6 +17,11 @@ const NavegacionLateral = () => {
 
   if (error) {
     return <p>Error al cargar menús: {error.message}</p>;
+  }
+
+  // Si no hay menús disponibles
+  if (!menuItems || menuItems.length === 0) {
+    return <p>Sin menús disponibles</p>;
   }
 
   return (
@@ -62,6 +67,6 @@ const NavegacionLateral = () => {
       </div>
     </nav>
   );
-};
+});
 
 export default NavegacionLateral;

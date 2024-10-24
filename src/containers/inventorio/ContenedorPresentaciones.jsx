@@ -20,12 +20,12 @@ const ContenedorPresentaciones = () => {
   );
 
   const manejarCrear = () => {
-    navigate('/inventario/presentaciones/crear');
+    navigate('/inventario/presentacion/crear');
   };
 
   const manejarActualizar = (presentacion) => {
     if (presentacion && presentacion.id) {
-      navigate(`/inventario/presentaciones/actualizar/${presentacion.id}`);
+      navigate(`/inventario/presentacion/actualizar/${presentacion.id}`);
     } else {
       toast.error('No se puede actualizar la presentación porque no tiene un ID válido.');
     }

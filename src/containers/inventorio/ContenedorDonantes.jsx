@@ -25,7 +25,7 @@ const ContenedorDonantes = () => {
 
   const manejarActualizar = (donante) => {
     if (donante && donante.id) {
-      navigate(`/inventario/donantes/actualizar/${donante.id}`);
+      navigate(`/inventario/donante/actualizar/${donante.id}`);
     } else {
       toast.error('No se puede actualizar el donante porque no tiene un ID válido.');
     }

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PaginaInicio from '@/pages/PaginaInicio';
+import { FaBoxOpen , FaSortAmountDownAlt , FaExclamationTriangle, FaClipboardList   } from 'react-icons/fa'; // 
 
 const ContenedorInicio = () => {
   const [datosTarjetas, setDatosTarjetas] = useState([]);
@@ -11,10 +12,10 @@ const ContenedorInicio = () => {
     const obtenerDatos = async () => {
       // Simulando una petición
       const tarjetas = [
-        { icon: 'faBox', titulo: 'Productos en Stock', subtitulo: 'Total en almacén', texto: '1000', color: 'verde' },
-        { icon: 'faClipboardList', titulo: 'Productos Bajos Stock', subtitulo: 'Necesitan reabastecimiento', texto: '50', color: 'amarillo' },
-        { icon: 'faExclamationTriangle', titulo: 'Productos a Vencer', subtitulo: 'Caducidad próxima', texto: '5', color: 'rojo' },
-        { icon: 'faUser', titulo: 'Requisas Pendientes', subtitulo: 'En proceso', texto: '4', color: 'azul' },
+        { icon: <FaBoxOpen  />, titulo: 'Productos en Stock', subtitulo: 'Total en almacén', texto: '1000', color: 'verde' },
+        { icon: <FaSortAmountDownAlt  />, titulo: 'Productos Bajos Stock', subtitulo: 'Necesitan reabastecimiento', texto: '50', color: 'amarillo' },
+        { icon: <FaExclamationTriangle  />, titulo: 'Productos a Vencer', subtitulo: 'Caducidad próxima', texto: '5', color: 'rojo' },
+        { icon: <FaClipboardList   />, titulo: 'Requisas Pendientes', subtitulo: 'En proceso', texto: '4', color: 'azul' },
       ];
 
       const requisiciones = [

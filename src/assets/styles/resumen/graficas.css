@@ -2,17 +2,20 @@
   display: flex;
   gap: 10px;
   flex-wrap: wrap;
+  box-sizing: border-box; /* Asegura que el padding y borde se calculen dentro del contenedor */
+  width: 100%; /* Asegura que las gráficas no se desborden del contenedor */
 }
 
 .grafica {
   flex: 1 1 calc(50% - 10px); /* Cada gráfica ocupará el 50% del contenedor menos el gap */
+  max-width: calc(50% - 10px); /* Limita el ancho máximo de cada gráfica */
   background-color: #fff;
   border: 1px solid #ededed;
   padding: 10px;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   transition: transform 0.2s ease-in-out;
-  box-sizing: border-box; /* Asegura que el padding y borde se calculen dentro del tamaño */
+  box-sizing: border-box;
 }
 
 .grafica:hover {
@@ -28,7 +31,8 @@
 
 @media (max-width: 1024px) {
   .grafica {
-    flex: 1 1 calc(50% - 10px); /* Cada gráfica ocupará el 50% en pantallas medianas */
+    flex: 1 1 calc(50% - 10px); /* Mantiene el 50% en pantallas medianas */
+    max-width: calc(50% - 10px);
   }
 }
 
@@ -38,7 +42,7 @@
   }
 
   .grafica {
-    flex: 1 1 100%; /* Cada gráfica ocupará el 100% en pantallas pequeñas */
-    max-width: 100%;
+    flex: 1 1 100%; /* Cada gráfica ocupará el 100% del ancho en pantallas pequeñas */
+    max-width: 100%; /* Asegura que no se desborde */
   }
 }

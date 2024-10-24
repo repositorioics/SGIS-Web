@@ -7,19 +7,40 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Cargador from '@/components/Cargador';
 import rutas from '@/config/rutas.jsx';
+import { cerrarSesion } from '@/context/slices/autenticacionSlice';
+import { useDispatch } from 'react-redux';
+import {useEffect} from 'react'
 
 function App() {
+  
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    // Listener para limpiar el estado solo cuando el navegador se cierra o se cierra la pestaña
+    const handleUnload = () => {
+      dispatch(cerrarSesion()); // Acción que queremos ejecutar solo cuando se cierra el navegador
+    };
+
+    // Agregar el listener al evento unload (solo se ejecuta al cerrar el navegador o la pestaña)
+    window.addEventListener('unload', handleUnload);
+
+    // Limpiar el listener cuando el componente se desmonta
+    return () => {
+      window.removeEventListener('unload', handleUnload); // Solo para limpiar el listener si el componente se desmonta
+    };
+  }, [dispatch]);
+
   const rutasSinLayout = [
     "/inicio-sesion",
     "/ingresar-email",
     "/cambiar-contra",
+    "*",
   ];
-  
 
   return (
     <Router>
       <Suspense fallback={<Cargador />}>
-        <ToastContainer autoClose={2500} />
+        <ToastContainer autoClose={2000} />
         <Routes>
           {rutas.map((ruta, index) => {
             const necesitaLayout = rutasSinLayout.includes(ruta.path);
@@ -27,7 +48,7 @@ function App() {
               <Route
                 key={index}
                 path={ruta.path}
-                element={necesitaLayout ? ruta.element: <DisPrincipal>{ruta.element}</DisPrincipal>}
+                element={necesitaLayout ? ruta.element : <DisPrincipal>{ruta.element}</DisPrincipal>}
               />
             );
           })}

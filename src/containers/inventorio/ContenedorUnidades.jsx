@@ -20,12 +20,12 @@ const ContenedorUnidades = () => {
   );
 
   const manejarCrear = () => {
-    navigate('/inventario/unidades/crear');
+    navigate('/inventario/unidad/crear');
   };
 
   const manejarActualizar = (unidad) => {
     if (unidad && unidad.id) {
-      navigate(`/inventario/unidades/actualizar/${unidad.id}`);
+      navigate(`/inventario/unidad/actualizar/${unidad.id}`);
     } else {
       toast.error('No se puede actualizar la unidad porque no tiene un ID válido.');
     }

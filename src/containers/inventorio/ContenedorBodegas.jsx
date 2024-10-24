@@ -27,7 +27,7 @@ const ContenedorBodegas = () => {
 
   const manejarActualizar = (bodega) => {
     if (bodega && bodega.id) {
-      navigate(`/inventario/bodegas/actualizar/${bodega.id}`);
+      navigate(`/inventario/bodega/actualizar/${bodega.id}`);
     } else {
       toast.error('No se puede actualizar la bodega porque no tiene un ID válido.');
     }

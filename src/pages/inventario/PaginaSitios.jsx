@@ -4,7 +4,7 @@ import Cargador from '@/components/Cargador';
 import MensajeError from '@/components/MensajeError';
 import '@/assets/styles/inventario/estilosInventario.css';
 
-const PaginaSitios = ({
+const PaginaInsumos = ({
   columnas,
   datos,
   cargando,
@@ -13,8 +13,8 @@ const PaginaSitios = ({
   totalPaginas,
   paginaActual,
   setPaginaActual,
-  pageSize,
-  setPageSize,
+  pageSize, // Recibe el tamaño de página
+  setPageSize, // Permite cambiar el tamaño de página
   manejarActualizar,
   manejarEliminar,
 }) => {
@@ -24,15 +24,15 @@ const PaginaSitios = ({
   return (
     <div className="seccion-principal">
       <div className="cabecera-inicio">
-        <h2 className="titulo-inicio">Gestión de Sitios</h2>
-        <p className="subtitulo-inicio">Administra los sitios del sistema</p>
+        <h2 className="titulo-inicio">Gestión de Insumos</h2>
+        <p className="subtitulo-inicio">Administra los insumos disponibles en el inventario.</p>
+        <button onClick={manejarCrear} className="boton-crear">Crear Insumo</button>
       </div>
       <div className="seccion-inventario">
         <TablaGenerica
-          encabezado="Listado de sitios registrados en el sistema"
+          encabezado="Listado de insumos registrados en el inventario"
           columnas={columnas}
-          datos={datos}
-          manejarCrear={manejarCrear}
+          datos={datos} // Pasar los datos de insumos
           totalPaginas={totalPaginas}
           paginaActual={paginaActual}
           setPagina={setPaginaActual}
@@ -46,4 +46,4 @@ const PaginaSitios = ({
   );
 };
 
-export default PaginaSitios;
+export default PaginaInsumos;

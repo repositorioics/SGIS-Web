@@ -13,7 +13,7 @@ const ContenedorInsumos = () => {
 
   // Usamos el hook personalizado useFetch para obtener los datos de la API
   const { data, loading, error } = useFetch(
-    `${URL}api/v1/insumos?page=${paginaActual}&size=${pageSize}`, 
+    `${URL}api/v1/insumos/activos?page=${paginaActual}&size=${pageSize}`, 
     {}, 
     [paginaActual, pageSize]
   );
@@ -31,30 +31,46 @@ const ContenedorInsumos = () => {
   };
 
   const manejarEliminar = (insumo) => {
-    toast.success(`Insumo ${insumo.nombre} desactivado correctamente`);
-    if (data) {
-      const insumosFiltrados = data.data.content.filter(i => i.id !== insumo.id);
-      // Aquí podrías actualizar el estado local si decides gestionar los insumos filtrados localmente.
+    if (insumo && insumo.nombre) {
+      toast.success(`Insumo ${insumo.nombre} desactivado correctamente.`);
+      if (data) {
+        const insumosFiltrados = data.data.filter(i => i.id !== insumo.id);
+        // Aquí podrías actualizar el estado local si decides manejar los datos filtrados localmente.
+      }
+    } else {
+      toast.error('No se puede eliminar el insumo sin un ID o nombre válido.');
     }
   };
 
   const columnas = [
-    { field: 'codigo', headerName: 'Código', flex: 2 },
     { field: 'nombre', headerName: 'Nombre', flex: 2 },
     { field: 'categoriaNombre', headerName: 'Categoría', flex: 2 },
-    { field: 'unidadMedidaNombre', headerName: 'Unidad de Medida', flex: 2 },
-    { field: 'activo', headerName: 'Estado', flex: 1 },
-    { field: 'acciones', headerName: 'Acciones', flex: 1, sortable: false },
+    { field: 'activo', headerName: 'Estado', flex: 1, renderCell: (params) => (
+        <span className={`estado-label ${params.value ? 'activo' : 'inactivo'}`}>
+          {params.value ? 'Activo' : 'Inactivo'}
+        </span>
+      ),
+    },
+    { field: 'acciones', headerName: 'Acciones', flex: 1, sortable: false, renderCell: (params) => (
+        <>
+          <button onClick={() => manejarActualizar(params.row)}>Actualizar</button>
+          <button onClick={() => manejarEliminar(params.row)}>Eliminar</button>
+        </>
+      ),
+    },
   ];
+
+  // Validamos que data.data sea un array válido o uno vacío.
+  const datosValidos = data && Array.isArray(data.data) ? data.data : [];
 
   return (
     <PaginaInsumos
       columnas={columnas}
-      datos={data ? data.data.content : []}
+      datos={datosValidos}
       cargando={loading}
       error={error}
       manejarCrear={manejarCrear}
-      totalPaginas={data ? data.data.totalPages : 1}
+      totalPaginas={data ? data.totalPages : 1}
       paginaActual={paginaActual}
       setPaginaActual={setPaginaActual}
       pageSize={pageSize} // Pasar pageSize como prop

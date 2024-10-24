@@ -36,6 +36,8 @@ const useFetch = (
         if (useAuthToken) {
           const token = obtenerToken("accessToken");
           headers["Authorization"] = `Bearer ${token}`;
+          console.info(token)
+          console.info('Mensaje desde el useFetch')
         }
 
         let response = await fetch(url, {

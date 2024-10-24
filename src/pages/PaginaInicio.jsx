@@ -3,8 +3,6 @@ import React from 'react';
 import Tarjeta from '@/components/resumen/Tarjeta.jsx';
 import Graficas from '@/components/resumen/Graficas.jsx';
 import PanelDerecho from '@/components/resumen/PanelDerecho.jsx';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBox, faClipboardList, faExclamationTriangle, faUser } from '@fortawesome/free-solid-svg-icons';
 import '@/assets/styles/resumen/inicio.css';
 
 const PaginaInicio = ({ datosTarjetas = [], datosRequisas = [], datosPaletas = [] }) => {
@@ -21,7 +19,7 @@ const PaginaInicio = ({ datosTarjetas = [], datosRequisas = [], datosPaletas = [
             {datosTarjetas.map((tarjeta, index) => (
               <Tarjeta
                 key={index}
-                icono={<FontAwesomeIcon icon={faBox} />}
+                icono={tarjeta.icon}
                 titulo={tarjeta.titulo}
                 subtitulo={tarjeta.subtitulo}
                 texto={tarjeta.texto}

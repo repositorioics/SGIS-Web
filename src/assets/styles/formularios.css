@@ -4,7 +4,8 @@
 .formulario-container {
     max-width: 800px;
     margin: 0 auto;
-    padding: 2rem;
+    padding: 1rem;
+    padding-bottom: 3rem;
     height: 100vh; /* La altura del viewport */
     overflow-y: auto; /* Habilitar scroll vertical cuando el contenido sea mayor al 100% del viewport */
   }

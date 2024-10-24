@@ -13,31 +13,31 @@ const validarToken = (token) => {
 export const guardarToken = (clave, token) => {
   validarClave(clave);
   validarToken(token);
-  localStorage.setItem(clave, token);
+  sessionStorage.setItem(clave, token);  // Cambiado a sessionStorage
 };
 
 export const obtenerToken = (clave) => {
   // validarClave(clave);
-  return localStorage.getItem(clave);
+  return sessionStorage.getItem(clave);  // Cambiado a sessionStorage
 };
 
 export const eliminarToken = (clave) => {
   validarClave(clave);
-  localStorage.removeItem(clave);
+  sessionStorage.removeItem(clave);  // Cambiado a sessionStorage
 };
 
 export const guardarRefreshToken = (clave, refreshToken) => {
   validarClave(clave);
   validarToken(refreshToken);
-  localStorage.setItem(clave, refreshToken);
+  sessionStorage.setItem(clave, refreshToken);  // Cambiado a sessionStorage
 };
 
 export const obtenerRefreshToken = (clave) => {
   validarClave(clave);
-  return localStorage.getItem(clave);
+  return sessionStorage.getItem(clave);  // Cambiado a sessionStorage
 };
 
 export const eliminarRefreshToken = (clave) => {
   validarClave(clave);
-  localStorage.removeItem(clave);
+  sessionStorage.removeItem(clave);  // Cambiado a sessionStorage
 };
