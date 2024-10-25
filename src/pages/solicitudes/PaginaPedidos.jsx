@@ -3,7 +3,11 @@ import TablaGenerica from '@/components/inventario/TablaGenerica';
 import Cargador from '@/components/Cargador';
 import MensajeError from '@/components/MensajeError';
 import '@/assets/styles/inventario/estilosInventario.css';
+import { useTranslation } from 'react-i18next';
 
+/**
+ * Renderiza la página de pedidos con una tabla y opciones para crear, buscar, actualizar y eliminar pedidos.
+ */
 const PaginaPedidos = ({
   columnas,
   datos,
@@ -19,18 +23,23 @@ const PaginaPedidos = ({
   manejarActualizar,
   manejarEliminar,
 }) => {
+  const { t } = useTranslation(); // Hook para traducciones
+
   if (cargando) return <Cargador />;
   if (error) return <MensajeError mensaje={error.message} />;
 
   return (
     <div className="seccion-principal">
+      {/* Encabezado de la página de gestión de pedidos */}
       <div className="cabecera-inicio">
-        <h2 className="titulo-inicio">Gestión de Pedidos</h2>
-        <p className="subtitulo-inicio">Administra los pedidos de insumos en el sistema</p>
+        <h2 className="titulo-inicio">{t('paginaPedidos.titulo')}</h2>
+        <p className="subtitulo-inicio">{t('paginaPedidos.subtitulo')}</p>
       </div>
+
+      {/* Sección principal que contiene la tabla de pedidos */}
       <div className="seccion-inventario">
         <TablaGenerica
-          encabezado={"Listado de pedidos registrados en el sistema"}
+          encabezado={t('paginaPedidos.encabezadoTabla')}
           columnas={columnas}
           datos={datos}
           manejarCrear={manejarCrear}

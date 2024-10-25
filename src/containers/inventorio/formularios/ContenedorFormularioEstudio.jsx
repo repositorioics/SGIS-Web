@@ -8,8 +8,10 @@ import PaginaFormularioEstudio from '@/pages/inventario/formularios/PaginaFormul
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { obtenerToken } from '@/utils/almacenamiento';
+import { useTranslation } from 'react-i18next'; // Hook de traducción
 
 const ContenedorFormularioEstudio = () => {
+  const { t } = useTranslation(); // Hook de traducción
   const [estudio, setEstudio] = useState({
     nombre: '',
     descripcion: '',
@@ -36,13 +38,13 @@ const ContenedorFormularioEstudio = () => {
     enableReinitialize: true, // Permite reinicializar valores iniciales al recibir nuevos datos
     validationSchema: Yup.object({
       nombre: Yup.string()
-        .required('El nombre es obligatorio')
-        .matches(/^[A-Za-z\s]+$/, 'El nombre solo puede contener letras y espacios')
-        .max(100, 'El nombre no puede exceder 100 caracteres'),
+        .required(t('contenedorFormularioEstudio.nombreObligatorio'))
+        .matches(/^[A-Za-z\s]+$/, t('contenedorFormularioEstudio.nombreInvalido'))
+        .max(100, t('contenedorFormularioEstudio.nombreMax')),
       descripcion: Yup.string()
-        .required('El nombre es obligatorio')
-        .matches(/^[A-Za-z\s]+$/, 'El nombre solo puede contener letras y espacios')
-        .max(200, 'La descripción no puede exceder 200 caracteres'),
+        .required(t('contenedorFormularioEstudio.descripcionObligatoria'))
+        .matches(/^[A-Za-z\s]+$/, t('contenedorFormularioEstudio.descripcionInvalida'))
+        .max(200, t('contenedorFormularioEstudio.descripcionMax')),
     }),
     onSubmit: async (values) => {
       const url = id ? `${URL}api/v1/estudios/${id}` : `${URL}api/v1/estudios`;
@@ -52,19 +54,19 @@ const ContenedorFormularioEstudio = () => {
         const token = obtenerToken("accessToken");
         const response = await fetch(url, {
           method,
-          headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`, },
-          body: JSON.stringify(values)
+          headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+          body: JSON.stringify(values),
         });
         const result = await response.json();
         
         if (response.ok) {
-          toast.success(id ? 'Estudio actualizado con éxito' : 'Estudio creado con éxito');
+          toast.success(id ? t('contenedorFormularioEstudio.mensajeExitoActualizar') : t('contenedorFormularioEstudio.mensajeExitoCrear'));
           navigate('/inventario/estudios'); // Redireccionamos a la página de estudios
         } else {
-          toast.error(result.message || 'Error al guardar el estudio');
+          toast.error(result.message || t('contenedorFormularioEstudio.mensajeErrorGuardar'));
         }
       } catch (err) {
-        toast.error('Ocurrió un error al guardar el estudio');
+        toast.error(t('contenedorFormularioEstudio.mensajeErrorGuardar'));
       }
     },
   });

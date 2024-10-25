@@ -1,23 +1,25 @@
 import React from 'react';
 import DisAutenticacion from '@/layout/DisAutenticacion';
 import FormularioGeneral from '@/components/FormularioGeneral';
+import { useTranslation } from 'react-i18next';
 
 const PaginaOTP = ({ onSubmit }) => {
+  const { t } = useTranslation();
+
   return (
     <DisAutenticacion
-      titulo="Check Your Email"
-      descripcion="We have sent a one-time password (OTP) to your registered email address.
-                  Please check your inbox, and if you don't see it there, make sure to look in your spam or junk folder."
+      titulo={t('otp.titulo')}
+      descripcion={t('otp.descripcion')}
       imagenUrl="https://i.ibb.co/Pj6XxtL/forgotpassword.png"
-      imagenAlt="OTP"
+      imagenAlt={t('otp.imagenAlt')}
     >
-      <h2 className='dis-autenticacion__titulo'>Enter OTP</h2>
-      <p className='dis-autenticacion__descripcion'>To proceed, please enter the 6-digit OTP that we have sent to your email. This helps us verify your identity.</p>
+      <h2 className='dis-autenticacion__titulo'>{t('otp.introducir_otp')}</h2>
+      <p className='dis-autenticacion__descripcion'>{t('otp.instruccion_otp')}</p>
       <FormularioGeneral
         campos={[
           { name: 'otp', type: 'text', placeholder: '######' }
         ]}
-        textoBoton="Enviar OTP"
+        textoBoton={t('otp.enviar_otp')}
         onSubmit={onSubmit}
         mostrarEnlace={false}
       />

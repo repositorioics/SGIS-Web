@@ -5,10 +5,15 @@ import PaginaMovimientosInventario from '@/pages/inventario/PaginaMovimientosInv
 import '@/assets/styles/inventario/estilosInventario.css';
 import { URL } from '@/constants/url';
 import useFetch from '@/hooks/useFetch';
+import { useTranslation } from 'react-i18next'; // Importar hook de traducción
 
+/**
+ * Controla la lógica de la página de movimientos de inventario, incluyendo la obtención de datos paginados.
+ */
 const ContenedorMovimientosInventario = () => {
   const [paginaActual, setPaginaActual] = useState(0);
   const [pageSize, setPageSize] = useState(10);
+  const { t } = useTranslation(); // Usar hook de traducción
 
   // Hook personalizado para obtener los datos de los movimientos de inventario
   const { data, loading, error } = useFetch(
@@ -18,29 +23,27 @@ const ContenedorMovimientosInventario = () => {
   );
 
   const columnas = [
-    { field: 'tipoMovimiento', headerName: 'Tipo Movimiento', flex: 2 },
-    { field: 'insumoNombre', headerName: 'Insumo', flex: 2 },
-    { field: 'presentacionNombre', headerName: 'Presentación', flex: 2 },
-    { field: 'cantidadPresentacion', headerName: 'Cantidad Presentacion', flex: 2 },
-    { field: 'bodegaOrigenNombre', headerName: 'Bodega Origen', flex: 2 },
-    { field: 'bodegaDestinoNombre', headerName: 'Bodega Destino', flex: 2 },
-    { field: 'fechaMovimiento', headerName: 'Fecha Movimiento', flex: 2 },
+    { field: 'tipoMovimiento', headerName: t('movimientosInventario.tipoMovimiento'), flex: 2 },
+    { field: 'insumoNombre', headerName: t('movimientosInventario.insumo'), flex: 2 },
+    { field: 'presentacionNombre', headerName: t('movimientosInventario.presentacion'), flex: 2 },
+    { field: 'cantidadPresentacion', headerName: t('movimientosInventario.cantidadPresentacion'), flex: 2 },
+    { field: 'bodegaOrigenNombre', headerName: t('movimientosInventario.bodegaOrigen'), flex: 2 },
+    { field: 'bodegaDestinoNombre', headerName: t('movimientosInventario.bodegaDestino'), flex: 2 },
+    { field: 'fechaMovimiento', headerName: t('movimientosInventario.fechaMovimiento'), flex: 2 },
   ];
 
   return (
-    <>
-      <PaginaMovimientosInventario
-        columnas={columnas}
-        datos={data ? data.data.content : []}
-        cargando={loading}
-        error={error}
-        totalPaginas={data ? data.data.totalPages : 1}
-        paginaActual={paginaActual}
-        setPaginaActual={setPaginaActual}
-        pageSize={pageSize}
-        setPageSize={setPageSize}
-      />
-    </>
+    <PaginaMovimientosInventario
+      columnas={columnas}
+      datos={data ? data.data.content : []}
+      cargando={loading}
+      error={error}
+      totalPaginas={data ? data.data.totalPages : 1}
+      paginaActual={paginaActual}
+      setPaginaActual={setPaginaActual}
+      pageSize={pageSize}
+      setPageSize={setPageSize}
+    />
   );
 };
 

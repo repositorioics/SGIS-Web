@@ -1,23 +1,25 @@
 import React from 'react';
 import DisAutenticacion from '@/layout/DisAutenticacion';
 import FormularioGeneral from '@/components/FormularioGeneral';
+import { useTranslation } from 'react-i18next';
 
 const PaginaCorreo = ({ onSubmit }) => {
+  const { t } = useTranslation();
+
   return (
     <DisAutenticacion
-      titulo="Forgot Password"
-      descripcion="If you have forgotten your password, don't worry. 
-                You can recover access to your account by following the steps on this page."
+      titulo={t('correo.titulo')}
+      descripcion={t('correo.descripcion')}
       imagenUrl="https://i.ibb.co/9W3ZpZm/send-Email.png"
-      imagenAlt="Correo electrónico"
+      imagenAlt={t('correo.imagenAlt')}
     >
-      <h2 className='dis-autenticacion__titulo'>Enter your email</h2>
-      <p className='dis-autenticacion__descripcion'>Enter the email address associated with your account, and we will send a code reset link to your email.</p>
+      <h2 className='dis-autenticacion__titulo'>{t('correo.introducir_correo')}</h2>
+      <p className='dis-autenticacion__descripcion'>{t('correo.instruccion_correo')}</p>
       <FormularioGeneral
         campos={[
           { name: 'email', type: 'email', placeholder: 'ejemplo@gmail.com' }
         ]}
-        textoBoton="Enviar enlace"
+        textoBoton={t('correo.enviar_enlace')}
         onSubmit={onSubmit}
         mostrarEnlace={false}
       />

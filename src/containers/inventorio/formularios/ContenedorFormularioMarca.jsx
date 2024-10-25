@@ -2,20 +2,24 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import useFetch from '@/hooks/useFetch'; // Importa tu hook de fetch personalizado
-import { URL } from '@/constants/url'; // Constante de la URL
-import PaginaFormularioMarca from '@/pages/inventario/formularios/PaginaFormularioMarca'; // Importamos el componente del formulario
+import useFetch from '@/hooks/useFetch';
+import { URL } from '@/constants/url';
+import PaginaFormularioMarca from '@/pages/inventario/formularios/PaginaFormularioMarca'; // Componente del formulario
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { obtenerToken } from '@/utils/almacenamiento';
+import { useTranslation } from 'react-i18next';
 
 const ContenedorFormularioMarca = () => {
+  const { t } = useTranslation();
+
+  // Inicializa el estado para gestionar los datos de la marca con valores por defecto
   const [marca, setMarca] = useState({
     nombre: '',
     descripcion: '',
   });
   
-  const { id } = useParams(); // Obtenemos el ID de los parámetros de la URL para saber si es edición
+  const { id } = useParams(); // Obtiene el ID de los parámetros de la URL para verificar si es modo edición
   const navigate = useNavigate();
   
   // Hook personalizado para obtener los datos de la marca si estamos en modo edición
@@ -26,23 +30,25 @@ const ContenedorFormularioMarca = () => {
   );
 
   useEffect(() => {
+    // Actualiza el estado con los datos de la marca si están disponibles (modo edición)
     if (marcaData) {
-      setMarca(marcaData.data); // Si estamos editando, cargamos los datos de la marca
+      setMarca(marcaData.data);
     }
   }, [marcaData]);
 
+  // Configuración del formulario con Formik: valores iniciales, esquema de validación y manejador de envío
   const formik = useFormik({
     initialValues: marca,
-    enableReinitialize: true, // Permite reinicializar valores iniciales al recibir nuevos datos
+    enableReinitialize: true, // Permite reinicializar los valores iniciales cuando se cargan nuevos datos
     validationSchema: Yup.object({
       nombre: Yup.string()
-        .required('El nombre es obligatorio')
-        .matches(/^[A-Za-z\s]+$/, 'El nombre solo puede contener letras y espacios')
-        .max(100, 'El nombre no puede exceder 100 caracteres'),
+        .required(t('contenedorFormularioMarca.nombreObligatorio')) // Etiqueta traducida para campo obligatorio de nombre
+        .matches(/^[A-Za-z\s]+$/, t('contenedorFormularioMarca.nombreInvalido')) // Etiqueta traducida para formato inválido de nombre
+        .max(100, t('contenedorFormularioMarca.nombreMax')), // Etiqueta traducida para límite de caracteres
       descripcion: Yup.string()
-        .required('El nombre es obligatorio')
-        .matches(/^[A-Za-z\s]+$/, 'El nombre solo puede contener letras y espacios')
-        .max(500, 'La descripción no puede exceder 500 caracteres'),
+        .required(t('contenedorFormularioMarca.descripcionObligatorio')) // Etiqueta traducida para campo obligatorio de descripción
+        .matches(/^[A-Za-z\s]+$/, t('contenedorFormularioMarca.descripcionInvalido')) // Etiqueta traducida para formato inválido de descripción
+        .max(500, t('contenedorFormularioMarca.descripcionMax')), // Etiqueta traducida para límite de caracteres
     }),
     onSubmit: async (values) => {
       const url = id ? `${URL}api/v1/marcas/${id}` : `${URL}api/v1/marcas`;
@@ -58,18 +64,21 @@ const ContenedorFormularioMarca = () => {
         const result = await response.json();
         
         if (response.ok) {
-          toast.success(id ? 'Marca actualizada con éxito' : 'Marca creada con éxito');
-          navigate('/inventario/marcas'); // Redireccionamos a la página de marcas
+          // Muestra mensaje de éxito según sea creación o actualización
+          toast.success(id ? t('contenedorFormularioMarca.mensajeExitoActualizar') : t('contenedorFormularioMarca.mensajeExitoCrear'));
+          navigate('/inventario/marcas'); // Redirige a la página de marcas
         } else {
-          toast.error(result.message || 'Error al guardar la marca');
+          // Muestra un mensaje de error si falla el guardado
+          toast.error(result.message || t('contenedorFormularioMarca.mensajeErrorGuardar'));
         }
       } catch (err) {
-        toast.error('Ocurrió un error al guardar la marca');
+        toast.error(t('contenedorFormularioMarca.mensajeErrorGuardar')); // Mensaje de error genérico
       }
     },
   });
 
   const handleChange = (e) => {
+    // Maneja los cambios en los campos del formulario
     formik.handleChange(e);
   };
 
@@ -79,8 +88,8 @@ const ContenedorFormularioMarca = () => {
       error={error}
       onChange={handleChange}
       onSave={formik.handleSubmit}
-      isEditing={!!id} // Usamos esto para diferenciar entre crear o editar
-      formik={formik} // Pasar el objeto formik completo para acceso a propiedades
+      isEditing={!!id} // Determina si está en modo crear o editar
+      formik={formik} // Pasa el objeto formik para acceso extendido
     />
   );
 };

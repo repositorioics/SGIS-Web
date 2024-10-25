@@ -1,8 +1,11 @@
 import React from 'react';
 import { Box, Button, Grid, TextField, Typography, Select, MenuItem, FormControl, InputLabel } from '@mui/material';
+import { useTranslation } from 'react-i18next'; // Importar hook de traducción
 import '@/assets/styles/formularios.css'; // Importar el archivo CSS
 
 const PaginaFormularioBodega = ({ bodega, onChange, onSave, error, isEditing, formik, sitios, donantes }) => {
+  const { t } = useTranslation(); // Usar hook de traducción
+
   return (
     <Box className="formulario-container">
       <Typography
@@ -12,7 +15,7 @@ const PaginaFormularioBodega = ({ bodega, onChange, onSave, error, isEditing, fo
         mb={1}
         textAlign="left"
       >
-        {isEditing ? 'Actualizar Bodega' : 'Crear Bodega'}
+        {isEditing ? t('formularioBodega.actualizarTitulo') : t('formularioBodega.crearTitulo')}
       </Typography>
 
       <Typography
@@ -22,12 +25,14 @@ const PaginaFormularioBodega = ({ bodega, onChange, onSave, error, isEditing, fo
         textAlign="left"
         color="textSecondary"
       >
-        Complete los siguientes campos para {isEditing ? 'actualizar la bodega' : 'crear una nueva bodega'}
+        {isEditing
+          ? t('formularioBodega.actualizarSubtitulo')
+          : t('formularioBodega.crearSubtitulo')}
       </Typography>
 
       {error ? (
         <Typography variant="h6" color="error" textAlign="center">
-          Error al cargar los datos de la bodega
+          {t('formularioBodega.errorCargar')}
         </Typography>
       ) : (
         <form onSubmit={onSave}>
@@ -35,7 +40,7 @@ const PaginaFormularioBodega = ({ bodega, onChange, onSave, error, isEditing, fo
             {/* Campo Nombre */}
             <Grid item xs={12} sm={6}>
               <TextField
-                label="Nombre"
+                label={t('formularioBodega.nombreLabel')}
                 name="nombre"
                 value={formik.values.nombre}
                 onChange={onChange}
@@ -43,6 +48,7 @@ const PaginaFormularioBodega = ({ bodega, onChange, onSave, error, isEditing, fo
                 margin="normal"
                 error={formik.touched.nombre && Boolean(formik.errors.nombre)}
                 helperText={formik.touched.nombre && formik.errors.nombre}
+                autoComplete="off"  
                 InputLabelProps={{
                   sx: { color: 'text.secondary', fontSize: '16px' },
                   shrink: true,
@@ -56,7 +62,7 @@ const PaginaFormularioBodega = ({ bodega, onChange, onSave, error, isEditing, fo
             {/* Campo Descripción */}
             <Grid item xs={12} sm={6}>
               <TextField
-                label="Descripción"
+                label={t('formularioBodega.descripcionLabel')}
                 name="descripcion"
                 value={formik.values.descripcion}
                 onChange={onChange}
@@ -65,6 +71,7 @@ const PaginaFormularioBodega = ({ bodega, onChange, onSave, error, isEditing, fo
                 rows={4}
                 error={formik.touched.descripcion && Boolean(formik.errors.descripcion)}
                 helperText={formik.touched.descripcion && formik.errors.descripcion}
+                autoComplete="off"  
                 InputLabelProps={{
                   sx: { color: 'text.secondary', fontSize: '16px' },
                   shrink: true,
@@ -78,7 +85,7 @@ const PaginaFormularioBodega = ({ bodega, onChange, onSave, error, isEditing, fo
             {/* Campo Dirección */}
             <Grid item xs={12} sm={6}>
               <TextField
-                label="Dirección"
+                label={t('formularioBodega.direccionLabel')}
                 name="direccion"
                 value={formik.values.direccion}
                 onChange={onChange}
@@ -86,6 +93,7 @@ const PaginaFormularioBodega = ({ bodega, onChange, onSave, error, isEditing, fo
                 margin="normal"
                 error={formik.touched.direccion && Boolean(formik.errors.direccion)}
                 helperText={formik.touched.direccion && formik.errors.direccion}
+                autoComplete="off"  
                 InputLabelProps={{
                   sx: { color: 'text.secondary', fontSize: '16px' },
                   shrink: true,
@@ -99,17 +107,15 @@ const PaginaFormularioBodega = ({ bodega, onChange, onSave, error, isEditing, fo
             {/* Campo Sitio */}
             <Grid item xs={12} sm={6}>
               <FormControl fullWidth margin="normal">
-                <InputLabel>Sitio</InputLabel>
+                <InputLabel>{t('formularioBodega.sitioLabel')}</InputLabel>
                 <Select
                   name="sitioId"
                   value={formik.values.sitioId || ''}
                   onChange={onChange}
                   error={formik.touched.sitioId && Boolean(formik.errors.sitioId)}
-                  InputProps={{
-                    className: 'formulario-input',
-                  }}
+                  inputProps={{ autoComplete: 'off' }}  
                 >
-                  <MenuItem value="">Seleccionar Sitio</MenuItem>
+                  <MenuItem value="">{t('formularioBodega.seleccionarSitio')}</MenuItem>
                   {sitios.map(sitio => (
                     <MenuItem key={sitio.id} value={sitio.id}>
                       {sitio.nombre}
@@ -125,14 +131,15 @@ const PaginaFormularioBodega = ({ bodega, onChange, onSave, error, isEditing, fo
             {/* Campo Donante */}
             <Grid item xs={12} sm={6}>
               <FormControl fullWidth margin="normal">
-                <InputLabel>Donante</InputLabel>
+                <InputLabel>{t('formularioBodega.donanteLabel')}</InputLabel>
                 <Select
                   name="donanteId"
                   value={formik.values.donanteId || ''}
                   onChange={onChange}
                   error={formik.touched.donanteId && Boolean(formik.errors.donanteId)}
+                  inputProps={{ autoComplete: 'off' }}  
                 >
-                  <MenuItem value="">Seleccionar Donante</MenuItem>
+                  <MenuItem value="">{t('formularioBodega.seleccionarDonante')}</MenuItem>
                   {donantes.map(donante => (
                     <MenuItem key={donante.id} value={donante.id}>
                       {donante.nombre}
@@ -153,7 +160,7 @@ const PaginaFormularioBodega = ({ bodega, onChange, onSave, error, isEditing, fo
               type="submit"
               className="formulario-boton" // Aplicar clase CSS
             >
-              {isEditing ? 'Actualizar Bodega' : 'Crear Bodega'}
+              {isEditing ? t('formularioBodega.botonActualizar') : t('formularioBodega.botonCrear')}
             </Button>
           </Box>
         </form>

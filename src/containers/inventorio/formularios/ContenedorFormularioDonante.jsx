@@ -8,8 +8,11 @@ import PaginaFormularioDonante from '@/pages/inventario/formularios/PaginaFormul
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { obtenerToken } from '@/utils/almacenamiento';
+import { useTranslation } from 'react-i18next'; // Hook de traducción
 
 const ContenedorFormularioDonante = () => {
+  const { t } = useTranslation(); // Hook de traducción
+
   const [donante, setDonante] = useState({
     nombre: '',
     direccion: '',
@@ -38,17 +41,17 @@ const ContenedorFormularioDonante = () => {
     enableReinitialize: true, // Permite reinicializar valores iniciales al recibir nuevos datos
     validationSchema: Yup.object({
       nombre: Yup.string()
-        .required('El nombre es obligatorio')
-        .matches(/^[A-Za-z\s]+$/, 'El nombre solo puede contener letras y espacios')
-        .max(100, 'El nombre no puede exceder 100 caracteres'),
+        .required(t('contenedorFormularioDonante.nombreObligatorio'))
+        .matches(/^[A-Za-z\s]+$/, t('contenedorFormularioDonante.nombreInvalido'))
+        .max(100, t('contenedorFormularioDonante.nombreMax')),
       direccion: Yup.string()
-      .required('El nombre es obligatorio')
-      .matches(/^[A-Za-z\s]+$/, 'El nombre solo puede contener letras y espacios')
-        .max(200, 'La dirección no puede exceder 200 caracteres'),
+        .required(t('contenedorFormularioDonante.direccionObligatoria'))
+        .matches(/^[A-Za-z\s]+$/, t('contenedorFormularioDonante.direccionInvalida'))
+        .max(200, t('contenedorFormularioDonante.direccionMax')),
       abreviatura: Yup.string()
-        .max(50, 'La abreviatura no puede exceder 50 caracteres'),
+        .max(50, t('contenedorFormularioDonante.abreviaturaMax')),
       contactoId: Yup.number()
-        .required('El ID del contacto es obligatorio'),
+        .required(t('contenedorFormularioDonante.contactoIdObligatorio')),
     }),
     onSubmit: async (values) => {
       const url = id ? `${URL}api/v1/donantes/${id}` : `${URL}api/v1/donantes`;
@@ -64,13 +67,13 @@ const ContenedorFormularioDonante = () => {
         const result = await response.json();
         
         if (response.ok) {
-          toast.success(id ? 'Donante actualizado con éxito' : 'Donante creado con éxito');
+          toast.success(id ? t('contenedorFormularioDonante.mensajeExitoActualizar') : t('contenedorFormularioDonante.mensajeExitoCrear'));
           navigate('/inventario/donantes'); // Redireccionamos a la página de donantes
         } else {
-          toast.error(result.message || 'Error al guardar el donante');
+          toast.error(result.message || t('contenedorFormularioDonante.mensajeErrorGuardar'));
         }
       } catch (err) {
-        toast.error('Ocurrió un error al guardar el donante');
+        toast.error(t('contenedorFormularioDonante.mensajeErrorGuardar'));
       }
     },
   });

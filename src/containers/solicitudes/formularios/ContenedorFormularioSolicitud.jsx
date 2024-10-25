@@ -5,7 +5,11 @@ import 'react-toastify/dist/ReactToastify.css';
 import PaginaFormularioSolicitud from '@/pages/solicitudes/formularios/PaginaFormularioSolicitud';
 import { URL } from '@/constants/url';
 import useFetch from '@/hooks/useFetch';
+import { useTranslation } from 'react-i18next'; // Importar hook de traducción
 
+/**
+ * Controlar la lógica del formulario de solicitud, incluyendo la creación y la gestión de detalles.
+ */
 const ContenedorFormularioSolicitud = () => {
   const [solicitud, setSolicitud] = useState({
     numeroSolicitud: '',
@@ -28,11 +32,11 @@ const ContenedorFormularioSolicitud = () => {
 
   const [detalles, setDetalles] = useState([]);
   const navigate = useNavigate();
+  const { t } = useTranslation(); // Hook de traducción
 
-  // Valor alto para intentar traer la mayor cantidad de datos
   const maxSize = 1000;
 
-  // Peticiones para cargar los datos necesarios con maxSize aplicado
+  // Fetching data for the form
   const { data: usuariosData, error: usuariosError } = useFetch(`${URL}api/v1/usuarios?page=0&size=${maxSize}`, {}, []);
   const { data: donantesData, error: donantesError } = useFetch(`${URL}api/v1/donantes?page=0&size=${maxSize}`, {}, []);
   const { data: insumosData, error: insumosError } = useFetch(`${URL}api/v1/insumos?page=0&size=${maxSize}`, {}, []);
@@ -40,7 +44,7 @@ const ContenedorFormularioSolicitud = () => {
   const { data: distribuidoresData, error: distribuidoresError } = useFetch(`${URL}api/v1/distribuidores?page=0&size=${maxSize}`, {}, []);
   const { data: presentacionesData, error: presentacionesError } = useFetch(`${URL}api/v1/presentaciones?page=0&size=${maxSize}`, {}, []);
 
-  // Función para manejar los cambios en los inputs del formulario
+  // Handle input changes
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setSolicitud({
@@ -49,7 +53,7 @@ const ContenedorFormularioSolicitud = () => {
     });
   };
 
-  // Función para manejar los cambios en los detalles
+  // Handle detail changes
   const handleDetalleChange = (e) => {
     const { name, value } = e.target;
     setDetalleActual({
@@ -58,7 +62,7 @@ const ContenedorFormularioSolicitud = () => {
     });
   };
 
-  // Función para agregar un detalle a la lista
+  // Add detail to the list
   const agregarDetalle = () => {
     setDetalles([...detalles, detalleActual]);
     setDetalleActual({
@@ -72,7 +76,7 @@ const ContenedorFormularioSolicitud = () => {
     });
   };
 
-  // Función para manejar la creación de la solicitud
+  // Handle form submission
   const manejarCrear = async () => {
     const nuevaSolicitud = { ...solicitud, detalles };
 
@@ -83,19 +87,19 @@ const ContenedorFormularioSolicitud = () => {
         body: JSON.stringify(nuevaSolicitud),
       });
       if (response.ok) {
-        toast.success('Solicitud creada con éxito');
+        toast.success(t('formularioSolicitud.creacionExitosa'));
         navigate('/solicitudes');
       } else {
-        toast.error('Error al crear la solicitud');
+        toast.error(t('formularioSolicitud.errorCrear'));
       }
     } catch (error) {
-      toast.error('Error al crear la solicitud');
+      toast.error(t('formularioSolicitud.errorCrear'));
     }
   };
 
-  // Verifica si hay errores en las peticiones
+  // Handle loading and errors
   if (usuariosError || donantesError || insumosError || marcasError || distribuidoresError || presentacionesError) {
-    return <p>Error al cargar los datos</p>;
+    return <p>{t('formularioSolicitud.errorCargarDatos')}</p>;
   }
 
   return (

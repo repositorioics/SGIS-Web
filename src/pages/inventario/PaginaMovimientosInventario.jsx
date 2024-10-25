@@ -3,7 +3,11 @@ import TablaGenerica from '@/components/inventario/TablaGenerica';
 import Cargador from '@/components/Cargador';
 import MensajeError from '@/components/MensajeError';
 import '@/assets/styles/inventario/estilosInventario.css';
+import { useTranslation } from 'react-i18next';
 
+/**
+ * Renderiza la página de movimientos de inventario con una tabla para mostrar los movimientos registrados.
+ */
 const PaginaMovimientosInventario = ({
   columnas,
   datos,
@@ -15,18 +19,23 @@ const PaginaMovimientosInventario = ({
   pageSize,
   setPageSize,
 }) => {
+  const { t } = useTranslation(); // Hook para traducción
+
   if (cargando) return <Cargador />;
   if (error) return <MensajeError mensaje={error.message} />;
 
   return (
     <div className="seccion-principal">
+      {/* Encabezado de la página de movimientos de inventario */}
       <div className="cabecera-inicio">
-        <h2 className="titulo-inicio">Resumen de Movimientos de Inventario</h2>
-        <p className="subtitulo-inicio">Consulta los movimientos registrados en el sistema</p>
+        <h2 className="titulo-inicio">{t('paginaMovimientosInventario.titulo')}</h2>
+        <p className="subtitulo-inicio">{t('paginaMovimientosInventario.subtitulo')}</p>
       </div>
+
+      {/* Tabla con los movimientos de inventario */}
       <div className="seccion-inventario">
         <TablaGenerica
-          encabezado="Listado de movimientos de inventario registrados"
+          encabezado={t('paginaMovimientosInventario.encabezadoTabla')}
           columnas={columnas}
           datos={datos}
           totalPaginas={totalPaginas}

@@ -1,11 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
 import autenticacionReducer from '@/context/slices/autenticacionSlice';
-import temaReducer from '@/context/slices/temaSlice';
+import idiomaReducer from '@/context/slices/idiomaSlice';
 
 const store = configureStore({
   reducer: {
     autenticacion: autenticacionReducer,
-    tema: temaReducer,
+    idioma: idiomaReducer
   },
 });
 

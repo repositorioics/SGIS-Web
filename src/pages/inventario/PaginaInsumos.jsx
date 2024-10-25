@@ -3,7 +3,11 @@ import TablaGenerica from '@/components/inventario/TablaGenerica';
 import Cargador from '@/components/Cargador';
 import MensajeError from '@/components/MensajeError';
 import '@/assets/styles/inventario/estilosInventario.css';
+import { useTranslation } from 'react-i18next';
 
+/**
+ * Renderiza la página de insumos con una tabla y opciones para crear, buscar, actualizar y eliminar insumos.
+ */
 const PaginaInsumos = ({
   columnas,
   datos,
@@ -18,6 +22,8 @@ const PaginaInsumos = ({
   manejarActualizar,
   manejarEliminar,
 }) => {
+  const { t } = useTranslation(); // Hook de traducción
+
   if (cargando) return <Cargador />;
   if (error) return <MensajeError mensaje={error.message} />;
 
@@ -26,13 +32,14 @@ const PaginaInsumos = ({
 
   return (
     <div className="seccion-principal">
+      {/* Encabezado de la página de gestión de insumos */}
       <div className="cabecera-inicio">
-        <h2 className="titulo-inicio">Gestión de Insumos</h2>
-        <p className="subtitulo-inicio">Administra los insumos disponibles en el inventario.</p>
+        <h2 className="titulo-inicio">{t('paginaInsumos.titulo')}</h2>
+        <p className="subtitulo-inicio">{t('paginaInsumos.subtitulo')}</p>
       </div>
       <div className="seccion-inventario">
         <TablaGenerica
-          encabezado="Listado de insumos registrados en el inventario"
+          encabezado={t('paginaInsumos.encabezadoTabla')}
           columnas={columnas}
           datos={datosValidos} // Pasar datos validados
           manejarCrear={manejarCrear}

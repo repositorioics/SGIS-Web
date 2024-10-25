@@ -1,8 +1,12 @@
 import React from 'react';
 import { Box, Button, Grid, TextField, Typography, Select, MenuItem, FormControl, InputLabel } from '@mui/material';
 import TablaGenerica from '@/components/inventario/TablaGenerica';
-import '@/assets/styles/formularios.css'; // Importar el archivo CSS
+import '@/assets/styles/formularios.css'; // Importar estilos personalizados
+import { useTranslation } from 'react-i18next';
 
+/**
+ * Renderiza el formulario de creación de requisa, junto con la funcionalidad de agregar detalles.
+ */
 const PaginaFormularioRequisa = ({
   requisa,
   detalleActual,
@@ -15,23 +19,26 @@ const PaginaFormularioRequisa = ({
   onAgregarDetalle,
   onGuardarRequisa
 }) => {
+  const { t } = useTranslation(); // Hook de traducción
+
+  // Definir columnas para la tabla de detalles agregados
   const columnasDetalles = [
-    { field: 'insumoId', headerName: 'Insumo', flex: 1, renderCell: (params) => insumos.find(i => i.id === params.value)?.nombre || '' },
-    { field: 'presentacionId', headerName: 'Presentación', flex: 1, renderCell: (params) => presentaciones.find(p => p.id === params.value)?.nombre || '' },
-    { field: 'cantidadPresentacionesSolicitada', headerName: 'Cantidad Solicitada', flex: 1 },
-    { field: 'observacion', headerName: 'Observación', flex: 1 },
+    { field: 'insumoId', headerName: t('formularioRequisa.insumo'), flex: 1, renderCell: (params) => insumos.find(i => i.id === params.value)?.nombre || '' },
+    { field: 'presentacionId', headerName: t('formularioRequisa.presentacion'), flex: 1, renderCell: (params) => presentaciones.find(p => p.id === params.value)?.nombre || '' },
+    { field: 'cantidadPresentacionesSolicitada', headerName: t('formularioRequisa.cantidadSolicitada'), flex: 1 },
+    { field: 'observacion', headerName: t('formularioRequisa.observacion'), flex: 1 },
   ];
 
   return (
     <Box className="formulario-container">
       <Typography component="h1" variant="h4" mb={1} className="formulario-titulo">
-        Crear Requisa
+        {t('formularioRequisa.titulo')}
       </Typography>
 
       <Grid container spacing={2} className="formulario-grid">
         <Grid item xs={12} sm={6}>
           <FormControl fullWidth margin="normal" className="formulario-select">
-            <InputLabel>Sitio</InputLabel>
+            <InputLabel>{t('formularioRequisa.sitio')}</InputLabel>
             <Select name="sitioId" value={requisa.sitioId} onChange={onInputChange}>
               {Array.isArray(sitios) && sitios.map(sitio => (
                 <MenuItem key={sitio.id} value={sitio.id}>{sitio.nombre}</MenuItem>
@@ -42,7 +49,7 @@ const PaginaFormularioRequisa = ({
 
         <Grid item xs={12} sm={6}>
           <TextField
-            label="Creado Por"
+            label={t('formularioRequisa.creadoPor')}
             name="creadoPor"
             type="number"
             value={requisa.creadoPor}
@@ -53,9 +60,9 @@ const PaginaFormularioRequisa = ({
           />
         </Grid>
 
-        <Grid item xs={12} style={{ marginBottom: '20px' }}> {/* Se agrega marginBottom para espacio debajo del campo Observaciones */}
+        <Grid item xs={12} mb={3}>
           <TextField
-            label="Observaciones"
+            label={t('formularioRequisa.observaciones')}
             name="observaciones"
             value={requisa.observaciones}
             onChange={onInputChange}
@@ -69,13 +76,13 @@ const PaginaFormularioRequisa = ({
       </Grid>
 
       <Typography component="h2" variant="h5" mt={7} className="formulario-titulo">
-        Agregar Detalles
+        {t('formularioRequisa.agregarDetalles')}
       </Typography>
 
       <Grid container spacing={2} className="formulario-grid">
         <Grid item xs={12} sm={6}>
           <FormControl fullWidth margin="normal" className="formulario-select">
-            <InputLabel>Insumo</InputLabel>
+            <InputLabel>{t('formularioRequisa.insumo')}</InputLabel>
             <Select name="insumoId" value={detalleActual.insumoId} onChange={onDetalleChange}>
               {Array.isArray(insumos) && insumos.map(insumo => (
                 <MenuItem key={insumo.id} value={insumo.id}>{insumo.nombre}</MenuItem>
@@ -86,7 +93,7 @@ const PaginaFormularioRequisa = ({
 
         <Grid item xs={12} sm={6}>
           <FormControl fullWidth margin="normal" className="formulario-select">
-            <InputLabel>Presentación</InputLabel>
+            <InputLabel>{t('formularioRequisa.presentacion')}</InputLabel>
             <Select name="presentacionId" value={detalleActual.presentacionId} onChange={onDetalleChange}>
               {Array.isArray(presentaciones) && presentaciones.map(presentacion => (
                 <MenuItem key={presentacion.id} value={presentacion.id}>{presentacion.nombre}</MenuItem>
@@ -97,7 +104,7 @@ const PaginaFormularioRequisa = ({
 
         <Grid item xs={12} sm={6}>
           <TextField
-            label="Cantidad de Presentaciones Solicitada"
+            label={t('formularioRequisa.cantidadSolicitada')}
             name="cantidadPresentacionesSolicitada"
             type="number"
             value={detalleActual.cantidadPresentacionesSolicitada}
@@ -110,7 +117,7 @@ const PaginaFormularioRequisa = ({
 
         <Grid item xs={12} sm={6}>
           <TextField
-            label="Observación"
+            label={t('formularioRequisa.observacion')}
             name="observacion"
             value={detalleActual.observacion}
             onChange={onDetalleChange}
@@ -124,13 +131,13 @@ const PaginaFormularioRequisa = ({
 
         <Grid item xs={12} mb={3} mt={3}>
           <Button variant="contained" color="secondary" onClick={onAgregarDetalle} className="formulario-boton">
-            Agregar Detalle
+            {t('formularioRequisa.agregarDetalleBoton')}
           </Button>
         </Grid>
       </Grid>
 
       <TablaGenerica
-        encabezado="Detalles Agregados"
+        encabezado={t('formularioRequisa.detallesAgregados')}
         columnas={columnasDetalles}
         datos={detalles}
         mostrarCrear={false}
@@ -138,7 +145,7 @@ const PaginaFormularioRequisa = ({
 
       <Box sx={{ display: 'flex', justifyContent: 'center', mt: 3 }}>
         <Button variant="contained" color="primary" onClick={onGuardarRequisa} className="formulario-boton">
-          Crear Requisa
+          {t('formularioRequisa.crearRequisaBoton')}
         </Button>
       </Box>
     </Box>

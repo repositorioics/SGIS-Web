@@ -1,8 +1,11 @@
 import React from 'react';
 import { Box, Button, Grid, TextField, Typography } from '@mui/material';
 import '@/assets/styles/formularios.css'; // Importar el archivo CSS
+import { useTranslation } from 'react-i18next'; // Hook de traducción
 
 const PaginaFormularioDonante = ({ donante, onChange, onSave, error, isEditing, formik }) => {
+  const { t } = useTranslation(); // Usar hook de traducción
+
   return (
     <Box className="formulario-container">
       <Typography
@@ -12,7 +15,7 @@ const PaginaFormularioDonante = ({ donante, onChange, onSave, error, isEditing, 
         mb={1}
         textAlign="left"
       >
-        {isEditing ? 'Actualizar Donante' : 'Crear Donante'}
+        {isEditing ? t('formularioDonante.actualizarTitulo') : t('formularioDonante.crearTitulo')}
       </Typography>
 
       <Typography
@@ -22,12 +25,12 @@ const PaginaFormularioDonante = ({ donante, onChange, onSave, error, isEditing, 
         textAlign="left"
         color="textSecondary"
       >
-        Complete los siguientes campos para {isEditing ? 'actualizar el donante' : 'crear un nuevo donante'}
+        {isEditing ? t('formularioDonante.actualizarSubtitulo') : t('formularioDonante.crearSubtitulo')}
       </Typography>
 
       {error ? (
         <Typography variant="h6" color="error" textAlign="center">
-          Error al cargar los datos del donante
+          {t('formularioDonante.errorCargar')}
         </Typography>
       ) : (
         <form onSubmit={onSave}>
@@ -35,11 +38,12 @@ const PaginaFormularioDonante = ({ donante, onChange, onSave, error, isEditing, 
             {/* Campo Nombre */}
             <Grid item xs={12} sm={6}>
               <TextField
-                label="Nombre"
+                label={t('formularioDonante.nombreLabel')}
                 name="nombre"
                 value={formik.values.nombre}
                 onChange={onChange}
                 fullWidth
+                autoComplete="off"  
                 margin="normal"
                 error={formik.touched.nombre && Boolean(formik.errors.nombre)}
                 helperText={formik.touched.nombre && formik.errors.nombre}
@@ -56,11 +60,12 @@ const PaginaFormularioDonante = ({ donante, onChange, onSave, error, isEditing, 
             {/* Campo Dirección */}
             <Grid item xs={12} sm={6}>
               <TextField
-                label="Dirección"
+                label={t('formularioDonante.direccionLabel')}
                 name="direccion"
                 value={formik.values.direccion}
                 onChange={onChange}
                 fullWidth
+                autoComplete="off"  
                 margin="normal"
                 error={formik.touched.direccion && Boolean(formik.errors.direccion)}
                 helperText={formik.touched.direccion && formik.errors.direccion}
@@ -77,11 +82,12 @@ const PaginaFormularioDonante = ({ donante, onChange, onSave, error, isEditing, 
             {/* Campo Abreviatura */}
             <Grid item xs={12} sm={6}>
               <TextField
-                label="Abreviatura"
+                label={t('formularioDonante.abreviaturaLabel')}
                 name="abreviatura"
                 value={formik.values.abreviatura}
                 onChange={onChange}
                 fullWidth
+                autoComplete="off"  
                 margin="normal"
                 error={formik.touched.abreviatura && Boolean(formik.errors.abreviatura)}
                 helperText={formik.touched.abreviatura && formik.errors.abreviatura}
@@ -98,12 +104,13 @@ const PaginaFormularioDonante = ({ donante, onChange, onSave, error, isEditing, 
             {/* Campo ID de Contacto */}
             <Grid item xs={12} sm={6}>
               <TextField
-                label="ID de Contacto"
+                label={t('formularioDonante.contactoIdLabel')}
                 name="contactoId"
                 type="number"
                 value={formik.values.contactoId}
                 onChange={onChange}
                 fullWidth
+                autoComplete="off"  
                 margin="normal"
                 error={formik.touched.contactoId && Boolean(formik.errors.contactoId)}
                 helperText={formik.touched.contactoId && formik.errors.contactoId}
@@ -125,7 +132,7 @@ const PaginaFormularioDonante = ({ donante, onChange, onSave, error, isEditing, 
               type="submit"
               className="formulario-boton" // Aplicar clase CSS
             >
-              {isEditing ? 'Actualizar Donante' : 'Crear Donante'}
+              {isEditing ? t('formularioDonante.botonActualizar') : t('formularioDonante.botonCrear')}
             </Button>
           </Box>
         </form>

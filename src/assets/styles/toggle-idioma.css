@@ -1,0 +1,35 @@
+/* Estilos para el contenedor de idioma */
+.toggle-idioma {
+  display: flex;
+  align-items: center;
+  justify-content: left;
+  background-color: var(--color-fondo-alterno); /* Ajusta a tu paleta de colores */
+  padding: 10px;
+  border-radius: 8px;
+  width: 100%;
+  height: 100%;
+  transition: background-color 0.3s ease;
+  cursor: pointer;
+  background-color: aqua;
+}
+
+.idioma-contenedor {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--color-texto-primario);
+}
+
+.toggle-idioma:hover {
+  background-color: var(--color-hover-blanco); /* Ajusta a tu esquema de colores */
+}
+
+/* Asegura que el texto y los íconos estén alineados */
+.toggle-idioma span {
+  font-size: 0.9rem;
+  color: var(--color-texto-primario);
+}
+
+.toggle-idioma .faGlobe, .toggle-idioma .faGlobeAmericas {
+  color: var(--color-texto-secundario);
+}

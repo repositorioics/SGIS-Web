@@ -1,3 +1,17 @@
+:root {
+  --color-primario: #007bff;
+  --color-hover-primario: #0056b3;
+  --color-fondo: #ffffff;
+  --color-texto-primario: #000000;
+  --color-texto-secundario: #666666;
+  --color-fondo-alterno: #FEFEFA;
+  --color-error: #dc3545;
+  --color-exito: #28a745;
+  --color-advertencia: #ffc107;
+  --color-info: #17a2b8;
+  --color-hover-blanco: #E9F2FF;
+}
+
 body {
   font-family: 'Poppins', sans-serif;
   box-sizing: border-box;

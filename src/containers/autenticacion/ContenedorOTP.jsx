@@ -1,21 +1,25 @@
-// src/containers/auth/ContenedorOTP.js
 import React from 'react';
-import { useFetch } from '@/hooks/useFetch';
+import useFetch from '@/hooks/useFetch';
 import PaginaOTP from '@/pages/autenticacion/PaginaOTP';
+import { toast } from 'react-toastify';
+import { useTranslation } from 'react-i18next';
 
 const ContenedorOTP = () => {
+  const { t } = useTranslation();
+
   const manejarEnvioOTP = async (valores) => {
     const { otp } = valores;
+
+    // Enviar el código OTP para verificación
     const { data, error } = await useFetch('/api/verify-otp', {
       method: 'POST',
       body: JSON.stringify({ otp }),
     });
 
     if (data) {
-      console.log('OTP verificado con éxito:', data);
-      // Aquí manejar la siguiente acción después de la verificación del OTP
+      toast.success(t('otp.exito'));
     } else if (error) {
-      console.error('Error en la verificación del OTP:', error);
+      toast.error(t('otp.error'));
     }
   };
 

@@ -3,8 +3,12 @@ import TablaGenerica from '@/components/inventario/TablaGenerica';
 import Cargador from '@/components/Cargador';
 import MensajeError from '@/components/MensajeError';
 import '@/assets/styles/inventario/estilosInventario.css';
+import { useTranslation } from 'react-i18next'; // Hook para traducción
 
-const PaginaInsumos = ({
+/**
+ * Renderiza la página de sitios con una tabla y opciones para crear, actualizar y eliminar.
+ */
+const PaginaSitios = ({
   columnas,
   datos,
   cargando,
@@ -18,21 +22,23 @@ const PaginaInsumos = ({
   manejarActualizar,
   manejarEliminar,
 }) => {
+  const { t } = useTranslation(); // Hook de traducción
+
   if (cargando) return <Cargador />;
   if (error) return <MensajeError mensaje={error.message} />;
 
   return (
     <div className="seccion-principal">
       <div className="cabecera-inicio">
-        <h2 className="titulo-inicio">Gestión de Insumos</h2>
-        <p className="subtitulo-inicio">Administra los insumos disponibles en el inventario.</p>
-        <button onClick={manejarCrear} className="boton-crear">Crear Insumo</button>
+        <h2 className="titulo-inicio">{t('paginaSitios.titulo')}</h2>
+        <p className="subtitulo-inicio">{t('paginaSitios.subtitulo')}</p>
       </div>
       <div className="seccion-inventario">
         <TablaGenerica
-          encabezado="Listado de insumos registrados en el inventario"
+          encabezado={t('paginaSitios.encabezado')}
           columnas={columnas}
-          datos={datos} // Pasar los datos de insumos
+          datos={datos}
+          manejarCrear={manejarCrear}
           totalPaginas={totalPaginas}
           paginaActual={paginaActual}
           setPagina={setPaginaActual}
@@ -46,4 +52,4 @@ const PaginaInsumos = ({
   );
 };
 
-export default PaginaInsumos;
+export default PaginaSitios;

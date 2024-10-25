@@ -1,8 +1,14 @@
 import React from 'react';
 import { Box, Button, Grid, TextField, Typography } from '@mui/material';
 import '@/assets/styles/formularios.css';
+import { useTranslation } from 'react-i18next';
 
+/**
+ * Renderiza la página de formulario para crear o actualizar entregas.
+ */
 const PaginaFormularioEntrega = ({ entrega, onChange, onSave, error, isEditing, formik }) => {
+  const { t } = useTranslation(); // Hook para las traducciones
+
   return (
     <Box className="formulario-container">
       <Typography
@@ -12,7 +18,7 @@ const PaginaFormularioEntrega = ({ entrega, onChange, onSave, error, isEditing, 
         mb={1}
         textAlign="left"
       >
-        {isEditing ? 'Actualizar Entrega' : 'Crear Entrega'}
+        {isEditing ? t('formularioEntrega.actualizarTitulo') : t('formularioEntrega.crearTitulo')}
       </Typography>
 
       <Typography
@@ -22,19 +28,19 @@ const PaginaFormularioEntrega = ({ entrega, onChange, onSave, error, isEditing, 
         textAlign="left"
         color="textSecondary"
       >
-        Complete los siguientes campos para {isEditing ? 'actualizar la entrega' : 'crear una nueva entrega'}
+        {isEditing ? t('formularioEntrega.actualizarSubtitulo') : t('formularioEntrega.crearSubtitulo')}
       </Typography>
 
       {error ? (
         <Typography variant="h6" color="error" textAlign="center">
-          Error al cargar los datos de la entrega
+          {t('formularioEntrega.errorCargarDatos')}
         </Typography>
       ) : (
         <form onSubmit={onSave}>
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
               <TextField
-                label="Detalle Requisa ID"
+                label={t('formularioEntrega.detalleRequisaId')}
                 name="detalleRequisaId"
                 type="number"
                 value={formik.values.detalleRequisaId}
@@ -50,7 +56,7 @@ const PaginaFormularioEntrega = ({ entrega, onChange, onSave, error, isEditing, 
 
             <Grid item xs={12} sm={6}>
               <TextField
-                label="Cantidad Presentación Entregada"
+                label={t('formularioEntrega.cantidadPresentacionEntregada')}
                 name="cantidadPresentacionEntregada"
                 type="number"
                 value={formik.values.cantidadPresentacionEntregada}
@@ -66,7 +72,7 @@ const PaginaFormularioEntrega = ({ entrega, onChange, onSave, error, isEditing, 
 
             <Grid item xs={12} sm={6}>
               <TextField
-                label="Recibido Por (ID)"
+                label={t('formularioEntrega.recibidoPor')}
                 name="recibidoPor"
                 type="number"
                 value={formik.values.recibidoPor}
@@ -82,7 +88,7 @@ const PaginaFormularioEntrega = ({ entrega, onChange, onSave, error, isEditing, 
 
             <Grid item xs={12}>
               <TextField
-                label="Observaciones"
+                label={t('formularioEntrega.observaciones')}
                 name="observaciones"
                 value={formik.values.observaciones}
                 onChange={onChange}
@@ -103,7 +109,7 @@ const PaginaFormularioEntrega = ({ entrega, onChange, onSave, error, isEditing, 
               type="submit"
               className="formulario-boton"
             >
-              {isEditing ? 'Actualizar Entrega' : 'Crear Entrega'}
+              {isEditing ? t('formularioEntrega.actualizarBoton') : t('formularioEntrega.crearBoton')}
             </Button>
           </Box>
         </form>

@@ -1,8 +1,11 @@
 import React from 'react';
 import { Box, Button, Grid, TextField, Typography, Select, MenuItem, FormControl, InputLabel } from '@mui/material';
 import '@/assets/styles/formularios.css'; // Importar el archivo CSS
+import { useTranslation } from 'react-i18next'; // Hook de traducción
 
 const PaginaFormularioSitio = ({ sitio, onChange, onSave, error, isEditing, formik, usuarios }) => {
+  const { t } = useTranslation(); // Hook de traducción
+
   return (
     <Box className="formulario-container">
       <Typography
@@ -12,7 +15,7 @@ const PaginaFormularioSitio = ({ sitio, onChange, onSave, error, isEditing, form
         mb={1}
         textAlign="left"
       >
-        {isEditing ? 'Actualizar Sitio' : 'Crear Sitio'}
+        {isEditing ? t('formularioSitio.actualizarTitulo') : t('formularioSitio.crearTitulo')}
       </Typography>
 
       <Typography
@@ -22,12 +25,12 @@ const PaginaFormularioSitio = ({ sitio, onChange, onSave, error, isEditing, form
         textAlign="left"
         color="textSecondary"
       >
-        Complete los siguientes campos para {isEditing ? 'actualizar el sitio' : 'crear un nuevo sitio'}
+        {isEditing ? t('formularioSitio.actualizarSubtitulo') : t('formularioSitio.crearSubtitulo')}
       </Typography>
 
       {error ? (
         <Typography variant="h6" color="error" textAlign="center">
-          Error al cargar los datos del sitio
+          {t('formularioSitio.errorCargar')}
         </Typography>
       ) : (
         <form onSubmit={onSave}>
@@ -35,7 +38,7 @@ const PaginaFormularioSitio = ({ sitio, onChange, onSave, error, isEditing, form
             {/* Campo Nombre */}
             <Grid item xs={12} sm={6}>
               <TextField
-                label="Nombre"
+                label={t('formularioSitio.nombreLabel')}
                 name="nombre"
                 value={formik.values.nombre}
                 onChange={onChange}
@@ -49,6 +52,7 @@ const PaginaFormularioSitio = ({ sitio, onChange, onSave, error, isEditing, form
                 }}
                 InputProps={{
                   className: 'formulario-input', // Aplicar clase CSS
+                  autoComplete: 'off', // Desactivar autocompletado
                 }}
               />
             </Grid>
@@ -56,7 +60,7 @@ const PaginaFormularioSitio = ({ sitio, onChange, onSave, error, isEditing, form
             {/* Campo Abreviatura */}
             <Grid item xs={12} sm={6}>
               <TextField
-                label="Abreviatura"
+                label={t('formularioSitio.abreviaturaLabel')}
                 name="abreviatura"
                 value={formik.values.abreviatura}
                 onChange={onChange}
@@ -70,6 +74,7 @@ const PaginaFormularioSitio = ({ sitio, onChange, onSave, error, isEditing, form
                 }}
                 InputProps={{
                   className: 'formulario-input', // Aplicar clase CSS
+                  autoComplete: 'off', // Desactivar autocompletado
                 }}
               />
             </Grid>
@@ -77,7 +82,7 @@ const PaginaFormularioSitio = ({ sitio, onChange, onSave, error, isEditing, form
             {/* Campo Dirección */}
             <Grid item xs={12} sm={6}>
               <TextField
-                label="Dirección"
+                label={t('formularioSitio.direccionLabel')}
                 name="direccion"
                 value={formik.values.direccion}
                 onChange={onChange}
@@ -91,6 +96,7 @@ const PaginaFormularioSitio = ({ sitio, onChange, onSave, error, isEditing, form
                 }}
                 InputProps={{
                   className: 'formulario-input', // Aplicar clase CSS
+                  autoComplete: 'off', // Desactivar autocompletado
                 }}
               />
             </Grid>
@@ -98,16 +104,16 @@ const PaginaFormularioSitio = ({ sitio, onChange, onSave, error, isEditing, form
             {/* Campo Usuario de Contacto */}
             <Grid item xs={12} sm={6}>
               <FormControl fullWidth margin="normal">
-                <InputLabel>Usuario de Contacto</InputLabel>
+                <InputLabel>{t('formularioSitio.usuarioContactoLabel')}</InputLabel>
                 <Select
                   name="usuarioContactoId"
                   value={formik.values.usuarioContactoId}
                   onChange={onChange}
-                  fullWidth
-                  InputProps={{
-                    className: 'formulario-input', // Aplicar clase CSS
-                  }}
                   error={formik.touched.usuarioContactoId && Boolean(formik.errors.usuarioContactoId)}
+                  inputProps={{
+                    className: 'formulario-input', // Aplicar clase CSS
+                    autoComplete: 'off', // Desactivar autocompletado
+                  }}
                 >
                   {usuarios.map(usuario => (
                     <MenuItem key={usuario.id} value={usuario.id}>
@@ -129,7 +135,7 @@ const PaginaFormularioSitio = ({ sitio, onChange, onSave, error, isEditing, form
               type="submit"
               className="formulario-boton" // Aplicar clase CSS
             >
-              {isEditing ? 'Actualizar Sitio' : 'Crear Sitio'}
+              {isEditing ? t('formularioSitio.botonActualizar') : t('formularioSitio.botonCrear')}
             </Button>
           </Box>
         </form>

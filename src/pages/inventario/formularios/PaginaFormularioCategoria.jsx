@@ -1,8 +1,11 @@
 import React from 'react';
 import { Box, Button, Grid, TextField, Typography } from '@mui/material';
 import '@/assets/styles/formularios.css'; // Importar el archivo CSS
+import { useTranslation } from 'react-i18next'; // Importar el hook de traducción
 
 const PaginaFormularioCategoria = ({ categoria, onChange, onSave, error, isEditing, formik }) => {
+  const { t } = useTranslation(); // Usar el hook de traducción
+
   return (
     <Box className="formulario-container">
       <Typography
@@ -12,7 +15,7 @@ const PaginaFormularioCategoria = ({ categoria, onChange, onSave, error, isEditi
         mb={1}
         textAlign="left"
       >
-        {isEditing ? 'Actualizar Categoría' : 'Crear Categoría'}
+        {isEditing ? t('formularioCategoria.actualizarTitulo') : t('formularioCategoria.crearTitulo')}
       </Typography>
 
       <Typography
@@ -22,12 +25,12 @@ const PaginaFormularioCategoria = ({ categoria, onChange, onSave, error, isEditi
         textAlign="left"
         color="textSecondary"
       >
-        Complete los siguientes campos para {isEditing ? 'actualizar la categoría' : 'crear una nueva categoría'}
+        {isEditing ? t('formularioCategoria.actualizarSubtitulo') : t('formularioCategoria.crearSubtitulo')}
       </Typography>
 
       {error ? (
         <Typography variant="h6" color="error" textAlign="center">
-          Error al cargar los datos de la categoría
+          {t('formularioCategoria.errorCargar')}
         </Typography>
       ) : (
         <form onSubmit={onSave}>
@@ -35,12 +38,13 @@ const PaginaFormularioCategoria = ({ categoria, onChange, onSave, error, isEditi
             {/* Campo Nombre */}
             <Grid item xs={12}>
               <TextField
-                label="Nombre"
+                label={t('formularioCategoria.nombreLabel')}
                 name="nombre"
                 value={formik.values.nombre}
                 onChange={onChange}
                 fullWidth
                 margin="normal"
+                autoComplete="off"  
                 error={formik.touched.nombre && Boolean(formik.errors.nombre)}
                 helperText={formik.touched.nombre && formik.errors.nombre}
                 InputLabelProps={{
@@ -56,13 +60,14 @@ const PaginaFormularioCategoria = ({ categoria, onChange, onSave, error, isEditi
             {/* Campo Descripción */}
             <Grid item xs={12}>
               <TextField
-                label="Descripción"
+                label={t('formularioCategoria.descripcionLabel')}
                 name="descripcion"
                 value={formik.values.descripcion}
                 onChange={onChange}
                 fullWidth
                 margin="normal"
                 rows={4}
+                autoComplete="off"  
                 error={formik.touched.descripcion && Boolean(formik.errors.descripcion)}
                 helperText={formik.touched.descripcion && formik.errors.descripcion}
                 InputLabelProps={{
@@ -74,7 +79,6 @@ const PaginaFormularioCategoria = ({ categoria, onChange, onSave, error, isEditi
                 }}
               />
             </Grid>
-            
           </Grid>
 
           <Box sx={{ display: 'flex', justifyContent: 'center', mt: 3 }}>
@@ -84,7 +88,7 @@ const PaginaFormularioCategoria = ({ categoria, onChange, onSave, error, isEditi
               type="submit"
               className="formulario-boton" // Aplicar clase CSS
             >
-              {isEditing ? 'Actualizar Categoría' : 'Crear Categoría'}
+              {isEditing ? t('formularioCategoria.botonActualizar') : t('formularioCategoria.botonCrear')}
             </Button>
           </Box>
         </form>

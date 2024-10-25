@@ -4,40 +4,56 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import PaginaUsuarios from '@/pages/configuracion/PaginaUsuarios';
 import '@/assets/styles/inventario/estilosInventario.css';
-import { URL } from '@/constants/url'; // Constante de la URL
-import useFetch from '@/hooks/useFetch'; // Importar el hook personalizado
+import { URL } from '@/constants/url'; 
+import useFetch from '@/hooks/useFetch'; 
+import { useTranslation } from 'react-i18next'; // Importar traducción
 
+/**
+ * Controlar la lógica de la página de usuarios, incluyendo la creación, actualización y desactivación de usuarios.
+ */
 const ContenedorUsuarios = () => {
   const [paginaActual, setPaginaActual] = useState(0);
-  const [pageSize, setPageSize] = useState(10); // Estado para manejar el tamaño de la página
-  const [usuarioSeleccionado, setUsuarioSeleccionado] = useState(null); // Usuario para mostrar en el modal
-  const [modalAbierto, setModalAbierto] = useState(false); // Controlar si el modal está abierto
+  const [pageSize, setPageSize] = useState(10);
+  const [usuarioSeleccionado, setUsuarioSeleccionado] = useState(null);
+  const [modalAbierto, setModalAbierto] = useState(false);
   const navigate = useNavigate();
+  const { t } = useTranslation(); // Usar hook de traducción
 
-  // Usamos el hook personalizado useFetch para obtener los datos de la API
+  // Obtener datos de usuarios desde la API con paginación
   const { data, loading, error } = useFetch(
     `${URL}api/v1/usuarios?page=${paginaActual}&size=${pageSize}`, 
     {}, 
     [paginaActual, pageSize]
   );
 
+  /**
+   * Navegar a la página de creación de un nuevo usuario.
+   */
   const manejarCrear = () => {
     navigate('/configuraciones/usuarios/crear');
   };
 
+  /**
+   * Navegar a la página de actualización de un usuario si tiene un ID válido.
+   * @param {object} usuario - El usuario seleccionado para actualizar.
+   */
   const manejarActualizar = (usuario) => {
     if (usuario && usuario.id) {
       navigate(`/configuraciones/usuarios/actualizar/${usuario.id}`);
     } else {
-      toast.error('No se puede actualizar el usuario porque no tiene un ID válido.');
+      // Mostrar mensaje de error si no hay un ID válido
+      toast.error(t('contenedorUsuarios.errorActualizar'));
     }
   };
 
+  /**
+   * Desactivar un usuario seleccionado y mostrar un mensaje de éxito.
+   * @param {object} usuario - El usuario seleccionado para desactivar.
+   */
   const manejarEliminar = (usuario) => {
-    toast.success(`Usuario ${usuario.nombre} desactivado correctamente`);
+    toast.success(t('contenedorUsuarios.usuarioDesactivado', { nombre: usuario.nombre }));
     if (data) {
       const usuariosFiltrados = data.data.content.filter(u => u.id !== usuario.id);
-      // Aquí podrías actualizar el estado local si decides gestionar los usuarios filtrados localmente.
     }
   };
 
@@ -46,14 +62,15 @@ const ContenedorUsuarios = () => {
     setUsuarioSeleccionado(null);
   };
 
+  // Definir las columnas de la tabla
   const columnas = [
-    { field: 'nombre', headerName: 'Nombre', flex: 2 },
-    { field: 'apellido', headerName: 'Apellido', flex: 2 },
-    { field: 'usuario', headerName: 'Usuario', flex: 2 },
-    { field: 'correo', headerName: 'Correo', flex: 3 },
-    { field: 'ultimo_acceso', headerName: 'Último Acceso', flex: 3 },
-    { field: 'activo', headerName: 'Estado', flex: 1 },
-    { field: 'acciones', headerName: 'Acciones', flex: 1, sortable: false },
+    { field: 'nombre', headerName: t('paginaUsuarios.columnaNombre'), flex: 2 },
+    { field: 'apellido', headerName: t('paginaUsuarios.columnaApellido'), flex: 2 },
+    { field: 'usuario', headerName: t('paginaUsuarios.columnaUsuario'), flex: 2 },
+    { field: 'correo', headerName: t('paginaUsuarios.columnaCorreo'), flex: 3 },
+    { field: 'ultimo_acceso', headerName: t('paginaUsuarios.columnaUltimoAcceso'), flex: 3 },
+    { field: 'activo', headerName: t('paginaUsuarios.columnaEstado'), flex: 1 },
+    { field: 'acciones', headerName: t('paginaUsuarios.columnaAcciones'), flex: 1, sortable: false },
   ];
 
   return (
@@ -67,8 +84,8 @@ const ContenedorUsuarios = () => {
         totalPaginas={data ? data.data.totalPages : 1}
         paginaActual={paginaActual}
         setPaginaActual={setPaginaActual}
-        pageSize={pageSize} // Pasar pageSize como prop
-        setPageSize={setPageSize} // Permitir cambiar el tamaño de página
+        pageSize={pageSize} 
+        setPageSize={setPageSize} 
         manejarActualizar={manejarActualizar}
         manejarEliminar={manejarEliminar}
       />

@@ -8,8 +8,11 @@ import PaginaFormularioDistribuidor from '@/pages/inventario/formularios/PaginaF
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { obtenerToken } from '@/utils/almacenamiento';
+import { useTranslation } from 'react-i18next'; // Hook de traducción
 
 const ContenedorFormularioDistribuidor = () => {
+  const { t } = useTranslation(); // Hook de traducción
+
   const [distribuidor, setDistribuidor] = useState({
     nombre: '',
     descripcion: '',
@@ -36,13 +39,13 @@ const ContenedorFormularioDistribuidor = () => {
     enableReinitialize: true, // Permite reinicializar valores iniciales al recibir nuevos datos
     validationSchema: Yup.object({
       nombre: Yup.string()
-        .required('El nombre es obligatorio')
-        .matches(/^[A-Za-z\s]+$/, 'El nombre solo puede contener letras y espacios')
-        .max(100, 'El nombre no puede exceder 100 caracteres'),
+        .required(t('contenedorFormularioDistribuidor.nombreObligatorio')) // Traducción con "contenedor"
+        .matches(/^[A-Za-z\s]+$/, t('contenedorFormularioDistribuidor.nombreInvalido')) // Traducción con "contenedor"
+        .max(100, t('contenedorFormularioDistribuidor.nombreMax')),
       descripcion: Yup.string()
-        .required('El nombre es obligatorio')
-        .matches(/^[A-Za-z\s]+$/, 'El nombre solo puede contener letras y espacios')
-        .max(500, 'La descripción no puede exceder 500 caracteres'),
+        .required(t('contenedorFormularioDistribuidor.descripcionObligatorio')) // Traducción con "contenedor"
+        .matches(/^[A-Za-z\s]+$/, t('contenedorFormularioDistribuidor.descripcionInvalido')) // Traducción con "contenedor"
+        .max(500, t('contenedorFormularioDistribuidor.descripcionMax')),
     }),
     onSubmit: async (values) => {
       const url = id ? `${URL}api/v1/distribuidores/${id}` : `${URL}api/v1/distribuidores`;
@@ -58,13 +61,13 @@ const ContenedorFormularioDistribuidor = () => {
         const result = await response.json();
         
         if (response.ok) {
-          toast.success(id ? 'Distribuidor actualizado con éxito' : 'Distribuidor creado con éxito');
+          toast.success(id ? t('contenedorFormularioDistribuidor.mensajeExitoActualizar') : t('contenedorFormularioDistribuidor.mensajeExitoCrear'));
           navigate('/inventario/distribuidores'); // Redireccionamos a la página de distribuidores
         } else {
-          toast.error(result.message || 'Error al guardar el distribuidor');
+          toast.error(result.message || t('contenedorFormularioDistribuidor.mensajeErrorGuardar'));
         }
       } catch (err) {
-        toast.error('Ocurrió un error al guardar el distribuidor');
+        toast.error(t('contenedorFormularioDistribuidor.mensajeErrorGuardar'));
       }
     },
   });

@@ -3,7 +3,11 @@ import TablaGenerica from '@/components/inventario/TablaGenerica';
 import Cargador from '@/components/Cargador';
 import MensajeError from '@/components/MensajeError';
 import '@/assets/styles/inventario/estilosInventario.css';
+import { useTranslation } from 'react-i18next'; // Importar hook de traducción
 
+/**
+ * Renderiza la página de unidades de medida con una tabla y opciones para crear, buscar, actualizar y eliminar unidades.
+ */
 const PaginaUnidades = ({
   columnas,
   datos,
@@ -18,18 +22,23 @@ const PaginaUnidades = ({
   manejarActualizar,
   manejarEliminar,
 }) => {
+  const { t } = useTranslation(); // Hook para traducción
+
   if (cargando) return <Cargador />;
   if (error) return <MensajeError mensaje={error.message} />;
 
   return (
     <div className="seccion-principal">
+      {/* Encabezado de la página de gestión de unidades de medida */}
       <div className="cabecera-inicio">
-        <h2 className="titulo-inicio">Gestión de Unidades de Medida</h2>
-        <p className="subtitulo-inicio">Administra las unidades de medida del sistema</p>
+        <h2 className="titulo-inicio">{t('paginaUnidades.titulo')}</h2>
+        <p className="subtitulo-inicio">{t('paginaUnidades.subtitulo')}</p>
       </div>
+
+      {/* Sección principal que contiene la tabla de unidades de medida */}
       <div className="seccion-inventario">
         <TablaGenerica
-          encabezado="Listado de unidades de medida registradas en el sistema"
+          encabezado={t('paginaUnidades.encabezadoTabla')}
           columnas={columnas}
           datos={datos}
           manejarCrear={manejarCrear}

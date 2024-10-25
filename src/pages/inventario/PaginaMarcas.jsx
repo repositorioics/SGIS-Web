@@ -1,10 +1,13 @@
 import React from 'react';
 import TablaGenerica from '@/components/inventario/TablaGenerica';
 import Cargador from '@/components/Cargador';
-// import TarjetaResumen from '@/components/inventario/TarjetaResumen';
 import MensajeError from '@/components/MensajeError';
 import '@/assets/styles/inventario/estilosInventario.css';
-// import { FaTags, FaCheckCircle, FaTimesCircle } from 'react-icons/fa'; 
+import { useTranslation } from 'react-i18next';
+
+/**
+ * Renderiza la página de marcas con una tabla y opciones para crear, buscar, actualizar y eliminar marcas.
+ */
 const PaginaMarcas = ({
   columnas,
   datos,
@@ -19,31 +22,30 @@ const PaginaMarcas = ({
   manejarActualizar,
   manejarEliminar,
 }) => {
+  const { t } = useTranslation(); // Hook para traducción
+
   if (cargando) return <Cargador />;
   if (error) return <MensajeError mensaje={error.message} />;
 
   return (
     <div className="seccion-principal">
+      {/* Encabezado de la página de gestión de marcas */}
       <div className="cabecera-inicio">
-        <h2 className="titulo-inicio">Gestión de Marcas</h2>
-        <p className="subtitulo-inicio">Administra las marcas disponibles en el inventario</p>
+        <h2 className="titulo-inicio">{t('paginaMarcas.titulo')}</h2>
+        <p className="subtitulo-inicio">{t('paginaMarcas.subtitulo')}</p>
       </div>
-      {/* <div className="contenedor-resumen">
-          <TarjetaResumen valor={datos?.length || 0} titulo="Total de Marcas" icono={<FaTags />} />
-          <TarjetaResumen valor={datos?.filter(i => i.activo).length || 0} titulo="Marcas Activas" icono={<FaCheckCircle />} />
-          <TarjetaResumen valor={datos?.filter(i => !i.activo).length || 0} titulo="Marcas Inactivas" icono={<FaTimesCircle />} />
-        </div> */}
+
       <div className="seccion-inventario">
         <TablaGenerica
-          encabezado="Listado de marcas registradas en el inventario"
+          encabezado={t('paginaMarcas.encabezadoTabla')}
           columnas={columnas}
           datos={datos}
           manejarCrear={manejarCrear}
           totalPaginas={totalPaginas}
           paginaActual={paginaActual}
           setPagina={setPaginaActual}
-          pageSize={pageSize} // Pasar el tamaño de la página
-          setPageSize={setPageSize} // Permitir cambiar el tamaño de la página
+          pageSize={pageSize}
+          setPageSize={setPageSize}
           manejarActualizar={manejarActualizar}
           manejarEliminar={manejarEliminar}
         />

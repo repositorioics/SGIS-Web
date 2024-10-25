@@ -1,8 +1,11 @@
 import React from 'react';
 import { Box, Button, Grid, TextField, Typography } from '@mui/material';
 import '@/assets/styles/formularios.css'; // Importar el archivo CSS
+import { useTranslation } from 'react-i18next'; // Hook de traducción
 
 const PaginaFormularioUnidad = ({ unidad, onChange, onSave, error, isEditing, formik }) => {
+  const { t } = useTranslation(); // Hook de traducción
+
   return (
     <Box className="formulario-container">
       <Typography
@@ -12,7 +15,7 @@ const PaginaFormularioUnidad = ({ unidad, onChange, onSave, error, isEditing, fo
         mb={1}
         textAlign="left"
       >
-        {isEditing ? 'Actualizar Unidad de Medida' : 'Crear Unidad de Medida'}
+        {isEditing ? t('formularioUnidad.actualizarTitulo') : t('formularioUnidad.crearTitulo')}
       </Typography>
 
       <Typography
@@ -22,12 +25,12 @@ const PaginaFormularioUnidad = ({ unidad, onChange, onSave, error, isEditing, fo
         textAlign="left"
         color="textSecondary"
       >
-        Complete los siguientes campos para {isEditing ? 'actualizar la unidad de medida' : 'crear una nueva unidad de medida'}
+        {isEditing ? t('formularioUnidad.actualizarSubtitulo') : t('formularioUnidad.crearSubtitulo')}
       </Typography>
 
       {error ? (
         <Typography variant="h6" color="error" textAlign="center">
-          Error al cargar los datos de la unidad
+          {t('formularioUnidad.errorCargar')}
         </Typography>
       ) : (
         <form onSubmit={onSave}>
@@ -35,7 +38,7 @@ const PaginaFormularioUnidad = ({ unidad, onChange, onSave, error, isEditing, fo
             {/* Campo Nombre */}
             <Grid item xs={12} sm={6}>
               <TextField
-                label="Nombre"
+                label={t('formularioUnidad.nombreLabel')}
                 name="nombre"
                 value={formik.values.nombre}
                 onChange={onChange}
@@ -49,6 +52,7 @@ const PaginaFormularioUnidad = ({ unidad, onChange, onSave, error, isEditing, fo
                 }}
                 InputProps={{
                   className: 'formulario-input', // Aplicar clase CSS
+                  autoComplete: 'off', // Desactivar autocompletado
                 }}
               />
             </Grid>
@@ -56,7 +60,7 @@ const PaginaFormularioUnidad = ({ unidad, onChange, onSave, error, isEditing, fo
             {/* Campo Abreviatura */}
             <Grid item xs={12} sm={6}>
               <TextField
-                label="Abreviatura"
+                label={t('formularioUnidad.abreviaturaLabel')}
                 name="abreviatura"
                 value={formik.values.abreviatura}
                 onChange={onChange}
@@ -70,6 +74,7 @@ const PaginaFormularioUnidad = ({ unidad, onChange, onSave, error, isEditing, fo
                 }}
                 InputProps={{
                   className: 'formulario-input', // Aplicar clase CSS
+                  autoComplete: 'off', // Desactivar autocompletado
                 }}
               />
             </Grid>
@@ -82,7 +87,7 @@ const PaginaFormularioUnidad = ({ unidad, onChange, onSave, error, isEditing, fo
               type="submit"
               className="formulario-boton" // Aplicar clase CSS
             >
-              {isEditing ? 'Actualizar Unidad' : 'Crear Unidad'}
+              {isEditing ? t('formularioUnidad.botonActualizar') : t('formularioUnidad.botonCrear')}
             </Button>
           </Box>
         </form>

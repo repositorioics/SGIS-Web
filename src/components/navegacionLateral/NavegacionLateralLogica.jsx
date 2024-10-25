@@ -3,27 +3,31 @@ import { useDispatch } from 'react-redux';
 import { cerrarSesion } from '@/context/slices/autenticacionSlice';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import useFetch from '@/hooks/useFetch'; // Hook personalizado
+import useFetch from '@/hooks/useFetch';
 import 'react-toastify/dist/ReactToastify.css';
-import { URL } from '@/constants/url'; // La URL de la API
+import { URL } from '@/constants/url';
+import { useTranslation } from 'react-i18next';
 
 export const useNavegacionLateralLogica = () => {
   const [menuActivo, setMenuActivo] = useState(null);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { t } = useTranslation(); // Translation hook
 
-  // Usamos el hook personalizado `useFetch` para obtener los menús desde la API
+  // Fetch menus using custom hook `useFetch`
   const { data: menuItems, loading, error } = useFetch(`${URL}api/v1/menus/obtener`, {}, []);
- 
-  console.info("Fetch desde el componente: useNavegacionLateralLogica");
 
+  //console.info(menuItems);
+
+  // Toggle menu active state
   const manejarClickMenu = (indiceMenu) => {
     setMenuActivo(menuActivo === indiceMenu ? null : indiceMenu);
   };
 
+  // Handle logout action
   const manejarCerrarSesion = () => {
     dispatch(cerrarSesion());
-    toast.success('Sesión Cerrada');
+    toast.success(t('navegacion.cerrar_sesion')); // Use translation for "Session closed"
     navigate('/inicio-sesion', { replace: true });
   };
 
@@ -31,7 +35,7 @@ export const useNavegacionLateralLogica = () => {
     menuActivo,
     manejarClickMenu,
     manejarCerrarSesion,
-    menuItems, // Devolvemos los menús obtenidos
+    menuItems, // Return fetched menus
     loading,
     error,
   };

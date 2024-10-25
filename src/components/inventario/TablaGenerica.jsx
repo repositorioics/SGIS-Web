@@ -3,8 +3,12 @@ import { DataGrid, GridToolbar } from '@mui/x-data-grid';
 import { Button, IconButton } from '@mui/material';
 import { FaEdit, FaTrash } from 'react-icons/fa';
 import { green, red, blue } from '@mui/material/colors';
+import { useTranslation } from 'react-i18next'; // Importar para la traducción
 import '@/assets/styles/inventario/estilosInventario.css';
 
+/**
+ * Renderizar una tabla genérica con soporte de paginación, ordenación, y acciones de edición y eliminación.
+ */
 const TablaGenerica = ({ 
   columnas, 
   encabezado, 
@@ -13,25 +17,33 @@ const TablaGenerica = ({
   totalPaginas, 
   paginaActual, 
   setPagina, 
-  pageSize, // Recibe el tamaño de página
-  setPageSize, // Permite cambiar el tamaño de página
+  pageSize, 
+  setPageSize, 
   manejarActualizar, 
   manejarEliminar,
   mostrarCrear = true 
 }) => {
+  const { t } = useTranslation(); // Hook para manejar traducción
 
+  /**
+   * Manejar el cambio en el tamaño de la página.
+   * @param {number} newPageSize - El nuevo tamaño de página seleccionado por el usuario.
+   */
   const manejarCambioPageSize = (newPageSize) => {
-    setPageSize(newPageSize); // Actualiza el tamaño de página dinámicamente
+    setPageSize(newPageSize); // Actualizar dinámicamente el tamaño de la página
   };
 
-  // Personalización de columnas para incluir las acciones y estados
+  /**
+   * Configurar las columnas, añadiendo personalización a las columnas de estado y acciones.
+   */
   const columnasMejoradas = columnas.map((columna) => {
+    // Personalizar la columna de 'activo' para mostrar 'Activo' o 'Inactivo' con colores
     if (columna.field === 'activo') {
       return {
         ...columna,
         flex: 1.5,
         renderCell: (params) => {
-          const isActive = params.value ? 'Activo' : 'Inactivo';
+          const isActive = params.value ? t('tablaGenerica.activo') : t('tablaGenerica.inactivo'); // Traducir 'Activo' e 'Inactivo'
           const color = params.value ? '#50C878' : '#FE6F5E';
           const backgroundColor = params.value ? green[100] : red[100];
 
@@ -45,7 +57,7 @@ const TablaGenerica = ({
               display: 'inline-block',
               textAlign: 'center',
               width: '70px',
-              fontSize:'12px'
+              fontSize: '12px'
             }}>
               {isActive}
             </span>
@@ -54,6 +66,7 @@ const TablaGenerica = ({
       };
     }
 
+    // Añadir acciones de edición y eliminación en la columna 'acciones'
     if (columna.field === 'acciones') {
       return {
         ...columna,
@@ -77,23 +90,24 @@ const TablaGenerica = ({
       };
     }
 
-    return { ...columna, flex: columna.flex || 1 };
+    return { ...columna, flex: columna.flex || 1 }; // Asegurar que las demás columnas mantengan sus propiedades
   });
 
   return (
     <div style={{ height: 'calc(100vh - 150px)', width: '100%' }}>
+      {/* Renderizar el componente DataGrid con las columnas mejoradas y el resto de las propiedades */}
       <DataGrid
-        rows={datos}
-        columns={columnasMejoradas}
-        pageSize={pageSize} // Tamaño de página dinámico
-        onPageSizeChange={manejarCambioPageSize} // Manejar el cambio del tamaño de página
+        rows={datos} // Filas de datos a mostrar en la tabla
+        columns={columnasMejoradas} // Columnas con configuraciones personalizadas
+        pageSize={pageSize} // Tamaño de la página, definido dinámicamente
+        onPageSizeChange={manejarCambioPageSize} // Manejar cambio del tamaño de la página
         rowsPerPageOptions={[10, 20, 30]} // Opciones de filas por página
-        rowCount={totalPaginas * pageSize} // Total de registros, basado en el tamaño de página
-        pagination
-        paginationMode="server" // Habilita la paginación en modo servidor
-        onPageChange={(newPage) => setPagina(newPage)}
-        page={paginaActual} // Página actual
-        sortingMode="server" // Modo de ordenación del servidor
+        rowCount={totalPaginas * pageSize} // Total de registros basado en el tamaño de página
+        pagination // Habilitar la paginación
+        paginationMode="server" // Activar la paginación en el servidor
+        onPageChange={(newPage) => setPagina(newPage)} // Manejar cambio de página
+        page={paginaActual} // Establecer la página actual
+        sortingMode="server" // Habilitar ordenación en el servidor
         disableSelectionOnClick
         headerHeight={45}
         rowHeight={45}
@@ -107,7 +121,7 @@ const TablaGenerica = ({
                   <Button
                     variant="contained"
                     color="primary"
-                    onClick={manejarCrear}
+                    onClick={manejarCrear} // Navegar a la página de creación
                     style={{
                       backgroundColor: '#1976d2',
                       color: '#fff',
@@ -117,7 +131,7 @@ const TablaGenerica = ({
                       marginLeft: 'auto'
                     }}
                   >
-                    Crear Nuevo
+                    {t('tablaGenerica.crearNuevo')} {/* Traducir "Crear Nuevo" */}
                   </Button>
                 )}
               </div>

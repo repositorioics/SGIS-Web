@@ -1,23 +1,26 @@
 import React from 'react';
 import DisAutenticacion from '@/layout/DisAutenticacion';
 import FormularioGeneral from '@/components/FormularioGeneral';
+import { useTranslation } from 'react-i18next';
 
 const PaginaRestablecerContrasena = ({ onSubmit }) => {
+  const { t } = useTranslation();
+
   return (
     <DisAutenticacion
-      titulo="Secure Your Account"
-      descripcion="For security reasons, create a new password that you haven't used before. Make sure your password is strong and easy to remember."
+      titulo={t('restablecer_contrasena.titulo')}
+      descripcion={t('restablecer_contrasena.descripcion')}
       imagenUrl="https://i.ibb.co/jhKYvQk/reset-Password.png"
-      imagenAlt="Restablecer contraseña"
+      imagenAlt={t('restablecer_contrasena.imagenAlt')}
     >
-      <h2 className='dis-autenticacion__titulo'>Reset Your Password</h2>
-      <p className='dis-autenticacion__descripcion'>Enter your new password below to regain access to your account.</p>
+      <h2 className='dis-autenticacion__titulo'>{t('restablecer_contrasena.introducir_nueva_contrasena')}</h2>
+      <p className='dis-autenticacion__descripcion'>{t('restablecer_contrasena.instruccion_contrasena')}</p>
       <FormularioGeneral
         campos={[
-          { name: 'password', type: 'password', placeholder: 'Nueva contraseña' },
-          { name: 'confirmPassword', type: 'password', placeholder: 'Confirmar contraseña' }
+          { name: 'password', type: 'password', placeholder: t('restablecer_contrasena.nueva_contrasena_placeholder') },
+          { name: 'confirmPassword', type: 'password', placeholder: t('restablecer_contrasena.confirmar_contrasena_placeholder') }
         ]}
-        textoBoton="Restablecer contraseña"
+        textoBoton={t('restablecer_contrasena.restablecer_contrasena')}
         onSubmit={onSubmit}
         mostrarEnlace={false}
       />

@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -9,15 +8,19 @@ import PaginaFormularioPresentacion from '@/pages/inventario/formularios/PaginaF
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { obtenerToken } from '@/utils/almacenamiento';
+import { useTranslation } from 'react-i18next'; // Hook de traducción
 
 const ContenedorFormularioPresentacion = () => {
+  const { t } = useTranslation(); // Inicializa el hook de traducción
+
+  // Inicializa el estado para gestionar los datos de la presentación con valores por defecto
   const [presentacion, setPresentacion] = useState({
     nombre: '',
     descripcion: '',
     unidadesPresentacion: 0,
   });
   
-  const { id } = useParams(); // Obtenemos el ID de los parámetros de la URL para saber si es edición
+  const { id } = useParams(); // Obtiene el ID de los parámetros de la URL para verificar si es modo edición
   const navigate = useNavigate();
   
   // Hook personalizado para obtener los datos de la presentación si estamos en modo edición
@@ -28,24 +31,26 @@ const ContenedorFormularioPresentacion = () => {
   );
 
   useEffect(() => {
+    // Actualiza el estado con los datos de la presentación si están disponibles (modo edición)
     if (presentacionData) {
-      setPresentacion(presentacionData.data); // Si estamos editando, cargamos los datos de la presentación
+      setPresentacion(presentacionData.data);
     }
   }, [presentacionData]);
 
+  // Configuración del formulario con Formik: valores iniciales, esquema de validación y manejador de envío
   const formik = useFormik({
     initialValues: presentacion,
-    enableReinitialize: true, // Permite reinicializar valores iniciales al recibir nuevos datos
+    enableReinitialize: true, // Permite reinicializar los valores iniciales cuando se cargan nuevos datos
     validationSchema: Yup.object({
       nombre: Yup.string()
-        .required('El nombre es obligatorio')
-        .max(100, 'El nombre no puede exceder 100 caracteres'),
+        .required(t('contenedorFormularioPresentacion.nombreObligatorio')) // Etiqueta traducida para campo obligatorio de nombre
+        .max(100, t('contenedorFormularioPresentacion.nombreMax')), // Etiqueta traducida para límite de caracteres
       descripcion: Yup.string()
-        .required('La descripción es obligatoria')
-        .max(200, 'La descripción no puede exceder 200 caracteres'),
+        .required(t('contenedorFormularioPresentacion.descripcionObligatorio')) // Etiqueta traducida para campo obligatorio de descripción
+        .max(200, t('contenedorFormularioPresentacion.descripcionMax')), // Etiqueta traducida para límite de caracteres
       unidadesPresentacion: Yup.number()
-        .required('Las unidades por presentación son obligatorias')
-        .min(1, 'Debe tener al menos 1 unidad'),
+        .required(t('contenedorFormularioPresentacion.unidadesPresentacionObligatorio')) // Etiqueta traducida para campo obligatorio de unidades
+        .min(1, t('contenedorFormularioPresentacion.unidadesPresentacionMin')), // Etiqueta traducida para unidades mínimas
     }),
     onSubmit: async (values) => {
       const url = id ? `${URL}api/v1/presentaciones/${id}` : `${URL}api/v1/presentaciones`;
@@ -61,18 +66,21 @@ const ContenedorFormularioPresentacion = () => {
         const result = await response.json();
         
         if (response.ok) {
-          toast.success(id ? 'Presentación actualizada con éxito' : 'Presentación creada con éxito');
-          navigate('/inventario/presentaciones'); // Redireccionamos a la página de presentaciones
+          // Muestra mensaje de éxito según sea creación o actualización
+          toast.success(id ? t('contenedorFormularioPresentacion.mensajeExitoActualizar') : t('contenedorFormularioPresentacion.mensajeExitoCrear'));
+          navigate('/inventario/presentaciones'); // Redirige a la página de presentaciones
         } else {
-          toast.error(result.message || 'Error al guardar la presentación');
+          // Muestra un mensaje de error si falla el guardado
+          toast.error(result.message || t('contenedorFormularioPresentacion.mensajeErrorGuardar'));
         }
       } catch (err) {
-        toast.error('Ocurrió un error al guardar la presentación');
+        toast.error(t('contenedorFormularioPresentacion.mensajeErrorGuardar')); // Mensaje de error genérico
       }
     },
   });
 
   const handleChange = (e) => {
+    // Maneja los cambios en los campos del formulario
     formik.handleChange(e);
   };
 
@@ -82,8 +90,8 @@ const ContenedorFormularioPresentacion = () => {
       error={error}
       onChange={handleChange}
       onSave={formik.handleSubmit}
-      isEditing={!!id} // Usamos esto para diferenciar entre crear o actualizar
-      formik={formik} // Pasar el objeto formik completo para acceso a propiedades
+      isEditing={!!id} // Determina si está en modo crear o editar
+      formik={formik} // Pasa el objeto formik para acceso extendido
     />
   );
 };

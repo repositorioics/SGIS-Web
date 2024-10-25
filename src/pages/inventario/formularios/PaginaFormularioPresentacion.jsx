@@ -1,8 +1,11 @@
 import React from 'react';
 import { Box, Button, Grid, TextField, Typography } from '@mui/material';
 import '@/assets/styles/formularios.css'; // Importar el archivo CSS
+import { useTranslation } from 'react-i18next'; // Hook de traducción
 
 const PaginaFormularioPresentacion = ({ presentacion, onChange, onSave, error, isEditing, formik }) => {
+  const { t } = useTranslation(); // Usar hook de traducción
+
   return (
     <Box className="formulario-container">
       <Typography
@@ -12,7 +15,7 @@ const PaginaFormularioPresentacion = ({ presentacion, onChange, onSave, error, i
         mb={1}
         textAlign="left"
       >
-        {isEditing ? 'Actualizar Presentación' : 'Crear Presentación'}
+        {isEditing ? t('formularioPresentacion.actualizarTitulo') : t('formularioPresentacion.crearTitulo')}
       </Typography>
 
       <Typography
@@ -22,12 +25,12 @@ const PaginaFormularioPresentacion = ({ presentacion, onChange, onSave, error, i
         textAlign="left"
         color="textSecondary"
       >
-        Complete los siguientes campos para {isEditing ? 'actualizar la presentación' : 'crear una nueva presentación'}
+        {isEditing ? t('formularioPresentacion.actualizarSubtitulo') : t('formularioPresentacion.crearSubtitulo')}
       </Typography>
 
       {error ? (
         <Typography variant="h6" color="error" textAlign="center">
-          Error al cargar los datos de la presentación
+          {t('formularioPresentacion.errorCargar')}
         </Typography>
       ) : (
         <form onSubmit={onSave}>
@@ -35,7 +38,7 @@ const PaginaFormularioPresentacion = ({ presentacion, onChange, onSave, error, i
             {/* Campo Nombre */}
             <Grid item xs={12} sm={6}>
               <TextField
-                label="Nombre"
+                label={t('formularioPresentacion.nombreLabel')}
                 name="nombre"
                 value={formik.values.nombre}
                 onChange={onChange}
@@ -49,6 +52,7 @@ const PaginaFormularioPresentacion = ({ presentacion, onChange, onSave, error, i
                 }}
                 InputProps={{
                   className: 'formulario-input', // Aplicar clase CSS
+                  autoComplete: 'off', // Desactivar autocompletado
                 }}
               />
             </Grid>
@@ -56,7 +60,7 @@ const PaginaFormularioPresentacion = ({ presentacion, onChange, onSave, error, i
             {/* Campo Descripción */}
             <Grid item xs={12} sm={6}>
               <TextField
-                label="Descripción"
+                label={t('formularioPresentacion.descripcionLabel')}
                 name="descripcion"
                 value={formik.values.descripcion}
                 onChange={onChange}
@@ -70,6 +74,7 @@ const PaginaFormularioPresentacion = ({ presentacion, onChange, onSave, error, i
                 }}
                 InputProps={{
                   className: 'formulario-input', // Aplicar clase CSS
+                  autoComplete: 'off', // Desactivar autocompletado
                 }}
               />
             </Grid>
@@ -77,7 +82,7 @@ const PaginaFormularioPresentacion = ({ presentacion, onChange, onSave, error, i
             {/* Campo Unidades por Presentación */}
             <Grid item xs={12} sm={6}>
               <TextField
-                label="Unidades por Presentación"
+                label={t('formularioPresentacion.unidadesPresentacionLabel')}
                 name="unidadesPresentacion"
                 type="number"
                 value={formik.values.unidadesPresentacion}
@@ -92,6 +97,7 @@ const PaginaFormularioPresentacion = ({ presentacion, onChange, onSave, error, i
                 }}
                 InputProps={{
                   className: 'formulario-input', // Aplicar clase CSS
+                  autoComplete: 'off', // Desactivar autocompletado
                 }}
               />
             </Grid>
@@ -104,7 +110,7 @@ const PaginaFormularioPresentacion = ({ presentacion, onChange, onSave, error, i
               type="submit"
               className="formulario-boton" // Aplicar clase CSS
             >
-              {isEditing ? 'Actualizar' : 'Crear Presentación'}
+              {isEditing ? t('formularioPresentacion.botonActualizar') : t('formularioPresentacion.botonCrear')}
             </Button>
           </Box>
         </form>

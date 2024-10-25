@@ -5,12 +5,13 @@ import 'react-toastify/dist/ReactToastify.css';
 import useFetch from '@/hooks/useFetch'; // Importa tu hook de fetch personalizado
 import { URL } from '@/constants/url'; // Constante de la URL
 import PaginaFormularioBodega from '@/pages/inventario/formularios/PaginaFormularioBodega'; // Importamos el componente del formulario
-
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { obtenerToken } from '@/utils/almacenamiento';
+import { useTranslation } from 'react-i18next'; // Importar el hook de traducción
 
 const ContenedorFormularioBodega = () => {
+  const { t } = useTranslation(); // Hook de traducción
   const [bodega, setBodega] = useState({
     nombre: '',
     descripcion: '',
@@ -44,50 +45,50 @@ const ContenedorFormularioBodega = () => {
     enableReinitialize: true, // Permite reinicializar valores iniciales al recibir nuevos datos
     validationSchema: Yup.object({
       nombre: Yup.string()
-        .required('El nombre es obligatorio')
-        .matches(/^[A-Za-z\s]+$/, 'El nombre solo puede contener letras y espacios')
-        .max(100, 'El nombre no puede exceder 100 caracteres'),
+        .required(t('contenedorFormularioBodega.nombreObligatorio')) // Usamos la traducción para el mensaje de validación
+        .matches(/^[A-Za-z\s]+$/, t('contenedorFormularioBodega.nombreInvalido')) // Traducción para la validación de formato
+        .max(100, t('contenedorFormularioBodega.nombreMax')),
       descripcion: Yup.string()
-        .required('El nombre es obligatorio')
-        .matches(/^[A-Za-z\s]+$/, 'El nombre solo puede contener letras y espacios')
-        .max(200, 'La descripción no puede exceder 200 caracteres'),
+        .required(t('contenedorFormularioBodega.descripcionObligatorio'))
+        .matches(/^[A-Za-z\s]+$/, t('contenedorFormularioBodega.descripcionInvalido'))
+        .max(200, t('contenedorFormularioBodega.descripcionMax')),
       direccion: Yup.string()
-        .required('La dirección es obligatoria')
-        .max(200, 'La dirección no puede exceder 200 caracteres'),
+        .required(t('contenedorFormularioBodega.direccionObligatoria'))
+        .max(200, t('contenedorFormularioBodega.direccionMax')),
       sitioId: Yup.number().nullable(),
       donanteId: Yup.number().nullable(),
     }),
     onSubmit: async (values) => {
       // Validar que solo uno de los IDs esté presente
       if (!values.sitioId && !values.donanteId) {
-        toast.error('Debe seleccionar un sitio o un donante.');
+        toast.error(t('contenedorFormularioBodega.errorSitioODonante')); // Mensaje de error traducido
         return;
       }
       if (values.sitioId && values.donanteId) {
-        toast.error('No se puede seleccionar un sitio y un donante al mismo tiempo.');
+        toast.error(t('contenedorFormularioBodega.errorAmbosSeleccionados')); // Mensaje de error traducido
         return;
       }
 
-      const url = id ? `${URL}api/v1/bodegas/${id}` : `${URL}api/v1/bodegas`; // Cambié a la interpolación correcta
+      const url = id ? `${URL}api/v1/bodegas/${id}` : `${URL}api/v1/bodegas`;
       const method = id ? 'PUT' : 'POST';
 
       try {
         const token = obtenerToken('accessToken');
         const response = await fetch(url, {
           method,
-          headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` }, // Corregí la interpolación en 'Authorization'
+          headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
           body: JSON.stringify(values),
         });
         const result = await response.json();
 
         if (response.ok) {
-          toast.success(id ? 'Bodega actualizada con éxito' : 'Bodega creada con éxito');
+          toast.success(id ? t('contenedorFormularioBodega.mensajeExitoActualizar') : t('contenedorFormularioBodega.mensajeExitoCrear')); // Mensajes de éxito traducidos
           navigate('/inventario/bodegas'); // Redireccionamos a la página de bodegas
         } else {
-          toast.error(result.message || 'Error al guardar la bodega');
+          toast.error(result.message || t('contenedorFormularioBodega.mensajeErrorGuardar')); // Mensaje de error traducido
         }
       } catch (err) {
-        toast.error('Ocurrió un error al guardar la bodega');
+        toast.error(t('contenedorFormularioBodega.mensajeErrorGuardar')); // Mensaje de error traducido
       }
     },
   });

@@ -4,57 +4,73 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import PaginaSolicitudes from '@/pages/solicitudes/PaginaSolicitudes';
 import '@/assets/styles/inventario/estilosInventario.css';
-import { URL } from '@/constants/url'; // Constante de la URL
-import useFetch from '@/hooks/useFetch'; // Importar el hook personalizado
+import { URL } from '@/constants/url'; 
+import useFetch from '@/hooks/useFetch';
+import { useTranslation } from 'react-i18next'; // Importar hook de traducción
 
+/**
+ * Controlar la lógica de la página de solicitudes, como la creación, actualización y desactivación.
+ */
 const ContenedorSolicitudes = () => {
   const [paginaActual, setPaginaActual] = useState(0);
-  const [pageSize, setPageSize] = useState(10); // Estado para manejar el tamaño de la página
+  const [pageSize, setPageSize] = useState(10); 
   const navigate = useNavigate();
+  const { t } = useTranslation(); // Usar hook de traducción
 
-  // Usamos el hook personalizado useFetch para obtener los datos de la API
+  // Obtener datos de solicitudes desde la API con paginación
   const { data, loading, error } = useFetch(
     `${URL}api/v1/solicitudes?page=${paginaActual}&size=${pageSize}`, 
     {}, 
     [paginaActual, pageSize]
   );
 
+  /**
+   * Navegar a la página de creación de una nueva solicitud.
+   */
   const manejarCrear = () => {
     navigate('/solicitudes/solicitudes/crear');
   };
 
+  /**
+   * Navegar a la página de actualización de una solicitud si tiene un ID válido.
+   * @param {object} solicitud - La solicitud seleccionada para actualizar.
+   */
   const manejarActualizar = (solicitud) => {
     if (solicitud && solicitud.id) {
       navigate(`/solicitudes/actualizar/${solicitud.id}`);
     } else {
-      toast.error('No se puede editar la solicitud porque no tiene un ID válido.');
+      toast.error(t('contenedorSolicitudes.errorActualizar')); // Mensaje traducido
     }
   };
 
+  /**
+   * Desactivar una solicitud seleccionada y mostrar un mensaje de éxito.
+   * @param {object} solicitud - La solicitud seleccionada para eliminar.
+   */
   const manejarEliminar = async (solicitud) => {
     try {
       const response = await fetch(`${URL}api/v1/solicitudes/${solicitud.id}`, {
         method: 'DELETE',
       });
       if (response.ok) {
-        toast.success(`Solicitud ${solicitud.numeroSolicitud} desactivada correctamente`);
-        // Refrescar la página después de eliminar
-        navigate(0);
+        toast.success(t('contenedorSolicitudes.solicitudDesactivada', { numero: solicitud.numeroSolicitud }));
+        navigate(0); // Refrescar la página después de eliminar
       } else {
-        toast.error('Error al desactivar la solicitud');
+        toast.error(t('contenedorSolicitudes.errorDesactivar'));
       }
     } catch (error) {
-      toast.error('Error al desactivar la solicitud');
+      toast.error(t('contenedorSolicitudes.errorDesactivar'));
     }
   };
 
+  // Definir las columnas de la tabla
   const columnas = [
-    { field: 'numeroSolicitud', headerName: 'Número Solicitud', flex: 2 },
-    { field: 'estado', headerName: 'Estado', flex: 1 },
-    { field: 'observaciones', headerName: 'Observaciones', flex: 3 },
+    { field: 'numeroSolicitud', headerName: t('paginaSolicitudes.columnaNumeroSolicitud'), flex: 2 },
+    { field: 'estado', headerName: t('paginaSolicitudes.columnaEstado'), flex: 1 },
+    { field: 'observaciones', headerName: t('paginaSolicitudes.columnaObservaciones'), flex: 3 },
     {
       field: 'fechaCreacion',
-      headerName: 'Fecha de Creación',
+      headerName: t('paginaSolicitudes.columnaFechaCreacion'),
       flex: 2,
       renderCell: (params) => (
         <span>{new Date(params.value).toLocaleDateString()}</span>
@@ -62,13 +78,13 @@ const ContenedorSolicitudes = () => {
     },
     {
       field: 'acciones', 
-      headerName: 'Acciones', 
+      headerName: t('paginaSolicitudes.columnaAcciones'), 
       flex: 1, 
       sortable: false,
       renderCell: (params) => (
         <>
-          <button onClick={() => manejarActualizar(params.row)}>Editar</button>
-          <button onClick={() => manejarEliminar(params.row)}>Eliminar</button>
+          <button onClick={() => manejarActualizar(params.row)}>{t('paginaSolicitudes.botonEditar')}</button>
+          <button onClick={() => manejarEliminar(params.row)}>{t('paginaSolicitudes.botonEliminar')}</button>
         </>
       ),
     }
@@ -85,8 +101,8 @@ const ContenedorSolicitudes = () => {
         totalPaginas={data ? data.data.totalPages : 1}
         paginaActual={paginaActual}
         setPaginaActual={setPaginaActual}
-        pageSize={pageSize} // Pasar pageSize como prop
-        setPageSize={setPageSize} // Permitir cambiar el tamaño de página
+        pageSize={pageSize} 
+        setPageSize={setPageSize} 
         manejarActualizar={manejarActualizar}
         manejarEliminar={manejarEliminar}
       />

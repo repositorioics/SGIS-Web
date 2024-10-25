@@ -8,8 +8,10 @@ import PaginaFormularioCategoria from '@/pages/inventario/formularios/PaginaForm
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { obtenerToken } from '@/utils/almacenamiento';
+import { useTranslation } from 'react-i18next'; // Hook de traducción
 
 const ContenedorFormularioCategoria = () => {
+  const { t } = useTranslation(); // Hook de traducción
   const [categoria, setCategoria] = useState({
     nombre: '',
     descripcion: '',
@@ -36,13 +38,13 @@ const ContenedorFormularioCategoria = () => {
     enableReinitialize: true, // Permite reinicializar valores iniciales al recibir nuevos datos
     validationSchema: Yup.object({
       nombre: Yup.string()
-        .required('El nombre es obligatorio')
-        .matches(/^[A-Za-z\s]+$/, 'El nombre solo puede contener letras y espacios')
-        .max(100, 'El nombre no puede exceder 100 caracteres'),
+        .required(t('formularioCategoriaContenedor.nombreObligatorio')) // Usamos la traducción
+        .matches(/^[A-Za-z\s]+$/, t('formularioCategoriaContenedor.nombreInvalido')) // Traducción para la validación de formato
+        .max(100, t('formularioCategoriaContenedor.nombreMax')),
       descripcion: Yup.string()
-        .required('El nombre es obligatorio')
-        .matches(/^[A-Za-z\s]+$/, 'El nombre solo puede contener letras y espacios')
-        .max(500, 'La descripción no puede exceder 500 caracteres'),
+        .required(t('formularioCategoriaContenedor.descripcionObligatorio'))
+        .matches(/^[A-Za-z\s]+$/, t('formularioCategoriaContenedor.descripcionInvalido'))
+        .max(500, t('formularioCategoriaContenedor.descripcionMax')),
     }),
     onSubmit: async (values) => {
       const url = id ? `${URL}api/v1/categorias/${id}` : `${URL}api/v1/categorias`;
@@ -58,13 +60,13 @@ const ContenedorFormularioCategoria = () => {
         const result = await response.json();
         
         if (response.ok) {
-          toast.success(id ? 'Categoría actualizada con éxito' : 'Categoría creada con éxito');
+          toast.success(id ? t('formularioCategoriaContenedor.mensajeExitoActualizar') : t('formularioCategoriaContenedor.mensajeExitoCrear'));
           navigate('/inventario/categorias'); // Redireccionamos a la página de categorías
         } else {
-          toast.error(result.message || 'Error al guardar la categoría');
+          toast.error(result.message || t('formularioCategoriaContenedor.mensajeErrorGuardar'));
         }
       } catch (err) {
-        toast.error('Ocurrió un error al guardar la categoría');
+        toast.error(t('formularioCategoriaContenedor.mensajeErrorGuardar'));
       }
     },
   });

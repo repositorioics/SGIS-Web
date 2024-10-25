@@ -1,8 +1,11 @@
 import React from 'react';
 import { Box, Button, Grid, TextField, Typography } from '@mui/material';
 import '@/assets/styles/formularios.css'; // Importar el archivo CSS
+import { useTranslation } from 'react-i18next'; // Importar el hook de traducción
 
 const PaginaFormularioDistribuidor = ({ distribuidor, onChange, onSave, error, isEditing, formik }) => {
+  const { t } = useTranslation(); // Hook de traducción
+
   return (
     <Box className="formulario-container">
       <Typography
@@ -12,7 +15,7 @@ const PaginaFormularioDistribuidor = ({ distribuidor, onChange, onSave, error, i
         mb={1}
         textAlign="left"
       >
-        {isEditing ? 'Actualizar Distribuidor' : 'Crear Distribuidor'}
+        {isEditing ? t('formularioDistribuidor.actualizarTitulo') : t('formularioDistribuidor.crearTitulo')}
       </Typography>
 
       <Typography
@@ -22,12 +25,12 @@ const PaginaFormularioDistribuidor = ({ distribuidor, onChange, onSave, error, i
         textAlign="left"
         color="textSecondary"
       >
-        Complete los siguientes campos para {isEditing ? 'actualizar el distribuidor' : 'crear un nuevo distribuidor'}
+        {isEditing ? t('formularioDistribuidor.actualizarSubtitulo') : t('formularioDistribuidor.crearSubtitulo')}
       </Typography>
 
       {error ? (
         <Typography variant="h6" color="error" textAlign="center">
-          Error al cargar los datos del distribuidor
+          {t('formularioDistribuidor.errorCargar')}
         </Typography>
       ) : (
         <form onSubmit={onSave}>
@@ -35,12 +38,13 @@ const PaginaFormularioDistribuidor = ({ distribuidor, onChange, onSave, error, i
             {/* Campo Nombre */}
             <Grid item xs={12}>
               <TextField
-                label="Nombre"
+                label={t('formularioDistribuidor.nombreLabel')}
                 name="nombre"
                 value={formik.values.nombre}
                 onChange={onChange}
                 fullWidth
                 margin="normal"
+                autoComplete="off"  
                 error={formik.touched.nombre && Boolean(formik.errors.nombre)}
                 helperText={formik.touched.nombre && formik.errors.nombre}
                 InputLabelProps={{
@@ -56,13 +60,14 @@ const PaginaFormularioDistribuidor = ({ distribuidor, onChange, onSave, error, i
             {/* Campo Descripción */}
             <Grid item xs={12}>
               <TextField
-                label="Descripción"
+                label={t('formularioDistribuidor.descripcionLabel')}
                 name="descripcion"
                 value={formik.values.descripcion}
                 onChange={onChange}
                 fullWidth
                 margin="normal"
                 rows={4}
+                autoComplete="off"  
                 error={formik.touched.descripcion && Boolean(formik.errors.descripcion)}
                 helperText={formik.touched.descripcion && formik.errors.descripcion}
                 InputLabelProps={{
@@ -83,7 +88,7 @@ const PaginaFormularioDistribuidor = ({ distribuidor, onChange, onSave, error, i
               type="submit"
               className="formulario-boton" // Aplicar clase CSS
             >
-              {isEditing ? 'Actualizar Distribuidor' : 'Crear Distribuidor'}
+              {isEditing ? t('formularioDistribuidor.botonActualizar') : t('formularioDistribuidor.botonCrear')}
             </Button>
           </Box>
         </form>

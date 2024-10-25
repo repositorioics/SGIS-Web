@@ -3,7 +3,11 @@ import TablaGenerica from '@/components/inventario/TablaGenerica';
 import Cargador from '@/components/Cargador';
 import MensajeError from '@/components/MensajeError';
 import '@/assets/styles/inventario/estilosInventario.css';
+import { useTranslation } from 'react-i18next'; // Hook para traducciones
 
+/**
+ * Renderiza la página de inventario con una tabla y opciones para crear, actualizar y eliminar inventarios.
+ */
 const PaginaInventario = ({
   columnas,
   datos,
@@ -18,18 +22,20 @@ const PaginaInventario = ({
   manejarActualizar,
   manejarEliminar,
 }) => {
+  const { t } = useTranslation(); // Usar hook de traducción
+
   if (cargando) return <Cargador />;
   if (error) return <MensajeError mensaje={error.message} />;
 
   return (
     <div className="seccion-principal">
       <div className="cabecera-inicio">
-        <h2 className="titulo-inicio">Gestión de Inventario</h2>
-        <p className="subtitulo-inicio">Administra los insumos en el inventario y sus existencias</p>
+        <h2 className="titulo-inicio">{t('paginaInventario.titulo')}</h2>
+        <p className="subtitulo-inicio">{t('paginaInventario.subtitulo')}</p>
       </div>
       <div className="seccion-inventario">
         <TablaGenerica
-          encabezado="Listado de inventarios registrados"
+          encabezado={t('paginaInventario.encabezadoTabla')}
           columnas={columnas}
           datos={datos}
           manejarCrear={manejarCrear}

@@ -6,11 +6,16 @@ import PaginaPresentaciones from '@/pages/inventario/PaginaPresentaciones';
 import '@/assets/styles/inventario/estilosInventario.css';
 import { URL } from '@/constants/url';
 import useFetch from '@/hooks/useFetch';
+import { useTranslation } from 'react-i18next'; // Importar hook de traducción
 
+/**
+ * Controla la lógica de la página de presentaciones, incluyendo la creación, actualización y eliminación.
+ */
 const ContenedorPresentaciones = () => {
   const [paginaActual, setPaginaActual] = useState(0);
   const [pageSize, setPageSize] = useState(10);
   const navigate = useNavigate();
+  const { t } = useTranslation(); // Hook de traducción
 
   // Hook personalizado para obtener los datos de las presentaciones
   const { data, loading, error } = useFetch(
@@ -27,43 +32,44 @@ const ContenedorPresentaciones = () => {
     if (presentacion && presentacion.id) {
       navigate(`/inventario/presentacion/actualizar/${presentacion.id}`);
     } else {
-      toast.error('No se puede actualizar la presentación porque no tiene un ID válido.');
+      toast.error(t('contenedorPresentaciones.errorActualizar'));
     }
   };
 
   const manejarEliminar = (presentacion) => {
-    toast.success(`Presentación ${presentacion.nombre} desactivada correctamente`);
+    toast.success(t('contenedorPresentaciones.presentacionEliminada', { nombre: presentacion.nombre }));
     if (data) {
-      const presentacionesFiltradas = data.data.content.filter(p => p.id !== presentacion.id);
-      // Aquí podrías manejar la actualización de datos si es necesario
     }
   };
 
   const columnas = [
-    { field: 'nombre', headerName: 'Nombre', flex: 2 },
-    { field: 'descripcion', headerName: 'Descripción', flex: 3 },
-    { field: 'unidadesPresentacion', headerName: 'Unidades por Presentación', flex: 2 },
-    { field: 'activo', headerName: 'Estado', flex: 1 },
-    { field: 'acciones', headerName: 'Acciones', flex: 1, sortable: false },
+    { field: 'nombre', headerName: t('contenedorPresentaciones.nombre'), flex: 2 },
+    { field: 'descripcion', headerName: t('contenedorPresentaciones.descripcion'), flex: 3 },
+    { field: 'unidadesPresentacion', headerName: t('contenedorPresentaciones.unidadesPresentacion'), flex: 2 },
+    { field: 'activo', headerName: t('contenedorPresentaciones.estado'), flex: 1, renderCell: (params) => (
+        <span className={`estado-label ${params.value ? 'activo' : 'inactivo'}`}>
+          {params.value ? t('contenedorPresentaciones.activo') : t('contenedorPresentaciones.inactivo')}
+        </span>
+      ),
+    },
+    { field: 'acciones', headerName: t('contenedorPresentaciones.acciones'), flex: 1, sortable: false },
   ];
 
   return (
-    <>
-      <PaginaPresentaciones
-        columnas={columnas}
-        datos={data ? data.data.content : []}
-        cargando={loading}
-        error={error}
-        manejarCrear={manejarCrear}
-        totalPaginas={data ? data.data.totalPages : 1}
-        paginaActual={paginaActual}
-        setPaginaActual={setPaginaActual}
-        pageSize={pageSize}
-        setPageSize={setPageSize}
-        manejarActualizar={manejarActualizar}
-        manejarEliminar={manejarEliminar}
-      />
-    </>
+    <PaginaPresentaciones
+      columnas={columnas}
+      datos={data ? data.data.content : []}
+      cargando={loading}
+      error={error}
+      manejarCrear={manejarCrear}
+      totalPaginas={data ? data.data.totalPages : 1}
+      paginaActual={paginaActual}
+      setPaginaActual={setPaginaActual}
+      pageSize={pageSize}
+      setPageSize={setPageSize}
+      manejarActualizar={manejarActualizar}
+      manejarEliminar={manejarEliminar}
+    />
   );
 };
 

@@ -10,10 +10,18 @@ import rutas from '@/config/rutas.jsx';
 import { cerrarSesion } from '@/context/slices/autenticacionSlice';
 import { useDispatch } from 'react-redux';
 import {useEffect} from 'react'
+import { useSelector } from 'react-redux';
+import i18n from '@/config/i18n';  // Asegúrate de importar correctamente i18n
 
 function App() {
   
   const dispatch = useDispatch();
+
+  const language = useSelector((state) => state.idioma.language);
+
+  useEffect(() => {
+    i18n.changeLanguage(language);  // Cambia el idioma dinámicamente
+  }, [language]);
 
   useEffect(() => {
     // Listener para limpiar el estado solo cuando el navegador se cierra o se cierra la pestaña
@@ -29,7 +37,7 @@ function App() {
       window.removeEventListener('unload', handleUnload); // Solo para limpiar el listener si el componente se desmonta
     };
   }, [dispatch]);
-
+  
   const rutasSinLayout = [
     "/inicio-sesion",
     "/ingresar-email",

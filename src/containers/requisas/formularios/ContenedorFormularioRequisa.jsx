@@ -6,7 +6,11 @@ import PaginaFormularioRequisa from '@/pages/requisas/formularios/PaginaFormular
 import { URL } from '@/constants/url';
 import useFetch from '@/hooks/useFetch';
 import { obtenerToken } from '@/utils/almacenamiento';
+import { useTranslation } from 'react-i18next';
 
+/**
+ * Controla la lógica del formulario de requisa, incluyendo la creación y manejo de detalles.
+ */
 const ContenedorFormularioRequisa = () => {
   const [requisa, setRequisa] = useState({
     sitioId: '',
@@ -24,16 +28,17 @@ const ContenedorFormularioRequisa = () => {
 
   const [detalles, setDetalles] = useState([]);
   const navigate = useNavigate();
+  const { t } = useTranslation(); // Usar traducción
 
-  // Valor alto para intentar traer la mayor cantidad de datos
+  // Definir el tamaño máximo para las peticiones de datos
   const maxSize = 1000;
 
-  // Peticiones para cargar los datos necesarios
+  // Cargar los datos necesarios para sitios, insumos y presentaciones
   const { data: sitiosData, error: sitiosError } = useFetch(`${URL}api/v1/sitios?page=0&size=${maxSize}`, {}, []);
   const { data: insumosData, error: insumosError } = useFetch(`${URL}api/v1/insumos?page=0&size=${maxSize}`, {}, []);
   const { data: presentacionesData, error: presentacionesError } = useFetch(`${URL}api/v1/presentaciones?page=0&size=${maxSize}`, {}, []);
 
-  // Función para manejar los cambios en los inputs del formulario
+  // Manejar cambios en los inputs del formulario de requisa
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setRequisa({
@@ -42,7 +47,7 @@ const ContenedorFormularioRequisa = () => {
     });
   };
 
-  // Función para manejar los cambios en los detalles
+  // Manejar cambios en los detalles de la requisa
   const handleDetalleChange = (e) => {
     const { name, value } = e.target;
     setDetalleActual({
@@ -51,7 +56,7 @@ const ContenedorFormularioRequisa = () => {
     });
   };
 
-  // Función para agregar un detalle a la lista
+  // Agregar un detalle a la lista de detalles
   const agregarDetalle = () => {
     setDetalles([...detalles, detalleActual]);
     setDetalleActual({
@@ -62,7 +67,7 @@ const ContenedorFormularioRequisa = () => {
     });
   };
 
-  // Función para manejar la creación de la requisa
+  // Manejar la creación de una nueva requisa
   const manejarCrear = async () => {
     const nuevaRequisa = { ...requisa, detallesRequisa: detalles };
 
@@ -74,19 +79,19 @@ const ContenedorFormularioRequisa = () => {
         body: JSON.stringify(nuevaRequisa),
       });
       if (response.ok) {
-        toast.success('Requisa creada con éxito');
+        toast.success(t('formularioRequisa.exitoCrear'));
         navigate('/requisas');
       } else {
-        toast.error('Error al crear la requisa');
+        toast.error(t('formularioRequisa.errorCrear'));
       }
     } catch (error) {
-      toast.error('Error al crear la requisa');
+      toast.error(t('formularioRequisa.errorGeneral'));
     }
   };
 
-  // Verifica si hay errores en las peticiones
+  // Verificar errores en la carga de datos
   if (sitiosError || insumosError || presentacionesError) {
-    return <p>Error al cargar los datos</p>;
+    return <p>{t('formularioRequisa.errorCargarDatos')}</p>;
   }
 
   return (

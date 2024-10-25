@@ -1,10 +1,17 @@
 import React from 'react';
 import { Box, Button, Grid, TextField, Typography } from '@mui/material';
+import { useTranslation } from 'react-i18next'; // Hook de traducción
 import '@/assets/styles/formularios.css'; // Importar el archivo CSS
 
+/**
+ * Formulario para crear o actualizar una marca.
+ */
 const PaginaFormularioMarca = ({ marca, onChange, onSave, error, isEditing, formik }) => {
+  const { t } = useTranslation(); // Usar el hook de traducción
+
   return (
     <Box className="formulario-container">
+      {/* Título del formulario basado en si es edición o creación */}
       <Typography
         component="h1"
         className="formulario-titulo"
@@ -12,9 +19,10 @@ const PaginaFormularioMarca = ({ marca, onChange, onSave, error, isEditing, form
         mb={1}
         textAlign="left"
       >
-        {isEditing ? 'Actualizar Marca' : 'Crear Marca'}
+        {isEditing ? t('formularioMarca.actualizarTitulo') : t('formularioMarca.crearTitulo')}
       </Typography>
 
+      {/* Subtítulo del formulario */}
       <Typography
         className="formulario-subtitulo"
         variant="subtitle1"
@@ -22,12 +30,13 @@ const PaginaFormularioMarca = ({ marca, onChange, onSave, error, isEditing, form
         textAlign="left"
         color="textSecondary"
       >
-        Complete los siguientes campos para {isEditing ? 'actualizar la marca' : 'crear una nueva marca'}
+        {isEditing ? t('formularioMarca.actualizarSubtitulo') : t('formularioMarca.crearSubtitulo')}
       </Typography>
 
+      {/* Mensaje de error en caso de haber problemas al cargar los datos */}
       {error ? (
         <Typography variant="h6" color="error" textAlign="center">
-          Error al cargar los datos de la marca
+          {t('formularioMarca.errorCargar')}
         </Typography>
       ) : (
         <form onSubmit={onSave}>
@@ -35,11 +44,12 @@ const PaginaFormularioMarca = ({ marca, onChange, onSave, error, isEditing, form
             {/* Campo Nombre */}
             <Grid item xs={12}>
               <TextField
-                label="Nombre"
+                label={t('formularioMarca.nombreLabel')}
                 name="nombre"
                 value={formik.values.nombre}
                 onChange={onChange}
                 fullWidth
+                autoComplete="off"  
                 margin="normal"
                 error={formik.touched.nombre && Boolean(formik.errors.nombre)}
                 helperText={formik.touched.nombre && formik.errors.nombre}
@@ -49,6 +59,7 @@ const PaginaFormularioMarca = ({ marca, onChange, onSave, error, isEditing, form
                 }}
                 InputProps={{
                   className: 'formulario-input', // Aplicar clase CSS
+                  autoComplete: 'off' // Desactivar autocompletado
                 }}
               />
             </Grid>
@@ -56,11 +67,12 @@ const PaginaFormularioMarca = ({ marca, onChange, onSave, error, isEditing, form
             {/* Campo Descripción */}
             <Grid item xs={12}>
               <TextField
-                label="Descripción"
+                label={t('formularioMarca.descripcionLabel')}
                 name="descripcion"
                 value={formik.values.descripcion}
                 onChange={onChange}
                 fullWidth
+                autoComplete="off"  
                 margin="normal"
                 rows={4}
                 error={formik.touched.descripcion && Boolean(formik.errors.descripcion)}
@@ -71,11 +83,13 @@ const PaginaFormularioMarca = ({ marca, onChange, onSave, error, isEditing, form
                 }}
                 InputProps={{
                   className: 'formulario-input', // Aplicar clase CSS
+                  autoComplete: 'off' // Desactivar autocompletado
                 }}
               />
             </Grid>
           </Grid>
 
+          {/* Botón de enviar para crear o actualizar la marca */}
           <Box sx={{ display: 'flex', justifyContent: 'center', mt: 3 }}>
             <Button
               variant="contained"
@@ -83,7 +97,7 @@ const PaginaFormularioMarca = ({ marca, onChange, onSave, error, isEditing, form
               type="submit"
               className="formulario-boton" // Aplicar clase CSS
             >
-              {isEditing ? 'Actualizar Marca' : 'Crear Marca'}
+              {isEditing ? t('formularioMarca.botonActualizar') : t('formularioMarca.botonCrear')}
             </Button>
           </Box>
         </form>
