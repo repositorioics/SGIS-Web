@@ -6,7 +6,7 @@ import '@/assets/styles/inventario/estilosInventario.css';
 import { useTranslation } from 'react-i18next';
 
 /**
- * Renderizar la página de pedidos con una tabla de pedidos y opciones para crear, actualizar y eliminar.
+ * Renderizar la página de pedidos con una tabla de pedidos y opción para ver más detalles.
  */
 const PaginaPedidos = ({
   columnas,
@@ -20,8 +20,7 @@ const PaginaPedidos = ({
   setPaginaActual,
   pageSize,
   setPageSize,
-  manejarActualizar,
-  manejarEliminar,
+  manejarVerMas, // Nueva función para manejar la acción de "Ver Más"
 }) => {
   const { t } = useTranslation();
 
@@ -40,16 +39,16 @@ const PaginaPedidos = ({
           encabezado={t('paginaPedidos.encabezadoTabla')}
           columnas={columnas}
           datos={datos}
-          manejarCrear={manejarCrear}
-          manejarBusqueda={manejarBusqueda}
+          //manejarCrear={manejarCrear}
+          //manejarBusqueda={manejarBusqueda}
           totalPaginas={totalPaginas}
           paginaActual={paginaActual}
           setPagina={setPaginaActual}
           pageSize={pageSize}
           mostrarCrear={false}
           setPageSize={setPageSize}
-          manejarActualizar={manejarActualizar}
-          manejarEliminar={manejarEliminar}
+          manejarVerMas={manejarVerMas} // Propiedad para "Ver Más"
+          mostrarSoloVerMas={true} // Muestra solo el botón "Ver Más"
         />
       </div>
     </div>

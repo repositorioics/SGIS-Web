@@ -17,7 +17,7 @@ const PaginaLogin = ({ onSubmit }) => {
       <p className='dis-autenticacion__descripcion'>{t('login.instruccion_login')}</p>
       <FormularioGeneral
         campos={[
-          { name: 'usuario', type: 'text', placeholder: t('login.correo_placeholder') }, 
+          { name: 'usuario', type: 'text', placeholder: t('login.usuario_placeholder') }, 
           { name: 'password', type: 'password', placeholder: t('login.contrasena_placeholder') }
         ]}
         textoBoton={t('login.iniciar_sesion')}

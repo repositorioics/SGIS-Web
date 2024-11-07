@@ -294,6 +294,10 @@ const rutas = [
     path: '/solicitudes/pedidos/crear/:id',
     element: <RutaProtegida><ContenedorFormularioPedido /></RutaProtegida>,
   },
+  {
+    path: '/solicitudes/pedidos/vermas/:id',
+    element: <RutaProtegida><ContenedorFormularioPedido /></RutaProtegida>,
+  },
 
   // Rutas del módulo de Requisas y Entregas
   {

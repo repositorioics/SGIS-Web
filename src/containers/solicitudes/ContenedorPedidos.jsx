@@ -7,48 +7,26 @@ import '@/assets/styles/inventario/estilosInventario.css';
 import { URL } from '@/constants/url';
 import useFetch from '@/hooks/useFetch';
 import { useTranslation } from 'react-i18next';
+import { FaEye } from 'react-icons/fa';
 
-/**
- * Controlar la lógica de la página de pedidos, como la creación, actualización y desactivación.
- */
 const ContenedorPedidos = () => {
   const [paginaActual, setPaginaActual] = useState(0);
   const [pageSize, setPageSize] = useState(10);
   const navigate = useNavigate();
   const { t } = useTranslation();
 
-  // Obtener datos de pedidos desde la API con paginación
   const { data: pedidosData, loading: pedidosLoading, error: pedidosError } = useFetch(
     `${URL}api/v1/pedidos?page=${paginaActual}&size=${pageSize}`,
     {},
     [paginaActual, pageSize]
   );
 
-  const manejarCrear = () => {
-    navigate('/pedidos/crear');
-  };
+  const manejarVerMas = (pedido) => {
 
-  const manejarActualizar = (pedido) => {
     if (pedido && pedido.id) {
-      navigate(`/pedidos/actualizar/${pedido.id}`);
+      navigate(`/solicitudes/pedidos/vermas/${pedido.id}`);
     } else {
-      toast.error(t('contenedorPedidos.errorActualizar'));
-    }
-  };
-
-  const manejarEliminar = async (pedido) => {
-    try {
-      const response = await fetch(`${URL}api/v1/pedidos/${pedido.id}`, {
-        method: 'DELETE',
-      });
-      if (response.ok) {
-        toast.success(t('contenedorPedidos.pedidoDesactivado', { codigo: pedido.codigoPedido }));
-        navigate(0);
-      } else {
-        toast.error(t('contenedorPedidos.errorDesactivar'));
-      }
-    } catch (error) {
-      toast.error(t('contenedorPedidos.errorDesactivar'));
+      toast.error(t('contenedorPedidos.errorVerMas'));
     }
   };
 
@@ -62,9 +40,7 @@ const ContenedorPedidos = () => {
       field: 'fechaCreacion',
       headerName: t('paginaPedidos.columnaFechaCreacion'),
       flex: 2,
-      renderCell: (params) => (
-        <span>{new Date(params.value).toLocaleDateString()}</span>
-      ),
+      renderCell: (params) => <span>{new Date(params.value).toLocaleDateString()}</span>,
     },
     {
       field: 'acciones',
@@ -72,28 +48,26 @@ const ContenedorPedidos = () => {
       flex: 1,
       sortable: false,
       renderCell: (params) => (
-        <>
-          <button onClick={() => manejarActualizar(params.row)}>{t('paginaPedidos.botonEditar')}</button>
-          <button onClick={() => manejarEliminar(params.row)}>{t('paginaPedidos.botonEliminar')}</button>
-        </>
+        <button onClick={() => manejarVerMas(params.row)}>
+          <FaEye style={{ marginRight: '5px' }} />
+          {t('paginaPedidos.botonVerMas')}
+        </button>
       ),
-    }
+    },
   ];
 
   return (
     <PaginaPedidos
       columnas={columnas}
-      datos={pedidosData?.data?.content || []} // Usamos los datos directamente del response
+      datos={pedidosData?.data?.content || []}
       cargando={pedidosLoading}
       error={pedidosError}
-      manejarCrear={manejarCrear}
+      manejarVerMas={manejarVerMas} // Se pasa manejarVerMas
       totalPaginas={pedidosData?.data?.totalPages || 1}
       paginaActual={paginaActual}
       setPaginaActual={setPaginaActual}
       pageSize={pageSize}
       setPageSize={setPageSize}
-      manejarActualizar={manejarActualizar}
-      manejarEliminar={manejarEliminar}
     />
   );
 };

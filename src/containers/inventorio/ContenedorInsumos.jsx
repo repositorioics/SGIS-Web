@@ -16,16 +16,19 @@ const ContenedorInsumos = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
 
+  // Fetch de los datos de insumos
   const { data, loading, error } = useFetch(
-    `${URL}api/v1/insumos?page=${paginaActual}&size=${pageSize}`, 
-    {}, 
+    `${URL}api/v1/insumos?page=${paginaActual}&size=${pageSize}`,
+    {},
     [paginaActual, pageSize]
   );
 
+  // Función para manejar la creación de insumos
   const manejarCrear = () => {
     navigate('/inventario/insumos/crear');
   };
 
+  // Función para manejar la actualización de un insumo
   const manejarActualizar = (insumo) => {
     if (insumo && insumo.id) {
       navigate(`/inventario/insumos/actualizar/${insumo.id}`);
@@ -34,6 +37,7 @@ const ContenedorInsumos = () => {
     }
   };
 
+  // Función para manejar la eliminación de un insumo
   const manejarEliminar = (insumo) => {
     if (insumo && insumo.nombre) {
       toast.success(t('contenedorInsumos.insumoEliminado', { nombre: insumo.nombre }));
@@ -42,9 +46,11 @@ const ContenedorInsumos = () => {
     }
   };
 
+  // Definición de las columnas de la tabla
   const columnas = [
     { field: 'nombre', headerName: t('contenedorInsumos.nombre'), flex: 2 },
     { field: 'categoriaNombre', headerName: t('contenedorInsumos.categoria'), flex: 2 },
+    { field: 'unidadMedidaNombre', headerName: t('contenedorInsumos.unidadMedida'), flex: 2 },
     { 
       field: 'activo', 
       headerName: t('contenedorInsumos.estado'), 
@@ -69,7 +75,15 @@ const ContenedorInsumos = () => {
     },
   ];
 
-  const datosValidos = data && data.data && Array.isArray(data.data.content) ? data.data.content : [];
+  // Transformación de los datos obtenidos
+  const datosValidos = data?.data?.content.map((insumo) => ({
+    id: insumo.id,
+    nombre: insumo.nombre,
+    descripcion: insumo.descripcion,
+    categoriaNombre: insumo.categoria?.nombre || 'N/A',
+    unidadMedidaNombre: insumo.unidadMedida?.nombre || 'N/A', // Añadir nombre de unidad de medida
+    activo: insumo.activo
+  })) || [];
 
   return (
     <PaginaInsumos

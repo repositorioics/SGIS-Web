@@ -36,7 +36,7 @@ const obtenerValor = (obj, path, textoEjemplo) => {
  * @param {Function} onUpdateDetail - Función para manejar la actualización de los valores de clasificación y observación.
  * @param {boolean} seleccionMultiple - Define si se muestra la selección múltiple (checkboxes) o el botón de eliminar.
  */
-const TablaDetalles = ({ detalles = [], columns, handleRemoveDetail, onSelectRow, onUpdateDetail, seleccionMultiple = false }) => {
+const TablaDetalles = ({ detalles = [], columns = [], handleRemoveDetail, onSelectRow, onUpdateDetail, seleccionMultiple = false }) => {
   const { t } = useTranslation();
 
   return (
@@ -44,11 +44,11 @@ const TablaDetalles = ({ detalles = [], columns, handleRemoveDetail, onSelectRow
       <Table aria-label="Detalles de la solicitud">
         <TableHead>
           <TableRow>
-            {seleccionMultiple && <TableCell>{t("acciones.seleccionar")}</TableCell>}
+            {seleccionMultiple && <TableCell>{t("accionesTable.seleccionar")}</TableCell>}
             {columns.map((col, index) => (
               <TableCell key={index}>{t(col.header)}</TableCell>
             ))}
-            {!seleccionMultiple && <TableCell>{t("acciones.eliminar")}</TableCell>}
+            {!seleccionMultiple && <TableCell>{t("accionesTable.eliminar")}</TableCell>}
           </TableRow>
         </TableHead>
         <TableBody>

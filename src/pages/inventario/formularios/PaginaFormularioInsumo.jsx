@@ -102,20 +102,27 @@ const PaginaFormularioInsumo = ({
           />
         </Grid>
 
+        <Grid item xs={12} sm={6}>
+          <CustomSelect
+            label={t("formularioInsumo.presentacionesLabel")}
+            name="presentaciones"
+            value={insumo.presentaciones} // Asegúrate de que Formik maneje este valor como un array
+            onChange={onInputChange}
+            options={presentaciones.map((presentacion) => ({
+              id: presentacion.id,
+              nombre: presentacion.nombre,
+            }))}
+            multiple={true} // Activar selección múltiple
+            error={touched.presentaciones && Boolean(errors.presentaciones)}
+            helperText={touched.presentaciones && errors.presentaciones}
+          />
+        </Grid>
+
+
         {/* Sección para agregar marcas y códigos */}
         <Grid item xs={12}>
           <CustomTypography variant="h6" className="formulario-titulo" mt={2}>
             {t("formularioInsumo.seccionMarcas")}
-          </CustomTypography>
-
-          <CustomTypography
-            variant="subtitle1"
-            color="textSecondary"
-            className="formulario-subtitulo"
-            mb={3}
-            textAlign="left"
-          >
-            {t("formularioInsumo.seccionMarcasSubtitulo")}
           </CustomTypography>
 
           <Grid container spacing={2} alignItems="center">
@@ -126,8 +133,6 @@ const PaginaFormularioInsumo = ({
                 value={insumo.marcaId || ''}
                 onChange={onInputChange}
                 options={marcas.map((m) => ({ id: m.id, nombre: m.nombre }))}
-                error={touched.marcaId && Boolean(errors.marcaId)}
-                helperText={touched.marcaId && errors.marcaId}
               />
             </Grid>
             <Grid item xs={12} sm={4}>
@@ -136,8 +141,6 @@ const PaginaFormularioInsumo = ({
                 name="codigoMarca"
                 value={insumo.codigoMarca || ''}
                 onChange={onInputChange}
-                error={touched.codigoMarca && Boolean(errors.codigoMarca)}
-                helperText={touched.codigoMarca && errors.codigoMarca}
               />
             </Grid>
             <Grid item xs={12} sm={4}>
@@ -165,16 +168,6 @@ const PaginaFormularioInsumo = ({
             {t("formularioInsumo.seccionDistribuidores")}
           </CustomTypography>
 
-          <CustomTypography
-            variant="subtitle1"
-            color="textSecondary"
-            className="formulario-subtitulo"
-            mb={3}
-            textAlign="left"
-          >
-            {t("formularioInsumo.seccionDistribuidoresSubtitulo")}
-          </CustomTypography>
-
           <Grid container spacing={2} alignItems="center">
             <Grid item xs={12} sm={4}>
               <CustomSelect
@@ -183,8 +176,6 @@ const PaginaFormularioInsumo = ({
                 value={insumo.distribuidorId || ''}
                 onChange={onInputChange}
                 options={distribuidores.map((d) => ({ id: d.id, nombre: d.nombre }))}
-                error={touched.distribuidorId && Boolean(errors.distribuidorId)}
-                helperText={touched.distribuidorId && errors.distribuidorId}
               />
             </Grid>
             <Grid item xs={12} sm={4}>
@@ -193,8 +184,6 @@ const PaginaFormularioInsumo = ({
                 name="codigoDistribuidor"
                 value={insumo.codigoDistribuidor || ''}
                 onChange={onInputChange}
-                error={touched.codigoDistribuidor && Boolean(errors.codigoDistribuidor)}
-                helperText={touched.codigoDistribuidor && errors.codigoDistribuidor}
               />
             </Grid>
             <Grid item xs={12} sm={4}>

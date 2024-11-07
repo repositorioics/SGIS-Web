@@ -1,3 +1,4 @@
+// ContenedorNotificaciones.jsx
 import React, { useState, useEffect } from 'react';
 import PaginaNotificaciones from '@/pages/configuracion/PaginaNotificaciones';
 import { URL } from '@/constants/url';
@@ -10,7 +11,10 @@ const ContenedorNotificaciones = () => {
   const { data: response, loading, error } = useFetch(`${URL}api/v1/notificacionesusuario`);
   const [noLeidas, setNoLeidas] = useState([]);
 
-  const notificaciones = response?.data || []; // Accede al array de notificaciones
+  let notificaciones = response?.data || []; // Accede al array de notificaciones
+
+  // Ordenar las notificaciones por fechaNotificacion de manera descendente
+  notificaciones = notificaciones.sort((a, b) => new Date(b.fechaNotificacion) - new Date(a.fechaNotificacion));
 
   useEffect(() => {
     if (Array.isArray(notificaciones)) {

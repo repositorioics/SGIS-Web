@@ -7,8 +7,6 @@ import useFetch from '@/hooks/useFetch';
 import { obtenerToken } from '@/utils/almacenamiento';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
-import * as Yup from 'yup';
-import { useFormik } from 'formik';
 
 /**
  * Controla la lógica del formulario de requisa, incluyendo la creación y manejo de detalles.
@@ -18,146 +16,87 @@ const ContenedorFormularioRequisa = () => {
   const navigate = useNavigate();
   const username = useSelector((state) => state.autenticacion.usuario);
 
-  const [usuarioNombre, setUsuarioNombre] = useState('');
-  const [codigoUnico, setCodigoUnico] = useState('');
-  const [detalles, setDetalles] = useState([]);
+  const [requisa, setRequisa] = useState({
+    sitioId: '',
+    creadoPor: username,
+    observaciones: '',
+    detalles: []
+  });
+
   const [detalleActual, setDetalleActual] = useState({
     insumoId: '',
     presentacionId: '',
-    cantidadPresentacionesSolicitada: 0,
-    observacion: '',
+    marcaId: '',
+    cantidadPresentacionesSolicitada: 1,
+    observacion: ''
   });
-  const [detalleErrors, setDetalleErrors] = useState({});
-  const [detalleTouched, setDetalleTouched] = useState({});
-  const [insumoIdSeleccionado, setInsumoIdSeleccionado] = useState(null);
 
-  const maxSize = 1000;
+  const [detalles, setDetalles] = useState([]);
+  const [codigoUnico, setCodigoUnico] = useState('');
+  const [selectedRows, setSelectedRows] = useState([]);
+  const [filteredPresentaciones, setFilteredPresentaciones] = useState([]);
+  const [filteredMarcas, setFilteredMarcas] = useState([]);
 
-  // Obtener los datos necesarios para los selectores y los valores predeterminados
-  const { data: sitiosData } = useFetch(`${URL}api/v1/sitios?page=0&size=${maxSize}`, {}, []);
-  const { data: insumosData } = useFetch(`${URL}api/v1/insumos/activos?page=0&size=${maxSize}`, {}, []);
-  const { data: usuarioData } = useFetch(username ? `${URL}api/v1/usuarios/username/${username}` : null, {}, [username]);
-  const { data: detalleInsumoData } = useFetch(insumoIdSeleccionado ? `${URL}api/v1/insumos/${insumoIdSeleccionado}/detalle` : null, {}, [insumoIdSeleccionado]);
+  const pageSize = 1000;
+
+  const { data: codigoRequisaData } = useFetch(`${URL}api/v1/requisas/proximo-numero-requisa`, {}, []);
+  const { data: sitiosData } = useFetch(`${URL}api/v1/sitios?page=0&size=${pageSize}`, {}, []);
+  const { data: insumosData } = useFetch(`${URL}api/v1/insumos?page=0&size=${pageSize}`, {}, []);
+  
+  useEffect(() => {
+    if (codigoRequisaData?.data) setCodigoUnico(codigoRequisaData.data);
+  }, [codigoRequisaData]);
 
   useEffect(() => {
-    if (usuarioData?.data) setUsuarioNombre(`${usuarioData.data.nombre} ${usuarioData.data.apellido}`);
-  }, [usuarioData]);
-
-  useEffect(() => {
-    if (detalleInsumoData?.data && insumoIdSeleccionado) {
-      setDetalleActual((prevDetalle) => ({
-        ...prevDetalle,
-        unidadMedida: detalleInsumoData.data.unidadMedida?.nombre || '',
-        categoria: detalleInsumoData.data.categoria?.nombre || '',
-      }));
+    const insumoSeleccionado = insumosData?.data?.content?.find(insumo => insumo.id === detalleActual.insumoId);
+    if (insumoSeleccionado) {
+      setFilteredPresentaciones(insumoSeleccionado.presentaciones || []);
+      setFilteredMarcas(insumoSeleccionado.marcas || []);
+    } else {
+      setFilteredPresentaciones([]);
+      setFilteredMarcas([]);
     }
-  }, [detalleInsumoData, insumoIdSeleccionado]);
+  }, [detalleActual.insumoId, insumosData]);
 
-  const requisaValidationSchema = Yup.object({
-    sitioId: Yup.string().required(t('contenedorFormularioRequisa.sitioObligatorio')).nullable(),
-    observaciones: Yup.string()
-      .max(500, t('contenedorFormularioRequisa.observacionesMax'))
-      .required(t('contenedorFormularioRequisa.observacionesObligatorio')),
-  });
-
-  const detalleValidationSchema = Yup.object({
-    insumoId: Yup.string().required(t('contenedorFormularioRequisa.insumoObligatorio')),
-    presentacionId: Yup.string().required(t('contenedorFormularioRequisa.presentacionObligatoria')),
-    cantidadPresentacionesSolicitada: Yup.number()
-      .min(1, t('contenedorFormularioRequisa.cantidadMinima'))
-      .required(t('contenedorFormularioRequisa.cantidadObligatoria')),
-    observacion: Yup.string().max(300, t('contenedorFormularioRequisa.observacionMaxima')),
-  });
-
-  const formik = useFormik({
-    initialValues: {
-      codigoUnico: '',
-      usuarioId: '',
-      sitioId: '',
-      estadoNombre: 'solicitado',
-      observaciones: '',
-    },
-    enableReinitialize: true,
-    validationSchema: requisaValidationSchema,
-    validateOnChange: false,
-    validateOnBlur: false,
-    onSubmit: async (values) => {
-      if (detalles.length === 0) {
-        toast.error(t('contenedorFormularioRequisa.errorSinDetalles'));
-        return;
-      }
-
-      const nuevaRequisa = {
-        ...values,
-        detalles: detalles.map((detalle) => ({
-          ...detalle,
-          cantidadPresentacionesSolicitada: Number(detalle.cantidadPresentacionesSolicitada),
-        })),
-      };
-
-      try {
-        const token = obtenerToken('accessToken');
-        const response = await fetch(`${URL}api/v1/requisas`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify(nuevaRequisa),
-        });
-
-        if (response.ok) {
-          toast.success(t('contenedorFormularioRequisa.creacionExitosa'));
-          navigate('/requisas');
-        } else {
-          const result = await response.json();
-          toast.error(result.message || t('contenedorFormularioRequisa.errorCrear'));
-        }
-      } catch (error) {
-        toast.error(t('contenedorFormularioRequisa.errorCrear'));
-      }
-    },
-  });
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setRequisa((prev) => ({
+      ...prev,
+      [name]: value
+    }));
+  };
 
   const handleDetalleChange = (e) => {
     const { name, value } = e.target;
-    setDetalleActual({
-      ...detalleActual,
-      [name]: name === 'cantidadPresentacionesSolicitada' ? Number(value) : value,
-    });
-
-    if (name === 'insumoId') setInsumoIdSeleccionado(value);
+    setDetalleActual((prev) => ({
+      ...prev,
+      [name]: value
+    }));
   };
 
-  const agregarDetalle = async () => {
-    try {
-      await detalleValidationSchema.validate(detalleActual, { abortEarly: false });
-      const detalleConNombres = {
-        ...detalleActual,
-        cantidadPresentacionesSolicitada: Number(detalleActual.cantidadPresentacionesSolicitada),
-        insumoNombre: insumosData?.data?.content.find(insumo => insumo.id === detalleActual.insumoId)?.nombre || '',
-        presentacionNombre: detalleActual.presentacionId || '',
-      };
-      setDetalles([...detalles, { ...detalleConNombres, id: detalles.length + 1 }]);
-      setDetalleActual({
-        insumoId: '',
-        presentacionId: '',
-        cantidadPresentacionesSolicitada: 0,
-        observacion: '',
-      });
-      setDetalleErrors({});
-      setDetalleTouched({});
-      setInsumoIdSeleccionado(null);
-    } catch (error) {
-      const validationErrors = {};
-      const touchedFields = {};
-      error.inner.forEach((err) => {
-        validationErrors[err.path] = err.message;
-        touchedFields[err.path] = true;
-      });
-      setDetalleErrors(validationErrors);
-      setDetalleTouched(touchedFields);
+  const agregarDetalle = () => {
+    if (!detalleActual.insumoId || !detalleActual.presentacionId || !detalleActual.marcaId) {
+      toast.error(t('formularioRequisa.errorCamposDetalle'));
+      return;
     }
+
+    setDetalles((prevDetalles) => [
+      ...prevDetalles,
+      {
+        ...detalleActual,
+        id: prevDetalles.length + 1,
+        insumoNombre: insumosData?.data?.content.find(i => i.id === detalleActual.insumoId)?.nombre,
+        presentacionNombre: filteredPresentaciones.find(p => p.id === detalleActual.presentacionId)?.nombre,
+        marcaNombre: filteredMarcas.find(m => m.id === detalleActual.marcaId)?.nombre
+      }
+    ]);
+    setDetalleActual({
+      insumoId: '',
+      presentacionId: '',
+      marcaId: '',
+      cantidadPresentacionesSolicitada: 1,
+      observacion: ''
+    });
   };
 
   const eliminarSeleccionados = () => {
@@ -165,41 +104,65 @@ const ContenedorFormularioRequisa = () => {
     setSelectedRows([]);
   };
 
-  const handleGuardarRequisa = async () => {
-    formik.setTouched({
-      codigoUnico: true,
-      usuarioId: true,
-      sitioId: true,
-      estadoNombre: true,
-      observaciones: true,
-    });
+  const manejarCrear = async () => {
+    if (!requisa.sitioId || detalles.length === 0) {
+      toast.error(t('formularioRequisa.errorCamposObligatorios'));
+      return;
+    }
 
-    const valid = await formik.validateForm();
-    if (Object.keys(valid).length === 0) {
-      formik.handleSubmit();
-    } else {
-      toast.error(t('contenedorFormularioRequisa.errorCamposObligatorios'));
+    const nuevaRequisa = { ...requisa, codigoUnico, detalles: detalles.map(d => ({
+      insumoId: d.insumoId,
+      presentacionId: d.presentacionId,
+      marcaId: d.marcaId,
+      cantidadPresentacionesSolicitada: d.cantidadPresentacionesSolicitada,
+      observacion: d.observacion
+    }))};
+
+     // Imprime el objeto que se va a enviar a la API
+  console.log("Datos enviados a la API:", nuevaRequisa);
+
+    const token = obtenerToken("accessToken");
+
+    try {
+      const response = await fetch(`${URL}api/v1/requisas`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+        body: JSON.stringify(nuevaRequisa),
+      });
+
+      if (response.ok) {
+        toast.success(t('formularioRequisa.exitoCrear'));
+        navigate('/requisas/requisas');
+      } else {
+        toast.error(t('formularioRequisa.errorCrear'));
+      }
+    } catch (error) {
+      toast.error(t('formularioRequisa.errorGeneral'));
     }
   };
 
+  if (!sitiosData || !insumosData) {
+    return <p>{t('formularioRequisa.errorCargarDatos')}</p>;
+  }
+
   return (
     <PaginaFormularioRequisa
-      requisa={formik.values}
+      requisa={requisa}
       detalleActual={detalleActual}
-      insumoIdSeleccionado={insumoIdSeleccionado}
       detalles={detalles}
       sitios={sitiosData?.data?.content || []}
       insumos={insumosData?.data?.content || []}
-      onInputChange={formik.handleChange}
+      presentaciones={filteredPresentaciones}
+      marcas={filteredMarcas}
+      onInputChange={handleInputChange}
       onDetalleChange={handleDetalleChange}
       onAgregarDetalle={agregarDetalle}
       onEliminarSeleccionados={eliminarSeleccionados}
-      onGuardarRequisa={handleGuardarRequisa}
-      errors={{ ...formik.errors, ...detalleErrors }}
-      touched={{ ...formik.touched, ...detalleTouched }}
-      usuarioNombre={usuarioNombre}
+      onGuardarRequisa={manejarCrear}
       codigoUnico={codigoUnico}
-      estadoDeshabilitado={true}
+      usuarioNombre={username}
+      selectedRows={selectedRows}
+      setSelectedRows={setSelectedRows}
     />
   );
 };

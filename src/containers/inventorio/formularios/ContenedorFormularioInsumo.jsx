@@ -15,20 +15,17 @@ const ContenedorFormularioInsumo = () => {
   const navigate = useNavigate();
   const { id } = useParams();
 
+  // Estado inicial solo con los campos que se deben enviar
   const [insumo, setInsumo] = useState({
     nombre: '',
     descripcion: '',
     categoriaId: '',
     unidadMedidaId: '',
-    valorUnidadMedida: 1,
+    valorUnidadMedida: '',
     activo: true,
     presentaciones: [],
     detallesMarcas: [],
     detallesDistribuidores: [],
-    marcaId: '',
-    codigoMarca: '',
-    distribuidorId: '',
-    codigoDistribuidor: '',
   });
 
   const { data: insumoData } = useFetch(
@@ -49,17 +46,15 @@ const ContenedorFormularioInsumo = () => {
         descripcion: insumoData.data.descripcion || '',
         categoriaId: insumoData.data.categoria?.id || '',
         unidadMedidaId: insumoData.data.unidadMedida?.id || '',
-        valorUnidadMedida: insumoData.data.valorUnidadMedida || 0,
+        valorUnidadMedida: insumoData.data.valorUnidadMedida || '',
         activo: insumoData.data.activo !== undefined ? insumoData.data.activo : true,
         presentaciones: insumoData.data.presentaciones?.map((presentacion) => presentacion.id) || [],
         detallesMarcas: insumoData.data.marcas?.map((marca) => ({
           marcaId: marca.id,
-          nombreMarca: marca.nombre,
           codigoMarca: marca.codigoMarca,
         })) || [],
         detallesDistribuidores: insumoData.data.distribuidores?.map((distribuidor) => ({
           distribuidorId: distribuidor.id,
-          nombreDistribuidor: distribuidor.nombre,
           codigoDistribuidor: distribuidor.codigoDistribuidor,
         })) || []
       });
@@ -74,14 +69,34 @@ const ContenedorFormularioInsumo = () => {
       descripcion: Yup.string().required(t('contenedorFormularioInsumo.descripcionObligatoria')),
       categoriaId: Yup.string().required(t('contenedorFormularioInsumo.categoriaObligatoria')),
       unidadMedidaId: Yup.string().required(t('contenedorFormularioInsumo.unidadMedidaObligatoria')),
-      valorUnidadMedida: Yup.number().required(t('contenedorFormularioInsumo.valorUnidadObligatorio')),
       presentaciones: Yup.array().min(1, t('contenedorFormularioInsumo.presentacionesObligatorias')),
-      detallesMarcas: Yup.array().min(1, t('contenedorFormularioInsumo.detallesMarcasObligatorios')),
-      detallesDistribuidores: Yup.array().min(1, t('contenedorFormularioInsumo.detallesDistribuidoresObligatorios')),
+      valorUnidadMedida: Yup.number().required(t('contenedorFormularioInsumo.valorUnidadObligatorio')),
+      detallesMarcas: Yup.array(),
+      detallesDistribuidores: Yup.array(),
     }),
     validateOnChange: false,
     validateOnBlur: false,
     onSubmit: async (values) => {
+      const payload = {
+        nombre: values.nombre,
+        descripcion: values.descripcion,
+        categoriaId: values.categoriaId,
+        unidadMedidaId: values.unidadMedidaId,
+        valorUnidadMedida: values.valorUnidadMedida,
+        activo: values.activo,
+        presentaciones: values.presentaciones,
+        marcas: values.detallesMarcas.map(({ marcaId, codigoMarca }) => ({
+          marcaId,
+          codigoMarca
+        })),
+        distribuidores: values.detallesDistribuidores.map(({ distribuidorId, codigoDistribuidor }) => ({
+          distribuidorId,
+          codigoDistribuidor
+        })),
+      };
+
+      console.log("Payload enviado:", payload);  // Verifica el payload en la consola
+
       const token = obtenerToken('accessToken');
       try {
         const response = await fetch(`${URL}api/v1/insumos`, {
@@ -90,12 +105,12 @@ const ContenedorFormularioInsumo = () => {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`,
           },
-          body: JSON.stringify(values),
+          body: JSON.stringify(payload),
         });
 
         if (response.ok) {
           toast.success(t('contenedorFormularioInsumo.creacionExitosa'));
-          navigate('/inventario');
+          navigate('/inventario/insumos');
         } else {
           const result = await response.json();
           toast.error(result.message || t('contenedorFormularioInsumo.errorCrear'));
@@ -114,13 +129,18 @@ const ContenedorFormularioInsumo = () => {
       unidadMedidaId: true,
       valorUnidadMedida: true,
       presentaciones: true,
-      detallesMarcas: true,
-      detallesDistribuidores: true,
     });
 
     const valid = await formik.validateForm();
+    
     if (Object.keys(valid).length === 0) {
-      formik.handleSubmit();
+      if (formik.values.detallesMarcas.length === 0) {
+        toast.error(t('contenedorFormularioInsumo.detallesMarcasObligatorios'));
+      } else if (formik.values.detallesDistribuidores.length === 0) {
+        toast.error(t('contenedorFormularioInsumo.detallesDistribuidoresObligatorios'));
+      } else {
+        formik.handleSubmit();
+      }
     } else {
       toast.error(t('contenedorFormularioInsumo.errorCamposObligatorios'));
     }
@@ -131,7 +151,7 @@ const ContenedorFormularioInsumo = () => {
       const nombreMarca = marcasData.data.content.find((m) => m.id === formik.values.marcaId)?.nombre || "Sin nombre";
       formik.setFieldValue("detallesMarcas", [
         ...formik.values.detallesMarcas,
-        { marcaId: formik.values.marcaId, nombreMarca, codigoMarca: formik.values.codigoMarca }
+        { marcaId: formik.values.marcaId, codigoMarca: formik.values.codigoMarca }
       ]);
       formik.setFieldValue("marcaId", "");
       formik.setFieldValue("codigoMarca", "");
@@ -139,7 +159,7 @@ const ContenedorFormularioInsumo = () => {
       const nombreDistribuidor = distribuidoresData.data.content.find((d) => d.id === formik.values.distribuidorId)?.nombre || "Sin nombre";
       formik.setFieldValue("detallesDistribuidores", [
         ...formik.values.detallesDistribuidores,
-        { distribuidorId: formik.values.distribuidorId, nombreDistribuidor, codigoDistribuidor: formik.values.codigoDistribuidor }
+        { distribuidorId: formik.values.distribuidorId, codigoDistribuidor: formik.values.codigoDistribuidor }
       ]);
       formik.setFieldValue("distribuidorId", "");
       formik.setFieldValue("codigoDistribuidor", "");
