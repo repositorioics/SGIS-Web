@@ -4,98 +4,77 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import PaginaPedidos from '@/pages/solicitudes/PaginaPedidos';
 import '@/assets/styles/inventario/estilosInventario.css';
-import { URL } from '@/constants/url'; // Constante de la URL
-import useFetch from '@/hooks/useFetch'; // Importar el hook personalizado
+import { URL } from '@/constants/url';
+import useFetch from '@/hooks/useFetch';
 import { useTranslation } from 'react-i18next';
 
 /**
- * Controla la lógica de la página de pedidos, incluyendo la creación, actualización y eliminación de pedidos.
+ * Controlar la lógica de la página de pedidos, como la creación, actualización y desactivación.
  */
 const ContenedorPedidos = () => {
   const [paginaActual, setPaginaActual] = useState(0);
-  const [pageSize, setPageSize] = useState(10); // Estado para manejar el tamaño de la página
-  const [pedidoSeleccionado, setPedidoSeleccionado] = useState(null); // Pedido para mostrar en el modal
-  const [modalAbierto, setModalAbierto] = useState(false); // Controlar si el modal está abierto
+  const [pageSize, setPageSize] = useState(10);
   const navigate = useNavigate();
-  const { t } = useTranslation(); // Hook para traducciones
+  const { t } = useTranslation();
 
-  // Usar el hook personalizado useFetch para obtener los datos de la API
-  const { data, loading, error } = useFetch(
-    `${URL}api/v1/pedidos?page=${paginaActual}&size=${pageSize}`, 
-    {}, 
+  // Obtener datos de pedidos desde la API con paginación
+  const { data: pedidosData, loading: pedidosLoading, error: pedidosError } = useFetch(
+    `${URL}api/v1/pedidos?page=${paginaActual}&size=${pageSize}`,
+    {},
     [paginaActual, pageSize]
   );
 
-  /**
-   * Navegar a la página de creación de un nuevo pedido.
-   */
   const manejarCrear = () => {
     navigate('/pedidos/crear');
   };
 
-  /**
-   * Navegar a la página de actualización de un pedido si tiene un ID válido.
-   * @param {object} pedido - El pedido seleccionado para actualizar.
-   */
   const manejarActualizar = (pedido) => {
     if (pedido && pedido.id) {
-      navigate(`/pedidos/editar/${pedido.id}`);
+      navigate(`/pedidos/actualizar/${pedido.id}`);
     } else {
       toast.error(t('contenedorPedidos.errorActualizar'));
     }
   };
 
-  /**
-   * Manejar la eliminación (desactivación) de un pedido seleccionado.
-   * @param {object} pedido - El pedido seleccionado para eliminar.
-   */
-  const manejarEliminar = (pedido) => {
-    toast.success(t('contenedorPedidos.pedidoEliminado', { codigo: pedido.codigoPedido }));
-    if (data) {
-      const pedidosFiltrados = data.data.content.filter(p => p.id !== pedido.id);
-      // Aquí podrías actualizar el estado local si decides gestionar los pedidos filtrados localmente.
+  const manejarEliminar = async (pedido) => {
+    try {
+      const response = await fetch(`${URL}api/v1/pedidos/${pedido.id}`, {
+        method: 'DELETE',
+      });
+      if (response.ok) {
+        toast.success(t('contenedorPedidos.pedidoDesactivado', { codigo: pedido.codigoPedido }));
+        navigate(0);
+      } else {
+        toast.error(t('contenedorPedidos.errorDesactivar'));
+      }
+    } catch (error) {
+      toast.error(t('contenedorPedidos.errorDesactivar'));
     }
   };
 
-  // Cerrar el modal y limpiar la selección del pedido
-  const cerrarModal = () => {
-    setModalAbierto(false);
-    setPedidoSeleccionado(null);
-  };
-
-  // Definir columnas de la tabla de pedidos
   const columnas = [
-    { field: 'codigoPedido', headerName: t('contenedorPedidos.codigoPedido'), flex: 2 },
-    { field: 'numeroSolicitud', headerName: t('contenedorPedidos.numeroSolicitud'), flex: 2 },
-    { 
-      field: 'autorizadoPor', 
-      headerName: t('contenedorPedidos.autorizadoPor'), 
-      flex: 2,
-      renderCell: (params) => (
-        `${params.value.nombre} ${params.value.apellido}`
-      )
-    },
-    { 
-      field: 'creadoPor', 
-      headerName: t('contenedorPedidos.creadoPor'), 
-      flex: 2,
-      renderCell: (params) => (
-        `${params.value.nombre} ${params.value.apellido}`
-      )
-    },
-    { field: 'estado', headerName: t('contenedorPedidos.estado'), flex: 1 },
-    { field: 'fechaCreacion', headerName: t('contenedorPedidos.fechaCreacion'), flex: 2, renderCell: (params) => (
-      <span>{new Date(params.value).toLocaleDateString()}</span>
-    ) },
+    { field: 'codigoSolicitud', headerName: t('paginaPedidos.columnaCodigoSolicitud'), flex: 2 },
+    { field: 'codigoPedido', headerName: t('paginaPedidos.columnaCodigoPedido'), flex: 2 },
+    { field: 'nombreUsuario', headerName: t('paginaPedidos.columnaUsuarioCreador'), flex: 2 },
+    { field: 'nombreDonante', headerName: t('paginaPedidos.columnaDonante'), flex: 2 },
+    { field: 'estado', headerName: t('paginaPedidos.columnaEstado'), flex: 1 },
     {
-      field: 'acciones', 
-      headerName: t('contenedorPedidos.acciones'), 
-      flex: 1, 
+      field: 'fechaCreacion',
+      headerName: t('paginaPedidos.columnaFechaCreacion'),
+      flex: 2,
+      renderCell: (params) => (
+        <span>{new Date(params.value).toLocaleDateString()}</span>
+      ),
+    },
+    {
+      field: 'acciones',
+      headerName: t('paginaPedidos.columnaAcciones'),
+      flex: 1,
       sortable: false,
       renderCell: (params) => (
         <>
-          <button onClick={() => manejarActualizar(params.row)}>{t('contenedorPedidos.botonEditar')}</button>
-          <button onClick={() => manejarEliminar(params.row)}>{t('contenedorPedidos.botonEliminar')}</button>
+          <button onClick={() => manejarActualizar(params.row)}>{t('paginaPedidos.botonEditar')}</button>
+          <button onClick={() => manejarEliminar(params.row)}>{t('paginaPedidos.botonEliminar')}</button>
         </>
       ),
     }
@@ -104,11 +83,11 @@ const ContenedorPedidos = () => {
   return (
     <PaginaPedidos
       columnas={columnas}
-      datos={data ? data.data.content : []}
-      cargando={loading}
-      error={error}
+      datos={pedidosData?.data?.content || []} // Usamos los datos directamente del response
+      cargando={pedidosLoading}
+      error={pedidosError}
       manejarCrear={manejarCrear}
-      totalPaginas={data ? data.data.totalPages : 1}
+      totalPaginas={pedidosData?.data?.totalPages || 1}
       paginaActual={paginaActual}
       setPaginaActual={setPaginaActual}
       pageSize={pageSize}

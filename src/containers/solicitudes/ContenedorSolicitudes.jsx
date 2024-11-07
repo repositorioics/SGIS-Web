@@ -28,7 +28,7 @@ const ContenedorSolicitudes = () => {
    * Navegar a la página de creación de una nueva solicitud.
    */
   const manejarCrear = () => {
-    navigate('/solicitudes/solicitudes/crear');
+    navigate('/solicitudes/solicitud/crear');
   };
 
   /**
@@ -37,7 +37,7 @@ const ContenedorSolicitudes = () => {
    */
   const manejarActualizar = (solicitud) => {
     if (solicitud && solicitud.id) {
-      navigate(`/solicitudes/actualizar/${solicitud.id}`);
+      navigate(`/solicitudes/solicitud/actualizar/${solicitud.id}`);
     } else {
       toast.error(t('contenedorSolicitudes.errorActualizar')); // Mensaje traducido
     }

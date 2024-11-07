@@ -1,7 +1,7 @@
 import React from 'react';
 import { Box, Button, Grid, TextField, Typography, Select, MenuItem, FormControl, InputLabel } from '@mui/material';
-import TablaGenerica from '@/components/inventario/TablaGenerica';
-import '@/assets/styles/formularios.css'; // Importar estilos personalizados
+import TablaDetalles from '@/components/TablaDetalles';
+import '@/assets/styles/formularios.css';
 import { useTranslation } from 'react-i18next';
 
 /**
@@ -10,16 +10,22 @@ import { useTranslation } from 'react-i18next';
 const PaginaFormularioRequisa = ({
   requisa,
   detalleActual,
-  detalles,
-  sitios,
-  insumos,
-  presentaciones,
+  detalles = [], // Valor por defecto como un array vacío
+  sitios = [],
+  insumos = [],
+  presentaciones = [],
   onInputChange,
   onDetalleChange,
   onAgregarDetalle,
-  onGuardarRequisa
+  onEliminarSeleccionados,
+  onGuardarRequisa,
+  errors,
+  touched,
+  usuarioNombre,
+  codigoUnico,
+  estadoDeshabilitado,
 }) => {
-  const { t } = useTranslation(); // Hook de traducción
+  const { t } = useTranslation();
 
   // Definir columnas para la tabla de detalles agregados
   const columnasDetalles = [
@@ -39,9 +45,16 @@ const PaginaFormularioRequisa = ({
         <Grid item xs={12} sm={6}>
           <FormControl fullWidth margin="normal" className="formulario-select">
             <InputLabel>{t('formularioRequisa.sitio')}</InputLabel>
-            <Select name="sitioId" value={requisa.sitioId} onChange={onInputChange}>
-              {Array.isArray(sitios) && sitios.map(sitio => (
-                <MenuItem key={sitio.id} value={sitio.id}>{sitio.nombre}</MenuItem>
+            <Select
+              name="sitioId"
+              value={requisa.sitioId}
+              onChange={onInputChange}
+              error={Boolean(touched.sitioId && errors.sitioId)}
+            >
+              {sitios.map((sitio) => (
+                <MenuItem key={sitio.id} value={sitio.id}>
+                  {sitio.nombre}
+                </MenuItem>
               ))}
             </Select>
           </FormControl>
@@ -51,9 +64,9 @@ const PaginaFormularioRequisa = ({
           <TextField
             label={t('formularioRequisa.creadoPor')}
             name="creadoPor"
-            type="number"
-            value={requisa.creadoPor}
-            onChange={onInputChange}
+            type="text"
+            value={usuarioNombre}
+            disabled
             fullWidth
             margin="normal"
             className="formulario-input"
@@ -71,6 +84,8 @@ const PaginaFormularioRequisa = ({
             multiline
             rows={3}
             className="formulario-input"
+            error={Boolean(touched.observaciones && errors.observaciones)}
+            helperText={touched.observaciones && errors.observaciones}
           />
         </Grid>
       </Grid>
@@ -83,9 +98,16 @@ const PaginaFormularioRequisa = ({
         <Grid item xs={12} sm={6}>
           <FormControl fullWidth margin="normal" className="formulario-select">
             <InputLabel>{t('formularioRequisa.insumo')}</InputLabel>
-            <Select name="insumoId" value={detalleActual.insumoId} onChange={onDetalleChange}>
-              {Array.isArray(insumos) && insumos.map(insumo => (
-                <MenuItem key={insumo.id} value={insumo.id}>{insumo.nombre}</MenuItem>
+            <Select
+              name="insumoId"
+              value={detalleActual.insumoId}
+              onChange={onDetalleChange}
+              error={Boolean(touched.insumoId && errors.insumoId)}
+            >
+              {insumos.map((insumo) => (
+                <MenuItem key={insumo.id} value={insumo.id}>
+                  {insumo.nombre}
+                </MenuItem>
               ))}
             </Select>
           </FormControl>
@@ -94,9 +116,16 @@ const PaginaFormularioRequisa = ({
         <Grid item xs={12} sm={6}>
           <FormControl fullWidth margin="normal" className="formulario-select">
             <InputLabel>{t('formularioRequisa.presentacion')}</InputLabel>
-            <Select name="presentacionId" value={detalleActual.presentacionId} onChange={onDetalleChange}>
-              {Array.isArray(presentaciones) && presentaciones.map(presentacion => (
-                <MenuItem key={presentacion.id} value={presentacion.id}>{presentacion.nombre}</MenuItem>
+            <Select
+              name="presentacionId"
+              value={detalleActual.presentacionId}
+              onChange={onDetalleChange}
+              error={Boolean(touched.presentacionId && errors.presentacionId)}
+            >
+              {presentaciones.map((presentacion) => (
+                <MenuItem key={presentacion.id} value={presentacion.id}>
+                  {presentacion.nombre}
+                </MenuItem>
               ))}
             </Select>
           </FormControl>
@@ -112,6 +141,8 @@ const PaginaFormularioRequisa = ({
             fullWidth
             margin="normal"
             className="formulario-input"
+            error={Boolean(touched.cantidadPresentacionesSolicitada && errors.cantidadPresentacionesSolicitada)}
+            helperText={touched.cantidadPresentacionesSolicitada && errors.cantidadPresentacionesSolicitada}
           />
         </Grid>
 
@@ -126,6 +157,8 @@ const PaginaFormularioRequisa = ({
             multiline
             rows={2}
             className="formulario-input"
+            error={Boolean(touched.observacion && errors.observacion)}
+            helperText={touched.observacion && errors.observacion}
           />
         </Grid>
 
@@ -136,11 +169,11 @@ const PaginaFormularioRequisa = ({
         </Grid>
       </Grid>
 
-      <TablaGenerica
+      <TablaDetalles
         encabezado={t('formularioRequisa.detallesAgregados')}
         columnas={columnasDetalles}
         datos={detalles}
-        mostrarCrear={false}
+        onEliminarSeleccionados={onEliminarSeleccionados}
       />
 
       <Box sx={{ display: 'flex', justifyContent: 'center', mt: 3 }}>

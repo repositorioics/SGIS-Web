@@ -57,13 +57,15 @@
     text-align: center;
   }
   
-  /* Estilo del botón */
   .formulario-boton {
-    width: 30%;
-    padding: 8px;
-    font-size: 14px;
+    width: 100%; /* Aumenta el ancho para que ocupe más espacio */
+    padding: 12px; /* Aumenta el padding para mayor altura */
+    font-size: 16px;
     font-weight: bold;
+    text-align: center; /* Asegura que el texto esté centrado */
+    border-radius: 8px; /* Opcional: bordes redondeados */
   }
+  
 
   .Mui-focused {
     border-color: #007bff !important;

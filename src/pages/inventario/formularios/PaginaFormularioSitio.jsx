@@ -1,142 +1,116 @@
 import React from 'react';
-import { Box, Button, Grid, TextField, Typography, Select, MenuItem, FormControl, InputLabel } from '@mui/material';
-import '@/assets/styles/formularios.css'; // Importar el archivo CSS
-import { useTranslation } from 'react-i18next'; // Hook de traducción
+import { Box, Grid } from '@mui/material';
+import { useTranslation } from 'react-i18next';
+import '@/assets/styles/formularios.css';
+import CustomTextField from '@/components/comun/CustomTextField';
+import CustomSelect from '@/components/comun/CustomSelect';
+import CustomButton from '@/components/comun/CustomButton';
+import CustomTypography from '@/components/comun/CustomTypography';
 
+/**
+ * PaginaFormularioSitio - Formulario para crear o actualizar un sitio.
+ * 
+ * @param {object} sitio - Datos actuales del sitio.
+ * @param {function} onChange - Función para manejar los cambios en los campos del formulario.
+ * @param {function} onSave - Función para manejar el envío del formulario.
+ * @param {boolean} error - Indica si hay un error al cargar los datos.
+ * @param {boolean} isEditing - Indica si el formulario está en modo de edición.
+ * @param {object} formik - Objeto de Formik que maneja el estado y la validación del formulario.
+ * @param {Array} usuarios - Lista de usuarios disponibles para seleccionar como contacto.
+ * 
+ * @returns {JSX.Element} Formulario de creación o edición de un sitio.
+ */
 const PaginaFormularioSitio = ({ sitio, onChange, onSave, error, isEditing, formik, usuarios }) => {
-  const { t } = useTranslation(); // Hook de traducción
+  const { t } = useTranslation();
 
   return (
     <Box className="formulario-container">
-      <Typography
+      {/* Título dinámico del formulario */}
+      <CustomTypography
         component="h1"
-        className="formulario-titulo"
         variant="h4"
         mb={1}
-        textAlign="left"
+        className="formulario-titulo"
       >
         {isEditing ? t('formularioSitio.actualizarTitulo') : t('formularioSitio.crearTitulo')}
-      </Typography>
+      </CustomTypography>
 
-      <Typography
-        className="formulario-subtitulo"
+      {/* Subtítulo dinámico */}
+      <CustomTypography
         variant="subtitle1"
         mb={3}
-        textAlign="left"
+        className="formulario-subtitulo"
         color="textSecondary"
       >
         {isEditing ? t('formularioSitio.actualizarSubtitulo') : t('formularioSitio.crearSubtitulo')}
-      </Typography>
+      </CustomTypography>
 
+      {/* Mensaje de error si existe */}
       {error ? (
-        <Typography variant="h6" color="error" textAlign="center">
+        <CustomTypography variant="h6" color="error" textAlign="center">
           {t('formularioSitio.errorCargar')}
-        </Typography>
+        </CustomTypography>
       ) : (
         <form onSubmit={onSave}>
           <Grid container spacing={2}>
             {/* Campo Nombre */}
             <Grid item xs={12} sm={6}>
-              <TextField
+              <CustomTextField
                 label={t('formularioSitio.nombreLabel')}
                 name="nombre"
                 value={formik.values.nombre}
                 onChange={onChange}
-                fullWidth
-                margin="normal"
                 error={formik.touched.nombre && Boolean(formik.errors.nombre)}
                 helperText={formik.touched.nombre && formik.errors.nombre}
-                InputLabelProps={{
-                  sx: { color: 'text.secondary', fontSize: '16px' },
-                  shrink: true,
-                }}
-                InputProps={{
-                  className: 'formulario-input', // Aplicar clase CSS
-                  autoComplete: 'off', // Desactivar autocompletado
-                }}
               />
             </Grid>
 
             {/* Campo Abreviatura */}
             <Grid item xs={12} sm={6}>
-              <TextField
+              <CustomTextField
                 label={t('formularioSitio.abreviaturaLabel')}
                 name="abreviatura"
                 value={formik.values.abreviatura}
                 onChange={onChange}
-                fullWidth
-                margin="normal"
                 error={formik.touched.abreviatura && Boolean(formik.errors.abreviatura)}
                 helperText={formik.touched.abreviatura && formik.errors.abreviatura}
-                InputLabelProps={{
-                  sx: { color: 'text.secondary', fontSize: '16px' },
-                  shrink: true,
-                }}
-                InputProps={{
-                  className: 'formulario-input', // Aplicar clase CSS
-                  autoComplete: 'off', // Desactivar autocompletado
-                }}
               />
             </Grid>
 
             {/* Campo Dirección */}
             <Grid item xs={12} sm={6}>
-              <TextField
+              <CustomTextField
                 label={t('formularioSitio.direccionLabel')}
                 name="direccion"
                 value={formik.values.direccion}
                 onChange={onChange}
-                fullWidth
-                margin="normal"
                 error={formik.touched.direccion && Boolean(formik.errors.direccion)}
                 helperText={formik.touched.direccion && formik.errors.direccion}
-                InputLabelProps={{
-                  sx: { color: 'text.secondary', fontSize: '16px' },
-                  shrink: true,
-                }}
-                InputProps={{
-                  className: 'formulario-input', // Aplicar clase CSS
-                  autoComplete: 'off', // Desactivar autocompletado
-                }}
               />
             </Grid>
 
             {/* Campo Usuario de Contacto */}
             <Grid item xs={12} sm={6}>
-              <FormControl fullWidth margin="normal">
-                <InputLabel>{t('formularioSitio.usuarioContactoLabel')}</InputLabel>
-                <Select
-                  name="usuarioContactoId"
-                  value={formik.values.usuarioContactoId}
-                  onChange={onChange}
-                  error={formik.touched.usuarioContactoId && Boolean(formik.errors.usuarioContactoId)}
-                  inputProps={{
-                    className: 'formulario-input', // Aplicar clase CSS
-                    autoComplete: 'off', // Desactivar autocompletado
-                  }}
-                >
-                  {usuarios.map(usuario => (
-                    <MenuItem key={usuario.id} value={usuario.id}>
-                      {`${usuario.nombre} ${usuario.apellido} (${usuario.usuario})`}
-                    </MenuItem>
-                  ))}
-                </Select>
-                {formik.touched.usuarioContactoId && formik.errors.usuarioContactoId && (
-                  <Typography color="error">{formik.errors.usuarioContactoId}</Typography>
-                )}
-              </FormControl>
+              <CustomSelect
+                label={t('formularioSitio.usuarioContactoLabel')}
+                name="usuarioContactoId"
+                value={formik.values.usuarioContactoId}
+                onChange={onChange}
+                options={usuarios.map(usuario => ({
+                  id: usuario.id,
+                  nombre: `${usuario.nombre} ${usuario.apellido} (${usuario.usuario})`,
+                }))}
+                error={formik.touched.usuarioContactoId && formik.errors.usuarioContactoId}
+              />
             </Grid>
           </Grid>
 
+          {/* Botón de envío */}
           <Box sx={{ display: 'flex', justifyContent: 'center', mt: 3 }}>
-            <Button
-              variant="contained"
-              color="primary"
+            <CustomButton
+              label={isEditing ? t('formularioSitio.botonActualizar') : t('formularioSitio.botonCrear')}
               type="submit"
-              className="formulario-boton" // Aplicar clase CSS
-            >
-              {isEditing ? t('formularioSitio.botonActualizar') : t('formularioSitio.botonCrear')}
-            </Button>
+            />
           </Box>
         </form>
       )}

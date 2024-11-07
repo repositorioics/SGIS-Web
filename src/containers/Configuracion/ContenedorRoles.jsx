@@ -28,7 +28,7 @@ const ContenedorRoles = () => {
    * Navegar a la página de creación de un nuevo rol.
    */
   const manejarCrear = () => {
-    navigate('/roles/crear');
+    navigate('/configuraciones/roles/crear');
   };
 
   /**
@@ -37,7 +37,7 @@ const ContenedorRoles = () => {
    */
   const manejarActualizar = (rol) => {
     if (rol && rol.id) {
-      navigate(`/roles/actualizar/${rol.id}`);
+      navigate(`/configuraciones/actualizar/${rol.id}`);
     } else {
       // Mostrar mensaje de error si no tiene un ID válido
       toast.error(t('contenedorRoles.errorActualizar'));

@@ -1,0 +1,90 @@
+.seccion-notificaciones {
+    padding: 20px;
+    background-color: var(--color-fondo);
+  }
+  
+  .cabecera-notificaciones {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .boton-leer-todas {
+    background-color: var(--color-primario);
+    color: var(--color-fondo);
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .boton-leer-todas:hover {
+    background-color: var(--color-hover-primario);
+  }
+  
+  .lista-notificaciones {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+  }
+
+.tarjeta-notificacion {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    border-bottom: 1px solid var(--color-hover-blanco);
+    background-color: var(--color-fondo);
+    transition: background-color 0.3s ease;
+    border-radius: 8px;
+  }
+  .content{
+    display: flex;
+    gap: 12px;
+    align-items: center;
+  }
+  .tarjeta-notificacion.no-leida {
+    background-color: var(--color-hover-blanco);
+  }
+  
+  .contenido-notificacion {
+    flex: 1;
+  }
+  
+  .titulo-notificacion {
+    margin: 0;
+    font-size: 1em;
+    font-weight: bold;
+    text-transform: capitalize;
+    color: var(--color-texto-primario);
+  }
+  
+  .mensaje-notificacion {
+    margin: 5px 0;
+    color: var(--color-texto-secundario);
+  }
+  
+  .fecha-notificacion {
+    display: block;
+    color: var(--color-texto-secundario);
+    font-size: 0.85em;
+  }
+  
+  .acciones-notificacion {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+  
+  .boton-ver-mas {
+    background: none;
+    border: none;
+    color: var(--color-primario);
+    cursor: pointer;
+    padding: 0;
+  }
+  
+  .boton-ver-mas:hover {
+    color: var(--color-hover-primario);
+  }  

@@ -1,12 +1,17 @@
 import React from 'react';
-import { Box, Button, Grid, TextField, Typography, Select, MenuItem, FormControl, InputLabel } from '@mui/material';
-import TablaGenerica from '@/components/inventario/TablaGenerica';
+import { Box, Grid } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import '@/assets/styles/formularios.css';
+import CustomTextField from '@/components/comun/CustomTextField';
+import CustomButton from '@/components/comun/CustomButton';
+import CustomTypography from '@/components/comun/CustomTypography';
+import CustomSelect from '@/components/comun/CustomSelect';
+import TablaDetalles from '@/components/TablaDetalles';
 
 const PaginaFormularioSolicitud = ({
   solicitud,
   detalleActual,
+  insumoIdSeleccionado,
   detalles,
   usuarios,
   donantes,
@@ -14,88 +19,91 @@ const PaginaFormularioSolicitud = ({
   marcas,
   distribuidores,
   presentaciones,
+  estudios,
+  bioanalistas,
   onInputChange,
   onDetalleChange,
   onAgregarDetalle,
-  onGuardarSolicitud
+  onEliminarSeleccionados,
+  onGuardarSolicitud,
+  selectedRows,
+  setSelectedRows,
+  columns,
+  errors,
+  touched,
+  usuarioNombre,
+  proximoNumeroSolicitud,
+  estadoDeshabilitado,
 }) => {
-  const { t } = useTranslation(); // Usar hook de traducción
+  const { t } = useTranslation();
 
-  // Definir las columnas para los detalles
-  const columnasDetalles = [
-    { field: 'insumoId', headerName: t('formularioSolicitud.insumo'), flex: 1, renderCell: (params) => insumos.find(i => i.id === params.value)?.nombre || '' },
-    { field: 'marcaId', headerName: t('formularioSolicitud.marca'), flex: 1, renderCell: (params) => marcas.find(m => m.id === params.value)?.nombre || '' },
-    { field: 'distribuidorId', headerName: t('formularioSolicitud.distribuidor'), flex: 1, renderCell: (params) => distribuidores.find(d => d.id === params.value)?.nombre || '' },
-    { field: 'presentacionId', headerName: t('formularioSolicitud.presentacion'), flex: 1, renderCell: (params) => presentaciones.find(p => p.id === params.value)?.nombre || '' },
-    { field: 'cantidadPresentaciones', headerName: t('formularioSolicitud.cantidad'), flex: 1 },
-    { field: 'analistaSolicitante', headerName: t('formularioSolicitud.analista'), flex: 1 },
-    { field: 'observacion', headerName: t('formularioSolicitud.observacion'), flex: 1 },
-  ];
+  const insumoSeleccionado = Boolean(insumoIdSeleccionado);
 
   return (
-    <Box className="formulario-container">
-      {/* Título del formulario */}
-      <Typography component="h1" variant="h4" mb={1} className="formulario-titulo">
+    <Box sx={{ padding: 5 }}>
+      <CustomTypography variant="h4" className="formulario-titulo" textAlign="left">
         {t('formularioSolicitud.crearSolicitud')}
-      </Typography>
+      </CustomTypography>
 
-      {/* Sección del formulario principal */}
-      <Grid container spacing={2} className="formulario-grid">
-        <Grid item xs={12} sm={6}>
-          <TextField
+      <CustomTypography variant="subtitle1" color="textSecondary" className="formulario-subtitulo" textAlign="left">
+        {t('formularioSolicitud.ingreseDatosGenerales')}
+      </CustomTypography>
+
+      <Grid container spacing={2} mt={2}>
+        <Grid item xs={12} sm={4}>
+          <CustomTextField
             label={t('formularioSolicitud.numeroSolicitud')}
             name="numeroSolicitud"
-            value={solicitud.numeroSolicitud}
+            value={proximoNumeroSolicitud}
             onChange={onInputChange}
             fullWidth
             margin="normal"
-            className="formulario-input"
+            error={Boolean(errors.numeroSolicitud)}
+            helperText={errors.numeroSolicitud}
+            touched={touched.numeroSolicitud}
+            InputProps={{ readOnly: true }}
           />
         </Grid>
-
-        <Grid item xs={12} sm={6}>
-          <FormControl fullWidth margin="normal" className="formulario-select">
-            <InputLabel>{t('formularioSolicitud.usuario')}</InputLabel> 
-            <Select name="usuarioId" value={solicitud.usuarioId} onChange={onInputChange}>
-              {Array.isArray(usuarios) && usuarios.map(usuario => (
-                <MenuItem key={usuario.id} value={usuario.id}>{usuario.nombre}</MenuItem>
-              ))}
-            </Select>
-          </FormControl>
+        <Grid item xs={12} sm={4}>
+          <CustomTextField
+            label={t('formularioSolicitud.usuario')}
+            name="usuarioId"
+            value={usuarioNombre}
+            fullWidth
+            margin="normal"
+            InputProps={{
+              readOnly: true,
+            }}
+            helperText={errors.usuarioId}
+            error={Boolean(errors.usuarioId)}
+          />
         </Grid>
-
-        <Grid item xs={12} sm={6}>
-          <FormControl fullWidth margin="normal" className="formulario-select">
-            <InputLabel>{t('formularioSolicitud.donante')}</InputLabel> 
-            <Select name="donanteId" value={solicitud.donanteId} onChange={onInputChange}>
-              {Array.isArray(donantes) && donantes.map(donante => (
-                <MenuItem key={donante.id} value={donante.id}>{donante.nombre}</MenuItem>
-              ))}
-            </Select>
-          </FormControl>
+        <Grid item xs={12} sm={4}>
+          <CustomSelect
+            label={t('formularioSolicitud.donante')}
+            name="donanteId"
+            value={solicitud.donanteId}
+            onChange={onInputChange}
+            options={donantes.map((donante) => ({ id: donante.id, nombre: donante.nombre }))}
+            error={errors.donanteId}
+            touched={touched.donanteId}
+          />
         </Grid>
-
-        <Grid item xs={12} sm={6}>
-          <FormControl fullWidth margin="normal" className="formulario-select">
-            <InputLabel>{t('formularioSolicitud.estado')}</InputLabel> 
-            <Select
-              name="estado"
-              value={solicitud.estado ? 1 : 0}
-              onChange={(e) =>
-                onInputChange({
-                  target: { name: "estado", value: e.target.value === 1 },
-                })
-              }
-            >
-              <MenuItem value={1}>{t('formularioSolicitud.activo')}</MenuItem>
-              <MenuItem value={0}>{t('formularioSolicitud.desactivado')}</MenuItem>
-            </Select>
-          </FormControl>
+        <Grid item xs={12} sm={4}>
+          <CustomTextField
+            label={t('formularioSolicitud.estado')}
+            name="estadoNombre"
+            value={solicitud.estadoNombre || t('formularioSolicitud.solicitado')}
+            fullWidth
+            margin="normal"
+            InputProps={{
+              readOnly: true,
+            }}
+          />
         </Grid>
-
-        <Grid item xs={12} style={{ marginBottom: '20px' }}>
-          <TextField
-            label={t('formularioSolicitud.observaciones')} 
+        <Grid item xs={8}>
+          <CustomTextField
+            label={t('formularioSolicitud.observaciones')}
             name="observaciones"
             value={solicitud.observaciones}
             onChange={onInputChange}
@@ -103,89 +111,128 @@ const PaginaFormularioSolicitud = ({
             margin="normal"
             multiline
             rows={3}
-            className="formulario-input"
+            error={Boolean(errors.observaciones)}
+            helperText={errors.observaciones}
+            touched={touched.observaciones}
           />
         </Grid>
       </Grid>
 
-      {/* Sección de agregar detalles */}
-      <Typography component="h2" variant="h5" mt={7} className="formulario-titulo">
+      <CustomTypography variant="h5" className="formulario-titulo" mt={2} textAlign="left">
         {t('formularioSolicitud.agregarDetalles')}
-      </Typography>
+      </CustomTypography>
 
-      <Grid container spacing={2} className="formulario-grid">
-        <Grid item xs={12} sm={6}>
-          <FormControl fullWidth margin="normal" className="formulario-select">
-            <InputLabel>{t('formularioSolicitud.insumo')}</InputLabel> 
-            <Select name="insumoId" value={detalleActual.insumoId} onChange={onDetalleChange}>
-              {Array.isArray(insumos) && insumos.map(insumo => (
-                <MenuItem key={insumo.id} value={insumo.id}>{insumo.nombre}</MenuItem>
-              ))}
-            </Select>
-          </FormControl>
+      <Grid container spacing={2} className="formulario-grid" sx={{ width: '100%' }}>
+        <Grid item xs={12} sm={4}>
+          <CustomSelect
+            label={t('formularioSolicitud.insumo')}
+            name="insumoId"
+            value={detalleActual.insumoId}
+            onChange={onDetalleChange}
+            options={insumos.map((insumo) => ({
+              id: insumo.id,
+              nombre: `${insumo.nombre} - ${insumo.unidadMedida.nombre} (${insumo.valorUnidadMedida})`,
+            }))}
+            error={errors.insumoId}
+            touched={touched.insumoId}
+            placeholder={t('formularioSolicitud.seleccioneInsumo')}
+          />
         </Grid>
 
-        <Grid item xs={12} sm={6}>
-          <FormControl fullWidth margin="normal" className="formulario-select">
-            <InputLabel>{t('formularioSolicitud.marca')}</InputLabel> 
-            <Select name="marcaId" value={detalleActual.marcaId} onChange={onDetalleChange}>
-              {Array.isArray(marcas) && marcas.map(marca => (
-                <MenuItem key={marca.id} value={marca.id}>{marca.nombre}</MenuItem>
-              ))}
-            </Select>
-          </FormControl>
+        {/* Mostrar marcas solo si hay un insumo seleccionado */}
+        <Grid item xs={12} sm={4}>
+          <CustomSelect
+            label={t('formularioSolicitud.marca')}
+            name="marcaId"
+            value={detalleActual.marcaId}
+            onChange={onDetalleChange}
+            options={(insumoSeleccionado ? marcas : []).map((marca) => ({
+              id: marca.id,
+              nombre: marca.nombre,
+            }))}
+            error={errors.marcaId}
+            touched={touched.marcaId}
+            disabled={!insumoSeleccionado}
+            placeholder={!insumoSeleccionado ? t('formularioSolicitud.seleccioneInsumoPrimero') : ''}
+          />
         </Grid>
 
-        <Grid item xs={12} sm={6}>
-          <FormControl fullWidth margin="normal" className="formulario-select">
-            <InputLabel>{t('formularioSolicitud.distribuidor')}</InputLabel> 
-            <Select name="distribuidorId" value={detalleActual.distribuidorId} onChange={onDetalleChange}>
-              {Array.isArray(distribuidores) && distribuidores.map(distribuidor => (
-                <MenuItem key={distribuidor.id} value={distribuidor.id}>{distribuidor.nombre}</MenuItem>
-              ))}
-            </Select>
-          </FormControl>
+        {/* Mostrar distribuidores solo si hay un insumo seleccionado */}
+        <Grid item xs={12} sm={4}>
+          <CustomSelect
+            label={t('formularioSolicitud.distribuidor')}
+            name="distribuidorId"
+            value={detalleActual.distribuidorId}
+            onChange={onDetalleChange}
+            options={(insumoSeleccionado ? distribuidores : []).map((distribuidor) => ({
+              id: distribuidor.id,
+              nombre: distribuidor.nombre,
+            }))}
+            error={errors.distribuidorId}
+            touched={touched.distribuidorId}
+            disabled={!insumoSeleccionado}
+            placeholder={!insumoSeleccionado ? t('formularioSolicitud.seleccioneInsumoPrimero') : ''}
+          />
         </Grid>
 
-        <Grid item xs={12} sm={6}>
-          <FormControl fullWidth margin="normal" className="formulario-select">
-            <InputLabel>{t('formularioSolicitud.presentacion')}</InputLabel> 
-            <Select name="presentacionId" value={detalleActual.presentacionId} onChange={onDetalleChange}>
-              {Array.isArray(presentaciones) && presentaciones.map(presentacion => (
-                <MenuItem key={presentacion.id} value={presentacion.id}>{presentacion.nombre}</MenuItem>
-              ))}
-            </Select>
-          </FormControl>
+        {/* Mostrar presentaciones solo si hay un insumo seleccionado */}
+        <Grid item xs={12} sm={4}>
+          <CustomSelect
+            label={t('formularioSolicitud.presentacion')}
+            name="presentacionId"
+            value={detalleActual.presentacionId}
+            onChange={onDetalleChange}
+            options={(insumoSeleccionado ? presentaciones : []).map((presentacion) => ({
+              id: presentacion.id,
+              nombre: presentacion.nombre,
+            }))}
+            error={errors.presentacionId}
+            touched={touched.presentacionId}
+            disabled={!insumoSeleccionado}
+            placeholder={!insumoSeleccionado ? t('formularioSolicitud.seleccioneInsumoPrimero') : ''}
+          />
         </Grid>
 
-        <Grid item xs={12} sm={6}>
-          <TextField
-            label={t('formularioSolicitud.cantidad')} 
+        <Grid item xs={12} sm={4}>
+          <CustomTextField
+            label={t('formularioSolicitud.cantidad')}
             name="cantidadPresentaciones"
             type="number"
             value={detalleActual.cantidadPresentaciones}
             onChange={onDetalleChange}
             fullWidth
+            inputProps={{ min: 1 }}
             margin="normal"
-            className="formulario-input"
+            error={Boolean(errors.cantidadPresentaciones)}
+            helperText={errors.cantidadPresentaciones}
+            touched={touched.cantidadPresentaciones}
           />
         </Grid>
-
-        <Grid item xs={12} sm={6}>
-          <TextField
-            label={t('formularioSolicitud.analista')} 
-            name="analistaSolicitante"
-            value={detalleActual.analistaSolicitante}
+        <Grid item xs={12} sm={4}>
+          <CustomSelect
+            label={t('formularioSolicitud.estudio')}
+            name="estudioId"
+            value={detalleActual.estudioId}
             onChange={onDetalleChange}
-            fullWidth
-            margin="normal"
-            className="formulario-input"
+            options={estudios.map((estudio) => ({ id: estudio.id, nombre: estudio.nombre }))}
+            error={errors.estudioId}
+            touched={touched.estudioId}
           />
         </Grid>
-
-        <Grid item xs={12}>
-          <TextField
-            label={t('formularioSolicitud.observacion')} 
+        <Grid item xs={12} sm={4}>
+          <CustomSelect
+            label={t('formularioSolicitud.analista')}
+            name="bioanalistaId"
+            value={detalleActual.bioanalistaId}
+            onChange={onDetalleChange}
+            options={bioanalistas.map((analista) => ({ id: analista.id, nombre: `${analista.nombre} ${analista.apellido}` }))}
+            error={errors.bioanalistaId}
+            touched={touched.bioanalistaId}
+          />
+        </Grid>
+        <Grid item xs={12} sm={8}>
+          <CustomTextField
+            label={t('formularioSolicitud.observacion')}
             name="observacion"
             value={detalleActual.observacion}
             onChange={onDetalleChange}
@@ -193,28 +240,44 @@ const PaginaFormularioSolicitud = ({
             margin="normal"
             multiline
             rows={2}
-            className="formulario-input"
+            error={Boolean(errors.observacion)}
+            helperText={errors.observacion}
+            touched={touched.observacion}
           />
         </Grid>
-
-        <Grid item xs={12}  mb={3} mt={3}>
-          <Button variant="contained" color="secondary" onClick={onAgregarDetalle} className="formulario-boton">
-            {t('formularioSolicitud.agregarDetalle')} 
-          </Button>
+        <Grid container justifyContent="center" alignItems="center" sx={{ mb: 2 }}>
+          <CustomButton
+            variant="contained"
+            color="secondary"
+            onClick={onAgregarDetalle}
+            className="formulario-boton"
+            label={t('formularioSolicitud.agregarDetalle')}
+            sx={{ mb: 2 }}
+          />
         </Grid>
       </Grid>
 
-      <TablaGenerica
-        encabezado={t('formularioSolicitud.detallesAgregados')}
-        columnas={columnasDetalles}
-        datos={detalles}
-        mostrarCrear={false}
+      <CustomTypography variant="h5" mt={2} textAlign="left">
+        {t('formularioSolicitud.detallesAgregados')}
+      </CustomTypography>
+      <CustomTypography variant="subtitle2" color="textSecondary" textAlign="left" mb={2}>
+        {t('formularioSolicitud.descripcionDetalles')}
+      </CustomTypography>
+
+      <TablaDetalles
+        detalles={detalles}
+        selectedRows={selectedRows}
+        setSelectedRows={setSelectedRows}
+        columns={columns}
       />
 
-      <Box sx={{ display: 'flex', justifyContent: 'center', mt: 3 }}>
-        <Button variant="contained" color="primary" onClick={onGuardarSolicitud} className="formulario-boton">
-          {t('formularioSolicitud.crearSolicitud')} 
-        </Button>
+      <Box sx={{mb: 4, width: '100%' }}>
+        <CustomButton
+          variant="contained"
+          color="primary"
+          onClick={onGuardarSolicitud}
+          label={t('formularioSolicitud.crearSolicitud')}
+        />
       </Box>
     </Box>
   );

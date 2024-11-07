@@ -1,94 +1,87 @@
 import React from 'react';
-import { Box, Button, Grid, TextField, Typography } from '@mui/material';
-import '@/assets/styles/formularios.css'; // Importar el archivo CSS
-import { useTranslation } from 'react-i18next'; // Hook de traducción
+import { Box, Grid } from '@mui/material';
+import { useTranslation } from 'react-i18next';
+import '@/assets/styles/formularios.css';
+import CustomTextField from '@/components/comun/CustomTextField';
+import CustomButton from '@/components/comun/CustomButton';
+import CustomTypography from '@/components/comun/CustomTypography';
 
+/**
+ * PaginaFormularioUnidad - Formulario para crear o actualizar una unidad.
+ * 
+ * @param {object} unidad - Datos actuales de la unidad.
+ * @param {function} onChange - Función para manejar los cambios en los campos del formulario.
+ * @param {function} onSave - Función para manejar el envío del formulario.
+ * @param {boolean} error - Indica si hay un error al cargar los datos.
+ * @param {boolean} isEditing - Indica si el formulario está en modo de edición.
+ * @param {object} formik - Objeto de Formik que maneja el estado y la validación del formulario.
+ * 
+ * @returns {JSX.Element} Formulario de creación o edición de una unidad.
+ */
 const PaginaFormularioUnidad = ({ unidad, onChange, onSave, error, isEditing, formik }) => {
-  const { t } = useTranslation(); // Hook de traducción
+  const { t } = useTranslation();
 
   return (
     <Box className="formulario-container">
-      <Typography
+      {/* Título dinámico del formulario */}
+      <CustomTypography
         component="h1"
-        className="formulario-titulo"
         variant="h4"
         mb={1}
-        textAlign="left"
+        className="formulario-titulo"
       >
         {isEditing ? t('formularioUnidad.actualizarTitulo') : t('formularioUnidad.crearTitulo')}
-      </Typography>
+      </CustomTypography>
 
-      <Typography
-        className="formulario-subtitulo"
+      {/* Subtítulo dinámico */}
+      <CustomTypography
         variant="subtitle1"
         mb={3}
-        textAlign="left"
+        className="formulario-subtitulo"
         color="textSecondary"
       >
         {isEditing ? t('formularioUnidad.actualizarSubtitulo') : t('formularioUnidad.crearSubtitulo')}
-      </Typography>
+      </CustomTypography>
 
+      {/* Mensaje de error si existe */}
       {error ? (
-        <Typography variant="h6" color="error" textAlign="center">
+        <CustomTypography variant="h6" color="error" textAlign="center">
           {t('formularioUnidad.errorCargar')}
-        </Typography>
+        </CustomTypography>
       ) : (
         <form onSubmit={onSave}>
           <Grid container spacing={2}>
             {/* Campo Nombre */}
             <Grid item xs={12} sm={6}>
-              <TextField
+              <CustomTextField
                 label={t('formularioUnidad.nombreLabel')}
                 name="nombre"
                 value={formik.values.nombre}
                 onChange={onChange}
-                fullWidth
-                margin="normal"
                 error={formik.touched.nombre && Boolean(formik.errors.nombre)}
                 helperText={formik.touched.nombre && formik.errors.nombre}
-                InputLabelProps={{
-                  sx: { color: 'text.secondary', fontSize: '16px' },
-                  shrink: true,
-                }}
-                InputProps={{
-                  className: 'formulario-input', // Aplicar clase CSS
-                  autoComplete: 'off', // Desactivar autocompletado
-                }}
               />
             </Grid>
 
             {/* Campo Abreviatura */}
             <Grid item xs={12} sm={6}>
-              <TextField
+              <CustomTextField
                 label={t('formularioUnidad.abreviaturaLabel')}
                 name="abreviatura"
                 value={formik.values.abreviatura}
                 onChange={onChange}
-                fullWidth
-                margin="normal"
                 error={formik.touched.abreviatura && Boolean(formik.errors.abreviatura)}
                 helperText={formik.touched.abreviatura && formik.errors.abreviatura}
-                InputLabelProps={{
-                  sx: { color: 'text.secondary', fontSize: '16px' },
-                  shrink: true,
-                }}
-                InputProps={{
-                  className: 'formulario-input', // Aplicar clase CSS
-                  autoComplete: 'off', // Desactivar autocompletado
-                }}
               />
             </Grid>
           </Grid>
 
+          {/* Botón de envío */}
           <Box sx={{ display: 'flex', justifyContent: 'center', mt: 3 }}>
-            <Button
-              variant="contained"
-              color="primary"
+            <CustomButton
+              label={isEditing ? t('formularioUnidad.botonActualizar') : t('formularioUnidad.botonCrear')}
               type="submit"
-              className="formulario-boton" // Aplicar clase CSS
-            >
-              {isEditing ? t('formularioUnidad.botonActualizar') : t('formularioUnidad.botonCrear')}
-            </Button>
+            />
           </Box>
         </form>
       )}

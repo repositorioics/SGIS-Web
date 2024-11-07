@@ -40,7 +40,10 @@ const ContenedorSitios = lazy(() => import('@/containers/inventorio/ContenedorSi
 const ContenedorFormularioSitio = lazy(() => import('@/containers/inventorio/formularios/ContenedorFormularioSitio'));
 
 const ContenedorRoles = lazy(() => import('@/containers/configuracion/ContenedorRoles'));
+const ContenedorFormularioRol = lazy(() => import('@/containers/configuracion/formularios/ContenedorFormularioRol'));
+
 const ContenedorPermisos = lazy(() => import('@/containers/configuracion/ContenedorPermisos'));
+const ContenedorFormularioPermiso = lazy(() => import('@/containers/configuracion/formularios/ContenedorFormularioPermiso'));
 
 const ContenedorBodegas = lazy(() => import('@/containers/inventorio/ContenedorBodegas'));
 const ContenedorFormularioBodega = lazy(() => import('@/containers/inventorio/formularios/ContenedorFormularioBodega'));
@@ -53,13 +56,15 @@ const ContenedorSolicitudes = lazy(() => import('@/containers/solicitudes/Conten
 const ContenedorFormularioSolicitud = lazy(() => import('@/containers/solicitudes/formularios/ContenedorFormularioSolicitud'));
 const ContenedorPedidos = lazy(() => import('@/containers/solicitudes/ContenedorPedidos'));
 const ContenedorAutorizaciones = lazy(() => import('@/containers/solicitudes/ContenedorAutorizaciones'));
+const ContenedorAutorizacionSolicitud = lazy(() => import('@/containers/solicitudes/formularios/ContenedorAutorizacionSolicitud'));
+const ContenedorFormularioPedido = lazy(() => import('@/containers/solicitudes/formularios/ContenedorFormularioPedido'));
 
 // Módulo de requisas y entregas
 import ContenedorRequisas from '@/containers/requisas/ContenedorRequisas';
 import ContenedorFormularioRequisa from '@/containers/requisas/formularios/ContenedorFormularioRequisa';
 import ContenedorEntregas from '@/containers/requisas/ContenedorEntregas';
 import ContenedorFormularioEntrega from '@/containers/requisas/formularios/ContenedorFormularioEntrega';
-
+import ContenedorNotificaciones from '@/containers/configuracion/ContenedorNotificaciones';
 // Página de error 404
 import PaginaNoEncontrada from "@/pages/PaginaNoEncontrada";
 
@@ -140,12 +145,32 @@ const rutas = [
     element: <RutaProtegida><ContenedorFormularioUsuario /></RutaProtegida>,
   },
   {
+    path: '/configuraciones/usuarios/actualizar/:id',
+    element: <RutaProtegida><ContenedorFormularioUsuario /></RutaProtegida>,
+  },
+  {
     path: '/configuraciones/roles',
     element: <RutaProtegida><ContenedorRoles /></RutaProtegida>,
   },
   {
+    path: '/configuraciones/roles/crear',
+    element: <RutaProtegida><ContenedorFormularioRol /></RutaProtegida>,
+  },
+  {
+    path: '/configuraciones/actualizar/:id',
+    element: <RutaProtegida><ContenedorFormularioRol /></RutaProtegida>,
+  },
+  {
     path: '/configuraciones/permisos',
     element: <RutaProtegida><ContenedorPermisos /></RutaProtegida>,
+  },
+  {
+    path: '/configuraciones/permisos/crear',
+    element: <RutaProtegida><ContenedorFormularioPermiso/></RutaProtegida>,
+  },
+  {
+    path: '/configuraciones/permisos/actualizar/:id',
+    element: <RutaProtegida><ContenedorFormularioPermiso/></RutaProtegida>,
   },
 
   // Rutas del módulo de Donantes, Sitios y Estudios
@@ -232,7 +257,7 @@ const rutas = [
     ),
   },
   {
-    path: '/inventario/presentacion/actualizar/:id',  // Para editar una presentación específica
+    path: '/inventario/presentacion/actualizar/:id',
     element: (
       <RutaProtegida>
         <ContenedorFormularioPresentacion />
@@ -246,12 +271,28 @@ const rutas = [
     element: <RutaProtegida><ContenedorSolicitudes /></RutaProtegida>,
   },
   {
+    path: '/solicitudes/solicitud/crear',
+    element: <RutaProtegida><ContenedorFormularioSolicitud /></RutaProtegida>,
+  },
+  {
+    path: '/solicitudes/solicitud/actualizar/:id',
+    element: <RutaProtegida><ContenedorFormularioSolicitud /></RutaProtegida>,
+  },
+  {
     path: '/solicitudes/gestion-autorizaciones',
     element: <RutaProtegida><ContenedorAutorizaciones /></RutaProtegida>,
   },
   {
+    path: '/solicitudes/gestion-autorizaciones/detalle/:id',
+    element: <RutaProtegida><ContenedorAutorizacionSolicitud /></RutaProtegida>,
+  },
+  {
     path: '/solicitudes/consolidar-pedido',
     element: <RutaProtegida><ContenedorPedidos /></RutaProtegida>,
+  },
+  {
+    path: '/solicitudes/pedidos/crear/:id',
+    element: <RutaProtegida><ContenedorFormularioPedido /></RutaProtegida>,
   },
 
   // Rutas del módulo de Requisas y Entregas
@@ -266,6 +307,9 @@ const rutas = [
   {
     path: '/entregas/crear',
     element: <RutaProtegida><ContenedorFormularioEntrega /></RutaProtegida>,
+  },{
+    path: '/notificaciones',
+    element: <RutaProtegida><ContenedorNotificaciones /></RutaProtegida>,
   },
 ];
 

@@ -1,17 +1,12 @@
 import React from "react";
-import {
-  Box,
-  Button,
-  Grid,
-  TextField,
-  Typography,
-  Select,
-  MenuItem,
-  FormControl,
-  InputLabel,
-} from "@mui/material";
+import { Box, Grid } from "@mui/material";
+import { useTranslation } from "react-i18next";
 import "@/assets/styles/formularios.css";
-import { useTranslation } from 'react-i18next';
+import CustomTextField from "@/components/comun/CustomTextField";
+import CustomSelect from "@/components/comun/CustomSelect";
+import CustomButton from "@/components/comun/CustomButton";
+import CustomTypography from "@/components/comun/CustomTypography";
+import TablaDetalles from "@/components/TablaDetalles";
 
 const PaginaFormularioInsumo = ({
   insumo,
@@ -22,224 +17,212 @@ const PaginaFormularioInsumo = ({
   presentaciones,
   onInputChange,
   onGuardarInsumo,
-  isUpdating
+  isEditing,
+  errors,
+  touched,
+  handleAddDetail,
+  handleRemoveDetail
 }) => {
-  const { t } = useTranslation(); // Usar hook de traducción
+  const { t } = useTranslation();
 
   return (
     <Box className="formulario-container">
-      <Typography
-        component="h1"
-        variant="h4"
-        mb={1}
-        className="formulario-titulo"
+      <CustomTypography variant="h4" className="formulario-titulo" mb={1}>
+        {isEditing ? t("formularioInsumo.actualizarTitulo") : t("formularioInsumo.crearTitulo")}
+      </CustomTypography>
+
+      <CustomTypography
+        variant="subtitle1"
+        color="textSecondary"
+        className="formulario-subtitulo"
+        mb={3}
+        textAlign="left"
       >
-        {isUpdating ? t('formularioInsumo.actualizarTitulo') : t('formularioInsumo.crearTitulo')}
-      </Typography>
+        {isEditing ? t('formularioInsumo.actualizarSubtitulo') : t('formularioInsumo.crearSubtitulo')}
+      </CustomTypography>
 
       <Grid container spacing={2} className="formulario-grid">
-        {/* Campo Nombre */}
+        {/* Campos de texto principales */}
         <Grid item xs={12} sm={6}>
-          <TextField
-            label={t('formularioInsumo.nombreLabel')}
+          <CustomTextField
+            label={t("formularioInsumo.nombreLabel")}
             name="nombre"
             value={insumo.nombre}
             onChange={onInputChange}
-            fullWidth
-            margin="normal"
-            className="formulario-input"
-            autoComplete="off" // Desactivar autocompletado
+            error={touched.nombre && Boolean(errors.nombre)}
+            helperText={touched.nombre && errors.nombre}
           />
         </Grid>
 
-        {/* Campo Descripción */}
         <Grid item xs={12} sm={6}>
-          <TextField
-            label={t('formularioInsumo.descripcionLabel')}
+          <CustomTextField
+            label={t("formularioInsumo.descripcionLabel")}
             name="descripcion"
             value={insumo.descripcion}
             onChange={onInputChange}
-            fullWidth
-            margin="normal"
-            className="formulario-input"
-            autoComplete="off" // Desactivar autocompletado
+            error={touched.descripcion && Boolean(errors.descripcion)}
+            helperText={touched.descripcion && errors.descripcion}
           />
         </Grid>
 
-        {/* Selector Categoría */}
+        {/* Selectores para categoría y unidad de medida */}
         <Grid item xs={12} sm={6}>
-          <FormControl fullWidth margin="normal" className="formulario-select">
-            <InputLabel>{t('formularioInsumo.categoriaLabel')}</InputLabel>
-            <Select
-              name="categoriaId"
-              value={insumo.categoriaId}
-              onChange={onInputChange}
-              autoComplete="off" // Desactivar autocompletado
-            >
-              {categorias.length > 0 ? (
-                categorias.map(categoria => (
-                  <MenuItem key={categoria.id} value={categoria.id}>
-                    {categoria.nombre}
-                  </MenuItem>
-                ))
-              ) : (
-                <MenuItem disabled>{t('formularioInsumo.cargandoCategorias')}</MenuItem>
-              )}
-            </Select>
-          </FormControl>
+          <CustomSelect
+            label={t("formularioInsumo.categoriaLabel")}
+            name="categoriaId"
+            value={insumo.categoriaId}
+            onChange={onInputChange}
+            options={categorias.map((categoria) => ({ id: categoria.id, nombre: categoria.nombre }))}
+            error={touched.categoriaId && Boolean(errors.categoriaId)}
+            helperText={touched.categoriaId && errors.categoriaId}
+          />
         </Grid>
 
-        {/* Selector Unidad de Medida */}
         <Grid item xs={12} sm={6}>
-          <FormControl fullWidth margin="normal" className="formulario-select">
-            <InputLabel>{t('formularioInsumo.unidadMedidaLabel')}</InputLabel>
-            <Select
-              name="unidadMedidaId"
-              value={insumo.unidadMedidaId}
-              onChange={onInputChange}
-              autoComplete="off" // Desactivar autocompletado
-            >
-              {unidadesMedida.length > 0 ? (
-                unidadesMedida.map(unidad => (
-                  <MenuItem key={unidad.id} value={unidad.id}>
-                    {unidad.nombre}
-                  </MenuItem>
-                ))
-              ) : (
-                <MenuItem disabled>{t('formularioInsumo.cargandoUnidades')}</MenuItem>
-              )}
-            </Select>
-          </FormControl>
+          <CustomSelect
+            label={t("formularioInsumo.unidadMedidaLabel")}
+            name="unidadMedidaId"
+            value={insumo.unidadMedidaId}
+            onChange={onInputChange}
+            options={unidadesMedida.map((unidad) => ({ id: unidad.id, nombre: unidad.nombre }))}
+            error={touched.unidadMedidaId && Boolean(errors.unidadMedidaId)}
+            helperText={touched.unidadMedidaId && errors.unidadMedidaId}
+          />
         </Grid>
 
-        {/* Selector Marca */}
         <Grid item xs={12} sm={6}>
-          <FormControl fullWidth margin="normal" className="formulario-select">
-            <InputLabel>{t('formularioInsumo.marcaLabel')}</InputLabel>
-            <Select
-              name="marcasId"
-              value={insumo.marcasId}
-              onChange={onInputChange}
-              multiple
-              autoComplete="off" // Desactivar autocompletado
-              MenuProps={{
-                PaperProps: {
-                  style: {
-                    maxHeight: 224,
-                    width: 250,
-                  },
-                },
-              }}
-            >
-              {marcas.length > 0 ? (
-                marcas.map(marca => (
-                  <MenuItem key={marca.id} value={marca.id}>
-                    {marca.nombre}
-                  </MenuItem>
-                ))
-              ) : (
-                <MenuItem disabled>{t('formularioInsumo.cargandoMarcas')}</MenuItem>
-              )}
-            </Select>
-          </FormControl>
+          <CustomTextField
+            label={t("formularioInsumo.valorUnidadMedidaLabel")}
+            name="valorUnidadMedida"
+            type="number"
+            value={insumo.valorUnidadMedida}
+            onChange={onInputChange}
+            error={touched.valorUnidadMedida && Boolean(errors.valorUnidadMedida)}
+            helperText={touched.valorUnidadMedida && errors.valorUnidadMedida}
+          />
         </Grid>
 
-        {/* Selector Distribuidor */}
-        <Grid item xs={12} sm={6}>
-          <FormControl fullWidth margin="normal" className="formulario-select">
-            <InputLabel>{t('formularioInsumo.distribuidorLabel')}</InputLabel>
-            <Select
-              name="distribuidoresId"
-              value={insumo.distribuidoresId}
-              onChange={onInputChange}
-              multiple
-              autoComplete="off" // Desactivar autocompletado
-              MenuProps={{
-                PaperProps: {
-                  style: {
-                    maxHeight: 224,
-                    width: 250,
-                  },
-                },
-              }}
-            >
-              {distribuidores.length > 0 ? (
-                distribuidores.map(distribuidor => (
-                  <MenuItem key={distribuidor.id} value={distribuidor.id}>
-                    {distribuidor.nombre}
-                  </MenuItem>
-                ))
-              ) : (
-                <MenuItem disabled>{t('formularioInsumo.cargandoDistribuidores')}</MenuItem>
-              )}
-            </Select>
-          </FormControl>
-        </Grid>
+        {/* Sección para agregar marcas y códigos */}
+        <Grid item xs={12}>
+          <CustomTypography variant="h6" className="formulario-titulo" mt={2}>
+            {t("formularioInsumo.seccionMarcas")}
+          </CustomTypography>
 
-        {/* Selector Presentación */}
-        <Grid item xs={12} sm={6}>
-          <FormControl fullWidth margin="normal" className="formulario-select">
-            <InputLabel>{t('formularioInsumo.presentacionLabel')}</InputLabel>
-            <Select
-              name="presentacionesId"
-              value={insumo.presentacionesId}
-              onChange={onInputChange}
-              multiple
-              autoComplete="off" // Desactivar autocompletado
-              MenuProps={{
-                PaperProps: {
-                  style: {
-                    maxHeight: 224,
-                    width: 250,
-                  },
-                },
-              }}
-            >
-              {presentaciones.length > 0 ? (
-                presentaciones.map(presentacion => (
-                  <MenuItem key={presentacion.id} value={presentacion.id}>
-                    {presentacion.nombre}
-                  </MenuItem>
-                ))
-              ) : (
-                <MenuItem disabled>{t('formularioInsumo.cargandoPresentaciones')}</MenuItem>
-              )}
-            </Select>
-          </FormControl>
-        </Grid>
+          <CustomTypography
+            variant="subtitle1"
+            color="textSecondary"
+            className="formulario-subtitulo"
+            mb={3}
+            textAlign="left"
+          >
+            {t("formularioInsumo.seccionMarcasSubtitulo")}
+          </CustomTypography>
 
-        {/* Campo Estado para la actualización */}
-        {isUpdating && (
-          <Grid item xs={12} sm={6}>
-            <FormControl fullWidth margin="normal" className="formulario-select">
-              <InputLabel>{t('formularioInsumo.estadoLabel')}</InputLabel>
-              <Select
-                name="activo"
-                value={insumo.activo ? 1 : 0}
-                onChange={(e) =>
-                  onInputChange({
-                    target: { name: 'activo', value: e.target.value === 1 },
-                  })
-                }
-              >
-                <MenuItem value={1}>{t('formularioInsumo.activo')}</MenuItem>
-                <MenuItem value={0}>{t('formularioInsumo.desactivado')}</MenuItem>
-              </Select>
-            </FormControl>
+          <Grid container spacing={2} alignItems="center">
+            <Grid item xs={12} sm={4}>
+              <CustomSelect
+                label={t("formularioInsumo.marcaLabel")}
+                name="marcaId"
+                value={insumo.marcaId || ''}
+                onChange={onInputChange}
+                options={marcas.map((m) => ({ id: m.id, nombre: m.nombre }))}
+                error={touched.marcaId && Boolean(errors.marcaId)}
+                helperText={touched.marcaId && errors.marcaId}
+              />
+            </Grid>
+            <Grid item xs={12} sm={4}>
+              <CustomTextField
+                label={t("formularioInsumo.codigoMarcaLabel")}
+                name="codigoMarca"
+                value={insumo.codigoMarca || ''}
+                onChange={onInputChange}
+                error={touched.codigoMarca && Boolean(errors.codigoMarca)}
+                helperText={touched.codigoMarca && errors.codigoMarca}
+              />
+            </Grid>
+            <Grid item xs={12} sm={4}>
+              <CustomButton
+                color="secondary"
+                label={t("acciones.agregar")}
+                onClick={() => handleAddDetail("marcas")}
+              />
+            </Grid>
           </Grid>
-        )}
+
+          <TablaDetalles
+            detalles={insumo.detallesMarcas}
+            columns={[
+              { header: t("formularioInsumo.marcaLabel"), field: "nombreMarca" },
+              { header: t("formularioInsumo.codigoMarcaLabel"), field: "codigoMarca" },
+            ]}
+            handleRemoveDetail={(index) => handleRemoveDetail("detallesMarcas", index)}
+          />
+        </Grid>
+
+        {/* Sección para agregar distribuidores y códigos */}
+        <Grid item xs={12}>
+          <CustomTypography variant="h6" className="formulario-titulo" mt={2}>
+            {t("formularioInsumo.seccionDistribuidores")}
+          </CustomTypography>
+
+          <CustomTypography
+            variant="subtitle1"
+            color="textSecondary"
+            className="formulario-subtitulo"
+            mb={3}
+            textAlign="left"
+          >
+            {t("formularioInsumo.seccionDistribuidoresSubtitulo")}
+          </CustomTypography>
+
+          <Grid container spacing={2} alignItems="center">
+            <Grid item xs={12} sm={4}>
+              <CustomSelect
+                label={t("formularioInsumo.distribuidorLabel")}
+                name="distribuidorId"
+                value={insumo.distribuidorId || ''}
+                onChange={onInputChange}
+                options={distribuidores.map((d) => ({ id: d.id, nombre: d.nombre }))}
+                error={touched.distribuidorId && Boolean(errors.distribuidorId)}
+                helperText={touched.distribuidorId && errors.distribuidorId}
+              />
+            </Grid>
+            <Grid item xs={12} sm={4}>
+              <CustomTextField
+                label={t("formularioInsumo.codigoDistribuidorLabel")}
+                name="codigoDistribuidor"
+                value={insumo.codigoDistribuidor || ''}
+                onChange={onInputChange}
+                error={touched.codigoDistribuidor && Boolean(errors.codigoDistribuidor)}
+                helperText={touched.codigoDistribuidor && errors.codigoDistribuidor}
+              />
+            </Grid>
+            <Grid item xs={12} sm={4}>
+              <CustomButton
+                color="secondary"
+                label={t("acciones.agregar")}
+                onClick={() => handleAddDetail("distribuidores")}
+              />
+            </Grid>
+          </Grid>
+
+          <TablaDetalles
+            detalles={insumo.detallesDistribuidores}
+            columns={[
+              { header: t("formularioInsumo.distribuidorLabel"), field: "nombreDistribuidor" },
+              { header: t("formularioInsumo.codigoDistribuidorLabel"), field: "codigoDistribuidor" },
+            ]}
+            handleRemoveDetail={(index) => handleRemoveDetail("detallesDistribuidores", index)}
+          />
+        </Grid>
       </Grid>
 
-      {/* Botón de guardar */}
-      <Box sx={{ display: 'flex', justifyContent: 'center', mt: 3 }}>
-        <Button
-          variant="contained"
-          color="primary"
+      {/* Botón de creación/actualización */}
+      <Box mt={2} mb={4} display="flex" justifyContent="center">
+        <CustomButton
+          label={isEditing ? t("formularioInsumo.botonActualizar") : t("formularioInsumo.botonCrear")}
           onClick={onGuardarInsumo}
-          className="formulario-boton"
-        >
-          {isUpdating ? t('formularioInsumo.botonActualizar') : t('formularioInsumo.botonCrear')}
-        </Button>
+        />
       </Box>
     </Box>
   );

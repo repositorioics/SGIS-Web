@@ -1,117 +1,100 @@
 import React from 'react';
-import { Box, Button, Grid, TextField, Typography } from '@mui/material';
-import '@/assets/styles/formularios.css'; // Importar el archivo CSS
-import { useTranslation } from 'react-i18next'; // Hook de traducción
+import { Box, Grid } from '@mui/material';
+import { useTranslation } from 'react-i18next';
+import '@/assets/styles/formularios.css';
+import CustomTextField from '@/components/comun/CustomTextField';
+import CustomButton from '@/components/comun/CustomButton';
+import CustomTypography from '@/components/comun/CustomTypography';
 
+/**
+ * PaginaFormularioPresentacion - Formulario para crear o actualizar una presentación.
+ * 
+ * @param {object} presentacion - Datos actuales de la presentación.
+ * @param {function} onChange - Función para manejar los cambios en los campos del formulario.
+ * @param {function} onSave - Función para manejar el envío del formulario.
+ * @param {boolean} error - Indica si hay un error al cargar los datos.
+ * @param {boolean} isEditing - Indica si el formulario está en modo de edición.
+ * @param {object} formik - Objeto de Formik que maneja el estado y la validación del formulario.
+ * 
+ * @returns {JSX.Element} Formulario de creación o edición de una presentación.
+ */
 const PaginaFormularioPresentacion = ({ presentacion, onChange, onSave, error, isEditing, formik }) => {
-  const { t } = useTranslation(); // Usar hook de traducción
+  const { t } = useTranslation();
 
   return (
     <Box className="formulario-container">
-      <Typography
+      {/* Título dinámico del formulario */}
+      <CustomTypography
         component="h1"
-        className="formulario-titulo"
         variant="h4"
         mb={1}
-        textAlign="left"
+        className="formulario-titulo"
       >
         {isEditing ? t('formularioPresentacion.actualizarTitulo') : t('formularioPresentacion.crearTitulo')}
-      </Typography>
+      </CustomTypography>
 
-      <Typography
-        className="formulario-subtitulo"
+      {/* Subtítulo dinámico */}
+      <CustomTypography
         variant="subtitle1"
         mb={3}
-        textAlign="left"
+        className="formulario-subtitulo"
         color="textSecondary"
       >
         {isEditing ? t('formularioPresentacion.actualizarSubtitulo') : t('formularioPresentacion.crearSubtitulo')}
-      </Typography>
+      </CustomTypography>
 
+      {/* Mensaje de error si existe */}
       {error ? (
-        <Typography variant="h6" color="error" textAlign="center">
+        <CustomTypography variant="h6" color="error" textAlign="center">
           {t('formularioPresentacion.errorCargar')}
-        </Typography>
+        </CustomTypography>
       ) : (
         <form onSubmit={onSave}>
           <Grid container spacing={2}>
             {/* Campo Nombre */}
             <Grid item xs={12} sm={6}>
-              <TextField
+              <CustomTextField
                 label={t('formularioPresentacion.nombreLabel')}
                 name="nombre"
                 value={formik.values.nombre}
                 onChange={onChange}
-                fullWidth
-                margin="normal"
                 error={formik.touched.nombre && Boolean(formik.errors.nombre)}
                 helperText={formik.touched.nombre && formik.errors.nombre}
-                InputLabelProps={{
-                  sx: { color: 'text.secondary', fontSize: '16px' },
-                  shrink: true,
-                }}
-                InputProps={{
-                  className: 'formulario-input', // Aplicar clase CSS
-                  autoComplete: 'off', // Desactivar autocompletado
-                }}
               />
             </Grid>
 
             {/* Campo Descripción */}
             <Grid item xs={12} sm={6}>
-              <TextField
+              <CustomTextField
                 label={t('formularioPresentacion.descripcionLabel')}
                 name="descripcion"
                 value={formik.values.descripcion}
                 onChange={onChange}
-                fullWidth
-                margin="normal"
                 error={formik.touched.descripcion && Boolean(formik.errors.descripcion)}
                 helperText={formik.touched.descripcion && formik.errors.descripcion}
-                InputLabelProps={{
-                  sx: { color: 'text.secondary', fontSize: '16px' },
-                  shrink: true,
-                }}
-                InputProps={{
-                  className: 'formulario-input', // Aplicar clase CSS
-                  autoComplete: 'off', // Desactivar autocompletado
-                }}
               />
             </Grid>
 
             {/* Campo Unidades por Presentación */}
             <Grid item xs={12} sm={6}>
-              <TextField
+              <CustomTextField
                 label={t('formularioPresentacion.unidadesPresentacionLabel')}
                 name="unidadesPresentacion"
                 type="number"
                 value={formik.values.unidadesPresentacion}
                 onChange={onChange}
-                fullWidth
-                margin="normal"
                 error={formik.touched.unidadesPresentacion && Boolean(formik.errors.unidadesPresentacion)}
                 helperText={formik.touched.unidadesPresentacion && formik.errors.unidadesPresentacion}
-                InputLabelProps={{
-                  sx: { color: 'text.secondary', fontSize: '16px' },
-                  shrink: true,
-                }}
-                InputProps={{
-                  className: 'formulario-input', // Aplicar clase CSS
-                  autoComplete: 'off', // Desactivar autocompletado
-                }}
               />
             </Grid>
           </Grid>
 
+          {/* Botón de envío */}
           <Box sx={{ display: 'flex', justifyContent: 'center', mt: 3 }}>
-            <Button
-              variant="contained"
-              color="primary"
+            <CustomButton
+              label={isEditing ? t('formularioPresentacion.botonActualizar') : t('formularioPresentacion.botonCrear')}
               type="submit"
-              className="formulario-boton" // Aplicar clase CSS
-            >
-              {isEditing ? t('formularioPresentacion.botonActualizar') : t('formularioPresentacion.botonCrear')}
-            </Button>
+            />
           </Box>
         </form>
       )}

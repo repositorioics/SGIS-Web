@@ -7,5 +7,8 @@ export default defineConfig({
     alias: {
       '@': '/src', // Esto permite usar '@' como alias de la carpeta src
     },
+    define: {
+      global: {}, // Definir `global` como un objeto vacío
+    },
   },
 });

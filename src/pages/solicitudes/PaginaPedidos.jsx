@@ -6,11 +6,11 @@ import '@/assets/styles/inventario/estilosInventario.css';
 import { useTranslation } from 'react-i18next';
 
 /**
- * Renderiza la página de pedidos con una tabla y opciones para crear, buscar, actualizar y eliminar pedidos.
+ * Renderizar la página de pedidos con una tabla de pedidos y opciones para crear, actualizar y eliminar.
  */
 const PaginaPedidos = ({
   columnas,
-  datos,
+  datos = [], // Establece un arreglo vacío por defecto
   cargando,
   error,
   manejarCrear,
@@ -23,20 +23,18 @@ const PaginaPedidos = ({
   manejarActualizar,
   manejarEliminar,
 }) => {
-  const { t } = useTranslation(); // Hook para traducciones
+  const { t } = useTranslation();
 
   if (cargando) return <Cargador />;
   if (error) return <MensajeError mensaje={error.message} />;
 
   return (
     <div className="seccion-principal">
-      {/* Encabezado de la página de gestión de pedidos */}
       <div className="cabecera-inicio">
         <h2 className="titulo-inicio">{t('paginaPedidos.titulo')}</h2>
         <p className="subtitulo-inicio">{t('paginaPedidos.subtitulo')}</p>
       </div>
 
-      {/* Sección principal que contiene la tabla de pedidos */}
       <div className="seccion-inventario">
         <TablaGenerica
           encabezado={t('paginaPedidos.encabezadoTabla')}
@@ -48,10 +46,10 @@ const PaginaPedidos = ({
           paginaActual={paginaActual}
           setPagina={setPaginaActual}
           pageSize={pageSize}
+          mostrarCrear={false}
           setPageSize={setPageSize}
           manejarActualizar={manejarActualizar}
           manejarEliminar={manejarEliminar}
-          mostrarCrear={false}
         />
       </div>
     </div>

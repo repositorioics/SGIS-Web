@@ -28,7 +28,7 @@ const ContenedorPermisos = () => {
    * Navegar a la página de creación de un nuevo permiso.
    */
   const manejarCrear = () => {
-    navigate('/permisos/crear');
+    navigate('/configuraciones/permisos/crear');
   };
 
   /**
@@ -37,7 +37,8 @@ const ContenedorPermisos = () => {
    */
   const manejarActualizar = (permiso) => {
     if (permiso && permiso.id) {
-      navigate(`/permisos/actualizar/${permiso.id}`);
+      console.log(permiso)
+      navigate(`/configuraciones/permisos/actualizar/${permiso.id}`);
     } else {
       // Mostrar error si no hay un ID válido
       toast.error(t('paginaPermisos.errorActualizar'));

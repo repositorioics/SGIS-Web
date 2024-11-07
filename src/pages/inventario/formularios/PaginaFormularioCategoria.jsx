@@ -1,100 +1,91 @@
 import React from 'react';
-import { Box, Button, Grid, TextField, Typography } from '@mui/material';
-import '@/assets/styles/formularios.css'; // Importar el archivo CSS
-import { useTranslation } from 'react-i18next'; // Importar el hook de traducción
+import { Box, Grid } from '@mui/material';
+import { useTranslation } from 'react-i18next';
+import '@/assets/styles/formularios.css';
+import CustomTextField from '@/components/comun/CustomTextField';
+import CustomButton from '@/components/comun/CustomButton';
+import CustomTypography from '@/components/comun/CustomTypography';
 
-const PaginaFormularioCategoria = ({ categoria, onChange, onSave, error, isEditing, formik }) => {
-  const { t } = useTranslation(); // Usar el hook de traducción
+/**
+ * PaginaFormularioDistribuidor - Formulario para gestionar distribuidores
+ * 
+ * Este componente permite crear o actualizar un distribuidor, con campos específicos para su información.
+ * 
+ * @param {object} distribuidor - Datos del distribuidor a gestionar.
+ * @param {function} onChange - Función para manejar cambios en los campos del formulario.
+ * @param {function} onSave - Función para manejar el evento de envío del formulario.
+ * @param {boolean} error - Indica si hay un error general en la carga de datos.
+ * @param {boolean} isEditing - Determina si el formulario está en modo de edición (true) o creación (false).
+ * @param {object} formik - Objeto formik que gestiona valores y validaciones de los campos.
+ * 
+ * @returns {JSX.Element} Formulario con campos para gestionar la información de un distribuidor.
+ */
+const PaginaFormularioDistribuidor = ({ distribuidor, onChange, onSave, error, isEditing, formik }) => {
+  const { t } = useTranslation();
 
   return (
     <Box className="formulario-container">
-      <Typography
-        component="h1"
-        className="formulario-titulo"
+      {/* Título del formulario, que se adapta al modo de operación */}
+      <CustomTypography
         variant="h4"
+        className="formulario-titulo"
         mb={1}
         textAlign="left"
       >
-        {isEditing ? t('formularioCategoria.actualizarTitulo') : t('formularioCategoria.crearTitulo')}
-      </Typography>
+        {isEditing ? t('formularioDistribuidor.actualizarTitulo') : t('formularioDistribuidor.crearTitulo')}
+      </CustomTypography>
 
-      <Typography
-        className="formulario-subtitulo"
+      {/* Subtítulo descriptivo */}
+      <CustomTypography
         variant="subtitle1"
+        color="textSecondary"
+        className="formulario-subtitulo"
         mb={3}
         textAlign="left"
-        color="textSecondary"
       >
-        {isEditing ? t('formularioCategoria.actualizarSubtitulo') : t('formularioCategoria.crearSubtitulo')}
-      </Typography>
+        {isEditing ? t('formularioDistribuidor.actualizarSubtitulo') : t('formularioDistribuidor.crearSubtitulo')}
+      </CustomTypography>
 
       {error ? (
-        <Typography variant="h6" color="error" textAlign="center">
-          {t('formularioCategoria.errorCargar')}
-        </Typography>
+        <CustomTypography variant="h6" color="error" textAlign="center">
+          {t('formularioDistribuidor.errorCargar')}
+        </CustomTypography>
       ) : (
         <form onSubmit={onSave}>
           <Grid container spacing={2}>
-            {/* Campo Nombre */}
+            {/* Campo para el nombre del distribuidor */}
             <Grid item xs={12}>
-              <TextField
-                label={t('formularioCategoria.nombreLabel')}
+              <CustomTextField
+                label={t('formularioDistribuidor.nombreLabel')}
                 name="nombre"
                 value={formik.values.nombre}
                 onChange={onChange}
-                fullWidth
-                margin="normal"
-                autoComplete="off"  
                 error={formik.touched.nombre && Boolean(formik.errors.nombre)}
                 helperText={formik.touched.nombre && formik.errors.nombre}
-                InputLabelProps={{
-                  sx: { color: 'text.secondary', fontSize: '16px' },
-                  shrink: true,
-                }}
-                InputProps={{
-                  className: 'formulario-input', // Aplicar clase CSS
-                }}
               />
             </Grid>
 
-            {/* Campo Descripción */}
+            {/* Campo para la descripción del distribuidor */}
             <Grid item xs={12}>
-              <TextField
-                label={t('formularioCategoria.descripcionLabel')}
+              <CustomTextField
+                label={t('formularioDistribuidor.descripcionLabel')}
                 name="descripcion"
                 value={formik.values.descripcion}
                 onChange={onChange}
-                fullWidth
-                margin="normal"
-                rows={4}
-                autoComplete="off"  
                 error={formik.touched.descripcion && Boolean(formik.errors.descripcion)}
                 helperText={formik.touched.descripcion && formik.errors.descripcion}
-                InputLabelProps={{
-                  sx: { color: 'text.secondary', fontSize: '16px' },
-                  shrink: true,
-                }}
-                InputProps={{
-                  className: 'formulario-input', // Aplicar clase CSS
-                }}
               />
             </Grid>
           </Grid>
 
-          <Box sx={{ display: 'flex', justifyContent: 'center', mt: 3 }}>
-            <Button
-              variant="contained"
-              color="primary"
-              type="submit"
-              className="formulario-boton" // Aplicar clase CSS
-            >
-              {isEditing ? t('formularioCategoria.botonActualizar') : t('formularioCategoria.botonCrear')}
-            </Button>
-          </Box>
+          {/* Botón de acción para guardar el formulario */}
+          <CustomButton
+            label={isEditing ? t('formularioDistribuidor.botonActualizar') : t('formularioDistribuidor.botonCrear')}
+          />
         </form>
       )}
     </Box>
   );
 };
 
-export default PaginaFormularioCategoria;
+export default PaginaFormularioDistribuidor;

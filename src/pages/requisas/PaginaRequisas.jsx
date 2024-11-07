@@ -3,7 +3,7 @@ import TablaGenerica from '@/components/inventario/TablaGenerica';
 import Cargador from '@/components/Cargador';
 import MensajeError from '@/components/MensajeError';
 import '@/assets/styles/inventario/estilosInventario.css';
-import { useTranslation } from 'react-i18next'; // Importar hook de traducción
+import { useTranslation } from 'react-i18next';
 
 /**
  * Renderizar la página de requisas con una tabla y opciones para crear, actualizar y eliminar requisas.
@@ -22,7 +22,7 @@ const PaginaRequisas = ({
   manejarActualizar,
   manejarEliminar,
 }) => {
-  const { t } = useTranslation(); 
+  const { t } = useTranslation();
 
   // Mostrar el componente de cargador mientras se obtienen los datos
   if (cargando) return <Cargador />;

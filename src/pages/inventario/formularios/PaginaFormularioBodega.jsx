@@ -1,168 +1,126 @@
 import React from 'react';
-import { Box, Button, Grid, TextField, Typography, Select, MenuItem, FormControl, InputLabel } from '@mui/material';
-import { useTranslation } from 'react-i18next'; // Importar hook de traducción
-import '@/assets/styles/formularios.css'; // Importar el archivo CSS
+import { Box, Grid } from '@mui/material';
+import { useTranslation } from 'react-i18next';
+import '@/assets/styles/formularios.css';
+import CustomTextField from '@/components/comun/CustomTextField';
+import CustomSelect from '@/components/comun/CustomSelect';
+import CustomButton from '@/components/comun/CustomButton';
+import CustomTypography from '@/components/comun/CustomTypography';
 
+/**
+ * PaginaFormularioBodega - Formulario de gestión de bodegas
+ * 
+ * Este componente renderiza un formulario para crear o editar una bodega.
+ * 
+ * @param {object} bodega - Datos de la bodega a gestionar.
+ * @param {function} onChange - Función para manejar cambios en los campos del formulario.
+ * @param {function} onSave - Función para manejar la acción de guardar el formulario.
+ * @param {boolean} error - Indica si hay un error general en la carga de datos.
+ * @param {boolean} isEditing - Define si el formulario se utiliza para editar (true) o crear (false).
+ * @param {object} formik - Instancia de formik para manejar valores y validaciones.
+ * @param {Array} sitios - Lista de sitios disponibles para seleccionar.
+ * @param {Array} donantes - Lista de donantes disponibles para seleccionar.
+ * 
+ * @returns {JSX.Element} Formulario con campos para gestionar la información de una bodega.
+ */
 const PaginaFormularioBodega = ({ bodega, onChange, onSave, error, isEditing, formik, sitios, donantes }) => {
-  const { t } = useTranslation(); // Usar hook de traducción
+  const { t } = useTranslation();
 
   return (
     <Box className="formulario-container">
-      <Typography
-        component="h1"
-        className="formulario-titulo"
+      {/* Título del formulario, dinámico según la acción (crear o actualizar) */}
+      <CustomTypography
         variant="h4"
+        className="formulario-titulo"
         mb={1}
         textAlign="left"
       >
         {isEditing ? t('formularioBodega.actualizarTitulo') : t('formularioBodega.crearTitulo')}
-      </Typography>
+      </CustomTypography>
 
-      <Typography
-        className="formulario-subtitulo"
+      {/* Subtítulo del formulario */}
+      <CustomTypography
         variant="subtitle1"
+        color="textSecondary"
+        className="formulario-subtitulo"
         mb={3}
         textAlign="left"
-        color="textSecondary"
       >
-        {isEditing
-          ? t('formularioBodega.actualizarSubtitulo')
-          : t('formularioBodega.crearSubtitulo')}
-      </Typography>
+        {isEditing ? t('formularioBodega.actualizarSubtitulo') : t('formularioBodega.crearSubtitulo')}
+      </CustomTypography>
 
       {error ? (
-        <Typography variant="h6" color="error" textAlign="center">
+        <CustomTypography variant="h6" color="error" textAlign="center">
           {t('formularioBodega.errorCargar')}
-        </Typography>
+        </CustomTypography>
       ) : (
         <form onSubmit={onSave}>
           <Grid container spacing={2}>
-            {/* Campo Nombre */}
+            {/* Campo de texto para el nombre de la bodega */}
             <Grid item xs={12} sm={6}>
-              <TextField
+              <CustomTextField
                 label={t('formularioBodega.nombreLabel')}
                 name="nombre"
                 value={formik.values.nombre}
                 onChange={onChange}
-                fullWidth
-                margin="normal"
                 error={formik.touched.nombre && Boolean(formik.errors.nombre)}
                 helperText={formik.touched.nombre && formik.errors.nombre}
-                autoComplete="off"  
-                InputLabelProps={{
-                  sx: { color: 'text.secondary', fontSize: '16px' },
-                  shrink: true,
-                }}
-                InputProps={{
-                  className: 'formulario-input', // Aplicar clase CSS
-                }}
               />
             </Grid>
 
-            {/* Campo Descripción */}
+            {/* Campo de texto para la descripción de la bodega */}
             <Grid item xs={12} sm={6}>
-              <TextField
+              <CustomTextField
                 label={t('formularioBodega.descripcionLabel')}
                 name="descripcion"
                 value={formik.values.descripcion}
                 onChange={onChange}
-                fullWidth
-                margin="normal"
-                rows={4}
                 error={formik.touched.descripcion && Boolean(formik.errors.descripcion)}
                 helperText={formik.touched.descripcion && formik.errors.descripcion}
-                autoComplete="off"  
-                InputLabelProps={{
-                  sx: { color: 'text.secondary', fontSize: '16px' },
-                  shrink: true,
-                }}
-                InputProps={{
-                  className: 'formulario-input', // Aplicar clase CSS
-                }}
               />
             </Grid>
 
-            {/* Campo Dirección */}
+            {/* Campo de texto para la dirección de la bodega */}
             <Grid item xs={12} sm={6}>
-              <TextField
+              <CustomTextField
                 label={t('formularioBodega.direccionLabel')}
                 name="direccion"
                 value={formik.values.direccion}
                 onChange={onChange}
-                fullWidth
-                margin="normal"
                 error={formik.touched.direccion && Boolean(formik.errors.direccion)}
                 helperText={formik.touched.direccion && formik.errors.direccion}
-                autoComplete="off"  
-                InputLabelProps={{
-                  sx: { color: 'text.secondary', fontSize: '16px' },
-                  shrink: true,
-                }}
-                InputProps={{
-                  className: 'formulario-input', // Aplicar clase CSS
-                }}
               />
             </Grid>
 
-            {/* Campo Sitio */}
+            {/* Selector de sitio asociado a la bodega */}
             <Grid item xs={12} sm={6}>
-              <FormControl fullWidth margin="normal">
-                <InputLabel>{t('formularioBodega.sitioLabel')}</InputLabel>
-                <Select
-                  name="sitioId"
-                  value={formik.values.sitioId || ''}
-                  onChange={onChange}
-                  error={formik.touched.sitioId && Boolean(formik.errors.sitioId)}
-                  inputProps={{ autoComplete: 'off' }}  
-                >
-                  <MenuItem value="">{t('formularioBodega.seleccionarSitio')}</MenuItem>
-                  {sitios.map(sitio => (
-                    <MenuItem key={sitio.id} value={sitio.id}>
-                      {sitio.nombre}
-                    </MenuItem>
-                  ))}
-                </Select>
-                {formik.touched.sitioId && formik.errors.sitioId && (
-                  <Typography color="error">{formik.errors.sitioId}</Typography>
-                )}
-              </FormControl>
+              <CustomSelect
+                label={t('formularioBodega.sitioLabel')}
+                name="sitioId"
+                value={formik.values.sitioId || ''}
+                onChange={onChange}
+                options={sitios}
+                error={formik.touched.sitioId && formik.errors.sitioId}
+              />
             </Grid>
 
-            {/* Campo Donante */}
+            {/* Selector de donante asociado a la bodega */}
             <Grid item xs={12} sm={6}>
-              <FormControl fullWidth margin="normal">
-                <InputLabel>{t('formularioBodega.donanteLabel')}</InputLabel>
-                <Select
-                  name="donanteId"
-                  value={formik.values.donanteId || ''}
-                  onChange={onChange}
-                  error={formik.touched.donanteId && Boolean(formik.errors.donanteId)}
-                  inputProps={{ autoComplete: 'off' }}  
-                >
-                  <MenuItem value="">{t('formularioBodega.seleccionarDonante')}</MenuItem>
-                  {donantes.map(donante => (
-                    <MenuItem key={donante.id} value={donante.id}>
-                      {donante.nombre}
-                    </MenuItem>
-                  ))}
-                </Select>
-                {formik.touched.donanteId && formik.errors.donanteId && (
-                  <Typography color="error">{formik.errors.donanteId}</Typography>
-                )}
-              </FormControl>
+              <CustomSelect
+                label={t('formularioBodega.donanteLabel')}
+                name="donanteId"
+                value={formik.values.donanteId || ''}
+                onChange={onChange}
+                options={donantes}
+                error={formik.touched.donanteId && formik.errors.donanteId}
+              />
             </Grid>
           </Grid>
 
-          <Box sx={{ display: 'flex', justifyContent: 'center', mt: 3 }}>
-            <Button
-              variant="contained"
-              color="primary"
-              type="submit"
-              className="formulario-boton" // Aplicar clase CSS
-            >
-              {isEditing ? t('formularioBodega.botonActualizar') : t('formularioBodega.botonCrear')}
-            </Button>
-          </Box>
+          {/* Botón para enviar el formulario, dinámico según la acción */}
+          <CustomButton
+            label={isEditing ? t('formularioBodega.botonActualizar') : t('formularioBodega.botonCrear')}
+          />
         </form>
       )}
     </Box>

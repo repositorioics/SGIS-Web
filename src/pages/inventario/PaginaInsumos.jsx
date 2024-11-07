@@ -17,17 +17,16 @@ const PaginaInsumos = ({
   totalPaginas,
   paginaActual,
   setPaginaActual,
-  pageSize, // Recibe el tamaño de página
-  setPageSize, // Permite cambiar el tamaño de página
+  pageSize,
+  setPageSize,
   manejarActualizar,
   manejarEliminar,
 }) => {
-  const { t } = useTranslation(); // Hook de traducción
+  const { t } = useTranslation();
 
   if (cargando) return <Cargador />;
   if (error) return <MensajeError mensaje={error.message} />;
 
-  // Validamos que "datos" sea un array y no undefined
   const datosValidos = Array.isArray(datos) ? datos : [];
 
   return (
@@ -41,13 +40,13 @@ const PaginaInsumos = ({
         <TablaGenerica
           encabezado={t('paginaInsumos.encabezadoTabla')}
           columnas={columnas}
-          datos={datosValidos} // Pasar datos validados
+          datos={datosValidos}
           manejarCrear={manejarCrear}
           totalPaginas={totalPaginas}
           paginaActual={paginaActual}
           setPagina={setPaginaActual}
-          pageSize={pageSize} // Pasar el tamaño de la página
-          setPageSize={setPageSize} // Permitir cambiar el tamaño de la página
+          pageSize={pageSize}
+          setPageSize={setPageSize}
           manejarActualizar={manejarActualizar}
           manejarEliminar={manejarEliminar}
         />
