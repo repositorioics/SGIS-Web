@@ -13,8 +13,8 @@ const DisAutenticacion = ({
       <div className="dis-autenticacion__tarjeta">
         <div className="dis-autenticacion__panel dis-autenticacion__panel--izquierdo">
           <div className="dis-autenticacion__contenido">
-            <h2 className="dis-autenticacion__titulo">{titulo}</h2>
-            <p className="dis-autenticacion__descripcion">{descripcion}</p>
+            <h2 className="dis-autenticacion__titulo-izq">{titulo}</h2>
+            <p className="dis-autenticacion__descripcion-izq">{descripcion}</p>
 
             <div className="dis-autenticacion__imagen-container">
               <img

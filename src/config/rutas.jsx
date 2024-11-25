@@ -62,9 +62,11 @@ const ContenedorFormularioPedido = lazy(() => import('@/containers/solicitudes/f
 // Módulo de requisas y entregas
 import ContenedorRequisas from '@/containers/requisas/ContenedorRequisas';
 import ContenedorFormularioRequisa from '@/containers/requisas/formularios/ContenedorFormularioRequisa';
-import ContenedorEntregas from '@/containers/requisas/ContenedorEntregas';
-import ContenedorFormularioEntrega from '@/containers/requisas/formularios/ContenedorFormularioEntrega';
+import ContenedorEntregasRequisas from '@/containers/requisas/ContenedorEntregasRequisas';
+import ContenedorFormularioEntregaRequisa from '@/containers/requisas/formularios/ContenedorFormularioEntregaRequisa';
 import ContenedorNotificaciones from '@/containers/configuracion/ContenedorNotificaciones';
+
+import ContenedorFormularioVerRequisa from '@/containers/requisas/formularios/ContenedorFormularioVerRequisa';
 // Página de error 404
 import PaginaNoEncontrada from "@/pages/PaginaNoEncontrada";
 
@@ -309,8 +311,16 @@ const rutas = [
     element: <RutaProtegida><ContenedorFormularioRequisa /></RutaProtegida>,
   },
   {
-    path: '/entregas/crear',
-    element: <RutaProtegida><ContenedorFormularioEntrega /></RutaProtegida>,
+    path: '/requisas/vermas/:id',
+    element: <RutaProtegida><ContenedorFormularioVerRequisa /></RutaProtegida>,
+  },
+  {
+    path: '/requisas/entregas',
+    element: <RutaProtegida><ContenedorEntregasRequisas /></RutaProtegida>,
+  },
+  {
+    path: '/requisas/entregas/crear/:id',
+    element: <RutaProtegida><ContenedorFormularioEntregaRequisa /></RutaProtegida>,
   },{
     path: '/notificaciones',
     element: <RutaProtegida><ContenedorNotificaciones /></RutaProtegida>,

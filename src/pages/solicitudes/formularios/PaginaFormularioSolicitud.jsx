@@ -34,6 +34,7 @@ const PaginaFormularioSolicitud = ({
   usuarioNombre,
   proximoNumeroSolicitud,
   estadoDeshabilitado,
+  handleRemoveDetail
 }) => {
   const { t } = useTranslation();
 
@@ -269,6 +270,7 @@ const PaginaFormularioSolicitud = ({
         selectedRows={selectedRows}
         setSelectedRows={setSelectedRows}
         columns={columns}
+        handleRemoveDetail={handleRemoveDetail}
       />
 
       <Box sx={{mb: 4, width: '100%' }}>

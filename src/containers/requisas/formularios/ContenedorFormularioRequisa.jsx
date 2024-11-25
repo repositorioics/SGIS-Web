@@ -145,6 +145,10 @@ const ContenedorFormularioRequisa = () => {
     return <p>{t('formularioRequisa.errorCargarDatos')}</p>;
   }
 
+  const handleRemoveDetail = (index) => {
+    setDetalles((prevDetalles) => prevDetalles.filter((_, i) => i !== index));
+  };
+
   return (
     <PaginaFormularioRequisa
       requisa={requisa}
@@ -163,6 +167,7 @@ const ContenedorFormularioRequisa = () => {
       usuarioNombre={username}
       selectedRows={selectedRows}
       setSelectedRows={setSelectedRows}
+      handleRemoveDetail={handleRemoveDetail} 
     />
   );
 };

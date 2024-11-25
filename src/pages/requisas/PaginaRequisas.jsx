@@ -19,8 +19,10 @@ const PaginaRequisas = ({
   setPaginaActual,
   pageSize,
   setPageSize,
+  manejarVerMas,
   manejarActualizar,
   manejarEliminar,
+  
 }) => {
   const { t } = useTranslation();
 
@@ -50,8 +52,11 @@ const PaginaRequisas = ({
           setPagina={setPaginaActual}
           pageSize={pageSize}
           setPageSize={setPageSize}
-          manejarActualizar={manejarActualizar}
-          manejarEliminar={manejarEliminar}
+          manejarVerMas={manejarVerMas}
+          mostrarSoloVerMas={true}
+          //manejarActualizar={manejarActualizar}
+          //manejarEliminar={manejarEliminar}
+          getRowId={(row) => row.requisaId}
         />
       </div>
     </div>

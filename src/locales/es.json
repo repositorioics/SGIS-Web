@@ -199,7 +199,26 @@
     "errorGeneral": "An error occurred while saving the delivery",
     "errorDetalleRequisa": "Requisition detail ID is required",
     "errorCantidadEntregada": "Delivered quantity is required",
-    "errorRecibidoPor": "The ID of the receiver is required"
+    "errorRecibidoPor": "The ID of the receiver is required",
+
+    
+
+    "titulo": "Requisition Delivery",
+    "detalleId": "Detail ID",
+    "cantidadEntregada": "Delivered Quantity",
+    "guardar": "Save",
+    "exitoGuardar": "Delivery saved successfully.",
+    
+    "requisaId": "Requisition ID",
+    "codigoUnico": "Unique Code",
+    "sitio": "Site",
+    "estado": "State",
+    "observacionesEntrega": "Delivery Observations",
+    "detalles": "Delivery Details",
+    "insumo": "Supply",
+    "presentacion": "Presentation",
+    "marca": "Brand",
+    "detallesEntregados": "Delivered Details"
   },
   "formularioRequisa": {
     "titulo": "Create Requisition",
@@ -217,7 +236,15 @@
     "exitoCrear": "Requisition successfully created",
     "errorCrear": "Error creating the requisition",
     "errorGeneral": "An error occurred while creating the requisition",
-    "errorCargarDatos": "Error loading data"
+    "errorCargarDatos": "Error loading data",
+
+    "detallesTitulo": "Requisition Details",
+    "codigoUnico": "Unique Code",
+    "nombreSitio": "Site",
+    "estado": "State",
+    "marca": "Brand",
+    "regresarBoton": "Back",
+    "cargando": "Loading data..."
   },
   "contenedorSolicitudes": {
     "errorActualizar": "Cannot edit the request because it does not have a valid ID.",

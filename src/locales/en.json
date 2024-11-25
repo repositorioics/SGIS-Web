@@ -199,7 +199,24 @@
     "errorGeneral": "Ocurrió un error al guardar la entrega",
     "errorDetalleRequisa": "El ID del detalle de la requisa es obligatorio",
     "errorCantidadEntregada": "La cantidad entregada es obligatoria",
-    "errorRecibidoPor": "El ID de quien recibió es obligatorio"
+    "errorRecibidoPor": "El ID de quien recibió es obligatorio",
+
+    "titulo": "Entrega de Requisa",
+    "detalleId": "ID del Detalle",
+    "cantidadEntregada": "Cantidad Entregada",
+    "guardar": "Guardar",
+    "exitoGuardar": "Entrega guardada con éxito.",
+
+    "codigoUnico": "Código Único",
+    "sitio": "Sitio",
+    "estado": "Estado",
+    "observacionesEntrega": "Observaciones de Entrega",
+    "detalles": "Detalles de la Entrega",
+    "insumo": "Insumo",
+    "presentacion": "Presentación",
+    "marca": "Marca",
+    "detallesEntregados": "Detalles Entregados"
+    
   },
   "formularioRequisa": {
     "titulo": "Crear Requisa",
@@ -217,7 +234,15 @@
     "exitoCrear": "Requisa creada con éxito",
     "errorCrear": "Error al crear la requisa",
     "errorGeneral": "Ocurrió un error al crear la requisa",
-    "errorCargarDatos": "Error al cargar los datos"
+    "errorCargarDatos": "Error al cargar los datos",
+    
+    "detallesTitulo": "Detalles de la Requisa",
+    "codigoUnico": "Código Único",
+    "nombreSitio": "Sitio",
+    "estado": "Estado",
+    "marca": "Marca",
+    "regresarBoton": "Regresar",
+    "cargando": "Cargando datos..."
   },
   "contenedorSolicitudes": {
     "errorActualizar": "No se puede editar la solicitud porque no tiene un ID válido.",

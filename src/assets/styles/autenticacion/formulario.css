@@ -15,7 +15,7 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     border-radius: 16px;
     overflow: hidden;
-    background-color: var(--color-fondo);
+    background-color: var(--color-fondo-alterno);
   }
   
   .dis-autenticacion__panel {
@@ -49,12 +49,18 @@
     margin-bottom: 8px;
     color: var(--color-texto-primario);
   }
+  .dis-autenticacion__titulo-izq{
+    color: var(--color-fondo-alterno);
+  }
   
   .dis-autenticacion__descripcion {
     font-size: 16px;
     text-align: left;
     margin-bottom: 24px;
     color: var(--color-texto-secundario);
+  }
+  .dis-autenticacion__descripcion-izq{
+    color: var(--color-fondo-alterno);
   }
   
   .dis-autenticacion__imagen {

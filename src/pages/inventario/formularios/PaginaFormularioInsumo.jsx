@@ -21,7 +21,7 @@ const PaginaFormularioInsumo = ({
   errors,
   touched,
   handleAddDetail,
-  handleRemoveDetail
+  handleRemoveDetail={handleRemoveDetail}
 }) => {
   const { t } = useTranslation();
 

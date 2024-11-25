@@ -21,6 +21,7 @@ const PaginaFormularioRequisa = ({
   codigoUnico,
   usuarioNombre,
   selectedRows,
+  handleRemoveDetail={handleRemoveDetail} ,
   setSelectedRows
 }) => {
   const { t } = useTranslation();
@@ -114,7 +115,7 @@ const PaginaFormularioRequisa = ({
           />
         </Grid>
 
-        <Grid item xs={12}>
+        <Grid item xs={12} sm={6}>
           <CustomTextField
             label={t('formularioRequisa.observaciones')}
             name="observaciones"
@@ -204,6 +205,7 @@ const PaginaFormularioRequisa = ({
         selectedRows={selectedRows}
         setSelectedRows={setSelectedRows}
         onEliminarSeleccionados={onEliminarSeleccionados}
+        handleRemoveDetail={handleRemoveDetail} 
       />
 
       <Box sx={{ display: 'flex', justifyContent: 'center', mt: 3 }}>

@@ -240,6 +240,11 @@ const ContenedorFormularioSolicitud = () => {
     }
   };
 
+  const handleRemoveDetail = (index) => {
+    setDetalles((prevDetalles) => prevDetalles.filter((_, i) => i !== index));
+  };
+  
+
   return (
     <PaginaFormularioSolicitud
       solicitud={formik.values}
@@ -267,6 +272,7 @@ const ContenedorFormularioSolicitud = () => {
       usuarioNombre={usuarioNombre}
       proximoNumeroSolicitud={proximoNumeroSolicitud}
       estadoDeshabilitado={true}
+      handleRemoveDetail={handleRemoveDetail}
     />
   );
 };

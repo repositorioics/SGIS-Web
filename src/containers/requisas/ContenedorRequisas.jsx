@@ -35,43 +35,54 @@ const ContenedorRequisas = () => {
    * Navegar a la página de actualización de una requisa si tiene un ID válido.
    * @param {object} requisa - La requisa seleccionada para actualizar.
    */
-  const manejarActualizar = (requisa) => {
+  // const manejarActualizar = (requisa) => {
+  //   if (requisa && requisa.id) {
+  //     navigate(`/requisas/actualizar/${requisa.id}`);
+  //   } else {
+  //     toast.error(t('contenedorRequisas.errorActualizar'));
+  //   }
+  // };
+
+  const manejarVerMas = (requisa) => {
     if (requisa && requisa.id) {
-      navigate(`/requisas/actualizar/${requisa.id}`);
+      console.log("Id recibido", requisa.id)
+
+      navigate(`/requisas/vermas/${requisa.id}`);
     } else {
       toast.error(t('contenedorRequisas.errorActualizar'));
     }
   };
 
+
   /**
    * Eliminar una requisa seleccionada y mostrar un mensaje de éxito.
    * @param {object} requisa - La requisa seleccionada para eliminar.
    */
-  const manejarEliminar = async (requisa) => {
-    try {
-      const response = await fetch(`${URL}api/v1/requisas/${requisa.id}`, {
-        method: 'DELETE',
-      });
-      if (response.ok) {
-        toast.success(t('contenedorRequisas.requisaEliminada', { codigo: requisa.codigoUnico }));
-        navigate(0); // Refrescar la página después de eliminar
-      } else {
-        toast.error(t('contenedorRequisas.errorEliminar'));
-      }
-    } catch (error) {
-      toast.error(t('contenedorRequisas.errorEliminar'));
-    }
-  };
+  // const manejarEliminar = async (requisa) => {
+  //   try {
+  //     const response = await fetch(`${URL}api/v1/requisas/${requisa.id}`, {
+  //       method: 'DELETE',
+  //     });
+  //     if (response.ok) {
+  //       toast.success(t('contenedorRequisas.requisaEliminada', { codigo: requisa.codigoUnico }));
+  //       navigate(0); // Refrescar la página después de eliminar
+  //     } else {
+  //       toast.error(t('contenedorRequisas.errorEliminar'));
+  //     }
+  //   } catch (error) {
+  //     toast.error(t('contenedorRequisas.errorEliminar'));
+  //   }
+  // };
 
   // Definir las columnas de la tabla
   const columnas = [
-    { field: 'codigoUnico', headerName: t('paginaRequisas.columnaCodigoUnico'), flex: 2 },
-    { field: 'nombreEstado', headerName: t('paginaRequisas.columnaEstado'), flex: 1 },
+    { field: 'codigoUnico', headerName: t('paginaRequisas.columnaCodigoUnico'), flex: 1 },
     { field: 'observaciones', headerName: t('paginaRequisas.columnaObservaciones'), flex: 3 },
+    { field: 'nombreEstado', headerName: t('paginaRequisas.columnaEstado'), flex: 1 },
     {
       field: 'fechaCreacion',
       headerName: t('paginaRequisas.columnaFechaCreacion'),
-      flex: 2,
+      flex: 1,
       renderCell: (params) => (
         <span>{new Date(params.value).toLocaleDateString()}</span>
       ),
@@ -83,8 +94,9 @@ const ContenedorRequisas = () => {
       sortable: false,
       renderCell: (params) => (
         <>
-          <button onClick={() => manejarActualizar(params.row)}>{t('paginaRequisas.botonEditar')}</button>
-          <button onClick={() => manejarEliminar(params.row)}>{t('paginaRequisas.botonEliminar')}</button>
+          <button onClick={() => manejarVerMas(params.row)}>
+                  {t('paginaAutorizaciones.botonVerMas')}
+                </button>
         </>
       ),
     }
@@ -102,8 +114,9 @@ const ContenedorRequisas = () => {
       setPaginaActual={setPaginaActual}
       pageSize={pageSize}
       setPageSize={setPageSize}
-      manejarActualizar={manejarActualizar}
-      manejarEliminar={manejarEliminar}
+      manejarVerMas={manejarVerMas}
+      //manejarActualizar={manejarActualizar}
+      //manejarEliminar={manejarEliminar}
     />
   );
 };
