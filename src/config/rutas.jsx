@@ -66,6 +66,10 @@ import ContenedorEntregasRequisas from '@/containers/requisas/ContenedorEntregas
 import ContenedorFormularioEntregaRequisa from '@/containers/requisas/formularios/ContenedorFormularioEntregaRequisa';
 import ContenedorNotificaciones from '@/containers/configuracion/ContenedorNotificaciones';
 
+
+import ContenedorAsignaciones from '@/containers/asignaciones/ContenedorAsignaciones';
+import ContenedorFormularioAsignacion from '@/containers/asignaciones/ContenedorFormularioAsignacion';
+
 import ContenedorFormularioVerRequisa from '@/containers/requisas/formularios/ContenedorFormularioVerRequisa';
 // Página de error 404
 import PaginaNoEncontrada from "@/pages/PaginaNoEncontrada";
@@ -324,6 +328,14 @@ const rutas = [
   },{
     path: '/notificaciones',
     element: <RutaProtegida><ContenedorNotificaciones /></RutaProtegida>,
+  },
+  {
+    path: '/asignaciones',
+    element: <RutaProtegida><ContenedorAsignaciones /></RutaProtegida>,
+  },
+  {
+    path: '/asignaciones/asignacion/crear',
+    element: <RutaProtegida><ContenedorFormularioAsignacion /></RutaProtegida>,
   },
 ];
 

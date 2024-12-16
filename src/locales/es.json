@@ -92,7 +92,8 @@
     "gestion_de_usuarios": "User Management",
     "gestion_de_roles": "Role Management",
     "gestion_de_permisos": "Permission Management",
-    "pedidos_autorizados": "Authorized Requests"
+    "pedidos_autorizados": "Authorized Requests",
+    "asignaciones": "Assignments"
   },
   "navegacion": {
     "cerrar_sesion": "Log Out"
@@ -1005,5 +1006,30 @@
     "botonEliminar": "Delete",
     "botonVerMas": "View More",
     "botonCrearPedido": "Create Order"
+  },
+  "contenedorFormularioAsignacion": {
+    "errorCamposDetalle": "Complete all fields in the detail.",
+    "errorSinDetalles": "You must add at least one detail.",
+    "guardadoExitoso": "Assignment successfully saved.",
+    "errorGuardar": "Error saving the assignment."
+  },
+  "formularioAsignacion": {
+    "titulo": "Assignment Form",
+    "bioanalista": "Bioanalyst",
+    "insumo": "Supply",
+    "cantidad": "Quantity",
+    "observaciones": "Remarks",
+    "observacionesDetalle": "Detail Remarks",
+    "agregarDetalle": "Add Detail",
+    "detalles": "Assignment Details",
+    "guardar": "Save Assignment",
+    "descripcionDetalles": "Here are the supplies and quantities assigned.",
+    "sinResultados": "No details to display.",
+    "columnas": {
+      "insumo": "Supply",
+      "cantidad": "Quantity",
+      "observaciones": "Remarks",
+      "acciones": "Actions"
+    }
   }
 }

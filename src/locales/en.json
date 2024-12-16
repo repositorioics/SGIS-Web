@@ -92,7 +92,8 @@
     "gestion_de_usuarios": "Gestión de Usuarios",
     "gestión_de_roles": "Gestión de Roles",
     "gestion_de_permisos": "Gestión de Permisos",
-    "pedidos_autorizados": "Solicitides Autorizadas"
+    "pedidos_autorizados": "Solicitides Autorizadas",
+    "asignaciones": "Asignaciones"
   },
   "navegacion": {
     "cerrar_sesion": "Cerrar Sesión"
@@ -1007,5 +1008,30 @@
     "botonEditar": "Editar",
     "botonEliminar": "Eliminar",
     "errorVerMas": "Error al intentar ver más detalles del pedido."
+  },
+  "contenedorFormularioAsignacion": {
+    "errorCamposDetalle": "Complete todos los campos del detalle.",
+    "errorSinDetalles": "Debe agregar al menos un detalle.",
+    "guardadoExitoso": "Asignación guardada exitosamente.",
+    "errorGuardar": "Error al guardar la asignación."
+  },
+  "formularioAsignacion": {
+    "titulo": "Formulario de Asignación",
+    "bioanalista": "Bioanalista",
+    "insumo": "Insumo",
+    "cantidad": "Cantidad",
+    "observaciones": "Observaciones",
+    "observacionesDetalle": "Observaciones del Detalle",
+    "agregarDetalle": "Agregar Detalle",
+    "detalles": "Detalles de la Asignación",
+    "guardar": "Guardar Asignación",
+    "descripcionDetalles": "Aquí se listan los insumos y cantidades asignadas.",
+    "sinResultados": "No hay detalles para mostrar.",
+    "columnas": {
+      "insumo": "Insumo",
+      "cantidad": "Cantidad",
+      "observaciones": "Observaciones",
+      "acciones": "Acciones"
+    }
   }
 }
