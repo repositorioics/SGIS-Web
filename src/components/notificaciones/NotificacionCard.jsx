@@ -1,30 +1,36 @@
-// src/components/NotificacionCard.jsx
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Calendar, ArrowRight } from 'lucide-react';
 import '@/assets/styles/notificaciones/notificaciones.css';
 
 const NotificacionCard = ({ notificacion }) => {
   const navigate = useNavigate();
-  const { titulo, mensaje, fechaNotificacion, leido } = notificacion;
+  const { titulo, mensaje, fechaNotificacion, leido, id } = notificacion;
 
-  // Redirige a la página de detalles de la notificación
-  const manejarVerMas = () => {
-    navigate(`/notificaciones/${notificacion.id}`);
+  const handleViewMore = () => {
+    navigate(`/notificaciones/${id}`);
   };
 
   return (
-    <div className={`tarjeta-notificacion ${!leido ? 'no-leida' : ''}`}>
-      <div className="contenido-notificacion">
-      <small className="fecha-notificacion">{new Date(fechaNotificacion).toLocaleString()}</small>
-        <div className="content">
-        <h3 className="titulo-notificacion">{titulo}:</h3>
-        <p className="mensaje-notificacion">{mensaje}.</p>
+    <div className={`notification-card ${!leido ? 'unread' : ''}`}>
+      <div className="notification-content">
+        <div className="notification-date">
+          <Calendar className="date-icon" />
+          <span className="date-text">
+            {new Date(fechaNotificacion).toLocaleString()}
+          </span>
         </div>
-      </div>
-      <div className="acciones-notificacion">
+        
+        <h3 className="notification-title">{titulo}</h3>
+        <p className="notification-message">{mensaje}</p>
+        
         {!leido && (
-          <button onClick={manejarVerMas} className="boton-ver-mas">
+          <button
+            onClick={handleViewMore}
+            className="view-more-button"
+          >
             Ver más
+            <ArrowRight className="arrow-icon" />
           </button>
         )}
       </div>

@@ -13,16 +13,20 @@ const PaginaCorreo = ({ onSubmit }) => {
       imagenUrl="https://i.ibb.co/9W3ZpZm/send-Email.png"
       imagenAlt={t('correo.imagenAlt')}
     >
-      <h2 className='dis-autenticacion__titulo'>{t('correo.introducir_correo')}</h2>
-      <p className='dis-autenticacion__descripcion'>{t('correo.instruccion_correo')}</p>
-      <FormularioGeneral
-        campos={[
-          { name: 'email', type: 'email', placeholder: 'ejemplo@gmail.com' }
-        ]}
-        textoBoton={t('correo.enviar_enlace')}
-        onSubmit={onSubmit}
-        mostrarEnlace={false}
-      />
+      <div className="dis-autenticacion__contenido">
+        <h2 className="dis-autenticacion__titulo">{t('correo.introducir_correo')}</h2>
+        <p className="dis-autenticacion__descripcion">{t('correo.instruccion_correo')}</p>
+        <FormularioGeneral
+          campos={[
+            { name: 'email', type: 'email', placeholder: 'ejemplo@gmail.com', required: true },
+          ]}
+          textoBoton={t('correo.enviar_enlace')}
+          onSubmit={onSubmit}
+          mostrarEnlace={true}
+          texto={t('correo.volver_inicio_sesion')} // Traducción para "Back to Login"
+          url="/inicio-sesion"
+        />
+      </div>
     </DisAutenticacion>
   );
 };

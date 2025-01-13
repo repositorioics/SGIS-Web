@@ -20,8 +20,8 @@ const ContenedorFormularioUsuario = () => {
     apellido: '',
     usuario: '',
     correo: '',
-    clave: '',
-    confirmarClave: '',
+    clave: 'PassWord!1',
+    confirmarClave: 'PassWord!1',
     rolIds: [],
   });
 

@@ -1,0 +1,53 @@
+.activate-account {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  text-align: center;
+  font-family: Arial, sans-serif;
+  padding: 20px;
+  background-color: #f4f4f4;
+}
+
+.activate-account__success,
+.activate-account__error {
+  background: #ffffff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 40px;
+}
+
+.activate-account__image {
+  width: 150px;
+  height: 150px;
+  margin-bottom: 20px;
+}
+
+.activate-account__title {
+  font-size: 24px;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.activate-account__description {
+  font-size: 16px;
+  color: #555;
+  margin-bottom: 20px;
+}
+
+.activate-account__button {
+  display: inline-block;
+  padding: 10px 20px;
+  color: #007bff;
+  text-decoration: none;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  transition: color 0.3s;
+  background-color: #ffffff;
+}
+
+.activate-account__button:hover {
+  color : #0056b3;
+}

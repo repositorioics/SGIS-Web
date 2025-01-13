@@ -9,11 +9,12 @@ import { useSelector } from 'react-redux';
 import * as Yup from 'yup';
 import { useFormik } from 'formik';
 import { obtenerToken } from '@/utils/almacenamiento';
-
+import ModalConfirmacion from '../../../components/comun/ModalConfirmacion'
 const ContenedorFormularioSolicitud = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const username = useSelector((state) => state.autenticacion.usuario);
+  const [donanteSeleccionado, setDonanteSeleccionado] = useState(false); // Estado para controlar la selección
 
   const [usuarioNombre, setUsuarioNombre] = useState('');
   const [proximoNumeroSolicitud, setProximoNumeroSolicitud] = useState('');
@@ -36,7 +37,7 @@ const ContenedorFormularioSolicitud = () => {
   const [detalleTouched, setDetalleTouched] = useState({});
   const [insumoIdSeleccionado, setInsumoIdSeleccionado] = useState(null);
   const [selectedRows, setSelectedRows] = useState([]);
-
+  const [mostrarConfirmacion, setMostrarConfirmacion] = useState(false); 
   const [marcas, setMarcas] = useState([]);
   const [distribuidores, setDistribuidores] = useState([]);
   const [presentaciones, setPresentaciones] = useState([]);
@@ -104,6 +105,12 @@ const ContenedorFormularioSolicitud = () => {
       .required(t('contenedorFormularioSolicitud.observacionesObligatorio')),
   });
 
+  const handleDonanteChange = (e) => {
+    const { value } = e.target;
+    formik.setFieldValue('donanteId', value);
+    setDonanteSeleccionado(true); // Bloquea el select después de la selección
+  };
+  
   const detalleValidationSchema = Yup.object({
     insumoId: Yup.string().required(t('contenedorFormularioSolicitud.insumoObligatorio')),
     marcaId: Yup.string().required(t('contenedorFormularioSolicitud.marcaObligatoria')),
@@ -117,6 +124,44 @@ const ContenedorFormularioSolicitud = () => {
     observacion: Yup.string().max(300, t('contenedorFormularioSolicitud.observacionMaxima')),
   });
 
+  const enviarSolicitud = async (values) => {
+    if (detalles.length === 0) {
+      toast.error(t('contenedorFormularioSolicitud.errorSinDetalles'));
+      return;
+    }
+  
+    const nuevaSolicitud = {
+      ...values,
+      detalles: detalles.map((detalle) => ({
+        ...detalle,
+        cantidadPresentaciones: Number(detalle.cantidadPresentaciones),
+      })),
+    };
+  
+    try {
+      const token = obtenerToken('accessToken');
+      const response = await fetch(`${URL}api/v1/solicitudes`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(nuevaSolicitud),
+      });
+  
+      if (response.ok) {
+        toast.success(t('contenedorFormularioSolicitud.creacionExitosa'));
+        navigate('/solicitudes/consolidar-solicitud');
+      } else {
+        const result = await response.json();
+        toast.error(result.message || t('contenedorFormularioSolicitud.errorCrear'));
+      }
+    } catch (error) {
+      toast.error(t('contenedorFormularioSolicitud.errorCrear'));
+    }
+  };
+
+  
   const formik = useFormik({
     initialValues: {
       numeroSolicitud: '',
@@ -129,43 +174,10 @@ const ContenedorFormularioSolicitud = () => {
     validationSchema: solicitudValidationSchema,
     validateOnChange: false,
     validateOnBlur: false,
-    onSubmit: async (values) => {
-      if (detalles.length === 0) {
-        toast.error(t('contenedorFormularioSolicitud.errorSinDetalles'));
-        return;
-      }
-
-      const nuevaSolicitud = {
-        ...values,
-        detalles: detalles.map((detalle) => ({
-          ...detalle,
-          cantidadPresentaciones: Number(detalle.cantidadPresentaciones),
-        }))
-      };
-
-      try {
-        const token = obtenerToken('accessToken');
-        const response = await fetch(`${URL}api/v1/solicitudes`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify(nuevaSolicitud),
-        });
-
-        if (response.ok) {
-          toast.success(t('contenedorFormularioSolicitud.creacionExitosa'));
-          navigate('/solicitudes/consolidar-solicitud');
-        } else {
-          const result = await response.json();
-          toast.error(result.message || t('contenedorFormularioSolicitud.errorCrear'));
-        }
-      } catch (error) {
-        toast.error(t('contenedorFormularioSolicitud.errorCrear'));
-      }
+    onSubmit: (values) => {
+      setMostrarConfirmacion(true); // Mostrar el modal antes de enviar
     },
-  });
+  });  
 
   const handleDetalleChange = (e) => {
     const { name, value } = e.target;
@@ -246,6 +258,7 @@ const ContenedorFormularioSolicitud = () => {
   
 
   return (
+    <>
     <PaginaFormularioSolicitud
       solicitud={formik.values}
       detalleActual={detalleActual}
@@ -273,7 +286,19 @@ const ContenedorFormularioSolicitud = () => {
       proximoNumeroSolicitud={proximoNumeroSolicitud}
       estadoDeshabilitado={true}
       handleRemoveDetail={handleRemoveDetail}
+      donanteSeleccionado={donanteSeleccionado} // Estado para deshabilitar el select
+      onDonanteChange={handleDonanteChange} // Manejador del cambio en el select
     />
+    {/* Render del modal de confirmación */}
+    <ModalConfirmacion
+      abierto={mostrarConfirmacion}
+      onCerrar={() => setMostrarConfirmacion(false)} // Cierra el modal sin enviar
+      onConfirmar={() => {
+        setMostrarConfirmacion(false); // Cierra el modal
+        enviarSolicitud(formik.values); // Envía la solicitud
+      }}
+    />
+    </>
   );
 };
 

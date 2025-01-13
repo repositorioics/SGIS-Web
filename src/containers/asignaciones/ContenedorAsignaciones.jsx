@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -24,6 +24,13 @@ const ContenedorAsignaciones = () => {
     [paginaActual, pageSize]
   );
 
+  // Log the fetched data when it changes
+  useEffect(() => {
+    if (data) {
+      console.log('Datos obtenidos:', data);
+    }
+  }, [data]);
+
   /**
    * Navegar a la página de creación de una nueva asignación.
    */
@@ -32,41 +39,19 @@ const ContenedorAsignaciones = () => {
   };
 
   /**
-   * Navegar a la página de actualización de una asignación.
+   * Navegar a la página de detalle de una asignación.
    * @param {object} asignacion - Asignación seleccionada.
    */
-  const manejarActualizar = (asignacion) => {
-    if (asignacion && asignacion.id) {
-      navigate(`/asignaciones/asignacion/actualizar/${asignacion.id}`);
-    } else {
-      toast.error(t('contenedorAsignaciones.errorActualizar'));
-    }
-  };
-
-  /**
-   * Desactivar una asignación seleccionada.
-   * @param {object} asignacion - Asignación seleccionada.
-   */
-  const manejarEliminar = async (asignacion) => {
-    try {
-      const response = await fetch(`${URL}api/v1/asignaciones/${asignacion.id}`, {
-        method: 'DELETE',
-      });
-      if (response.ok) {
-        toast.success(t('contenedorAsignaciones.asignacionDesactivada', { numero: asignacion.numeroAsignacion }));
-        navigate(0); // Refrescar página
-      } else {
-        toast.error(t('contenedorAsignaciones.errorDesactivar'));
-      }
-    } catch (error) {
-      toast.error(t('contenedorAsignaciones.errorDesactivar'));
-    }
-  };
+  const manejarVerMas = (asignacion) => {
+    navigate(`/asignaciones/asignacion/${asignacion.id}`);
+};
 
   // Definir columnas para la tabla
   const columnas = [
     { field: 'numeroAsignacion', headerName: t('paginaAsignaciones.columnaNumeroAsignacion'), flex: 2 },
-    { field: 'estado', headerName: t('paginaAsignaciones.columnaEstado'), flex: 1 },
+    { field: 'bioanalistaNombre', headerName: t('paginaAsignaciones.columnaBioanalista'), flex: 2 },
+    { field: 'responsableAsignacionNombre', headerName: t('paginaAsignaciones.columnaResponsable'), flex: 2 },
+    { field: 'estadoNombre', headerName: t('paginaAsignaciones.columnaEstado'), flex: 1 },
     { field: 'observaciones', headerName: t('paginaAsignaciones.columnaObservaciones'), flex: 3 },
     {
       field: 'fechaEntrega',
@@ -82,10 +67,8 @@ const ContenedorAsignaciones = () => {
       flex: 1,
       sortable: false,
       renderCell: (params) => (
-        <>
-          <button onClick={() => manejarActualizar(params.row)}>{t('paginaAsignaciones.botonEditar')}</button>
-          <button onClick={() => manejarEliminar(params.row)}>{t('paginaAsignaciones.botonEliminar')}</button>
-        </>
+        <button onClick={() => manejarVerMas(params.row)}>
+                    <FaEye style={{ marginRight: '5px' }} /> {t('paginaPedidos.botonVerMas')}</button>
       ),
     },
   ];
@@ -99,11 +82,10 @@ const ContenedorAsignaciones = () => {
       manejarCrear={manejarCrear}
       totalPaginas={data ? data.data.totalPages : 1}
       paginaActual={paginaActual}
+      manejarVerMas={manejarVerMas}
       setPaginaActual={setPaginaActual}
       pageSize={pageSize}
       setPageSize={setPageSize}
-      manejarActualizar={manejarActualizar}
-      manejarEliminar={manejarEliminar}
     />
   );
 };

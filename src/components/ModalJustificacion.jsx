@@ -7,11 +7,11 @@ const style = {
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  width: 400,
+  width: 450,
   bgcolor: 'background.paper',
-  border: '2px solid #000',
-  boxShadow: 24,
-  p: 4,
+  borderRadius: 8,
+  boxShadow: '0px 4px 20px rgba(0, 0, 0, 0.1)',
+  p: 3,
 };
 
 /**
@@ -36,10 +36,10 @@ const ModalJustificacion = ({ open, onClose, justificacion, onJustificacionChang
   return (
     <Modal open={open} onClose={onClose} aria-labelledby="modal-justificacion-title" aria-describedby="modal-justificacion-description">
       <Box sx={style}>
-        <Typography id="modal-justificacion-title" variant="h6" component="h2">
+        <Typography id="modal-justificacion-title" variant="h6" component="h2" sx={{ fontWeight: 600 }}>
           {t('pedido.justificacionTitulo')}
         </Typography>
-        <Typography id="modal-justificacion-description" sx={{ mt: 2 }}>
+        <Typography id="modal-justificacion-description" sx={{ mt: 2, color: 'text.secondary' }}>
           {t('pedido.ingreseJustificacion')}
         </Typography>
         <TextField
@@ -50,13 +50,13 @@ const ModalJustificacion = ({ open, onClose, justificacion, onJustificacionChang
           value={justificacion}
           onChange={(e) => onJustificacionChange(e.target.value)}
           placeholder={t('pedido.justificacionPlaceholder')}
-          sx={{ mt: 2 }}
+          sx={{ mt: 3 }}
         />
-        <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: 1, mt: 2 }}>
-          <Button onClick={onClose} variant="outlined" color="secondary">
+        <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: 2, mt: 3 }}>
+          <Button onClick={onClose} variant="outlined" color="secondary" sx={{ borderRadius: 5 }}>
             {t('pedido.cancelar')}
           </Button>
-          <Button onClick={handleConfirm} variant="contained" color="primary">
+          <Button onClick={handleConfirm} variant="contained" color="primary" sx={{ borderRadius: 5 }}>
             {t('pedido.confirmar')}
           </Button>
         </Box>

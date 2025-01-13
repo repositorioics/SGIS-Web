@@ -71,8 +71,13 @@ import ContenedorAsignaciones from '@/containers/asignaciones/ContenedorAsignaci
 import ContenedorFormularioAsignacion from '@/containers/asignaciones/ContenedorFormularioAsignacion';
 
 import ContenedorFormularioVerRequisa from '@/containers/requisas/formularios/ContenedorFormularioVerRequisa';
+
+import ContenedorCompras from '@/containers/compra/ContenedorCompras';
+import ContenedorFormularioCompra from '@/containers/compra/formularios/ContenedorFormularioCompra';
 // Página de error 404
 import PaginaNoEncontrada from "@/pages/PaginaNoEncontrada";
+
+import ContenedorActivarCuenta from '@/containers/autenticacion/ContenedorActivarCuenta'
 
 const rutas = [
   // Rutas que NO necesitan autenticación
@@ -80,6 +85,7 @@ const rutas = [
   { path: '/ingresar-email', element: <PaginaCorreo /> },
   { path: '/cambiar-contra', element: <PaginaRestablecerContrasena /> },
   { path: '*', element: <PaginaNoEncontrada /> }, // Ruta para manejar el 404
+  {path:'/activar-cuenta', element:<ContenedorActivarCuenta/>}, //Ruta de activacion de cuenta
 
   // Rutas que necesitan autenticación
   { 
@@ -337,6 +343,22 @@ const rutas = [
     path: '/asignaciones/asignacion/crear',
     element: <RutaProtegida><ContenedorFormularioAsignacion /></RutaProtegida>,
   },
+  {
+    path: '/asignaciones/asignacion/:id',
+    element: <RutaProtegida><ContenedorFormularioAsignacion /></RutaProtegida>,
+  },
+  {
+    path: '/compras/compras',
+    element: <RutaProtegida><ContenedorCompras /></RutaProtegida>,
+  },
+  {
+    path: '/compras/crear',
+    element: <RutaProtegida><ContenedorFormularioCompra /></RutaProtegida>,
+  },
+  {
+    path: '/compras/ver/:id',
+    element: <RutaProtegida><ContenedorFormularioCompra /></RutaProtegida>,
+  }
 ];
 
 export default rutas;

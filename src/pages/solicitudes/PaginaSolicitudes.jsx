@@ -20,7 +20,7 @@ const PaginaSolicitudes = ({
   setPaginaActual,
   pageSize,
   setPageSize,
-  manejarActualizar,
+  manejarVerMas,
   manejarEliminar,
 }) => {
   const { t } = useTranslation(); // Usar hook de traducción
@@ -48,12 +48,14 @@ const PaginaSolicitudes = ({
           manejarCrear={manejarCrear}
           manejarBusqueda={manejarBusqueda}
           totalPaginas={totalPaginas}
+          // manejarVerMas={manejarVerMas}
           paginaActual={paginaActual}
           setPagina={setPaginaActual}
           pageSize={pageSize}
           setPageSize={setPageSize}
-          manejarActualizar={manejarActualizar}
-          manejarEliminar={manejarEliminar}
+          // manejarEliminar={manejarEliminar}
+          manejarVerMas={manejarVerMas}
+          mostrarSoloVerMas={true}
         />
       </div>
     </div>

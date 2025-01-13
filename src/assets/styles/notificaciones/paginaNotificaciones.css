@@ -1,0 +1,62 @@
+.notifications-grid {
+    display: flex; /* Cambiar de grid a flex */
+    flex-direction: column; /* Asegura que cada elemento esté en una fila */
+    gap: 1rem; /* Espaciado entre las tarjetas */
+  }
+  
+  .notification-section {
+    margin-bottom: 2rem;
+    padding-bottom: 7rem;
+  }
+  
+  .notifications-page {
+    width: 100%;
+    min-height: 100vh;
+    background-color: var(--color-fondo);
+    padding: 1rem;
+  }
+  
+  .notifications-container {
+    max-width: 1024px;
+    margin: 0 auto;
+  }
+  .header-title{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+  }
+  .notifications-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+    background-color: var(--color-fondo);
+    border-radius: 0.5rem;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    backdrop-filter: blur(8px);
+  }
+  
+  .mark-all-button {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--color-texto-secundario);
+    background-color: var(--color-fondo);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  
+  .mark-all-button:hover {
+    background-color: var(--color-hover-blanco);
+    border-color: var(--color-primario);
+  }  

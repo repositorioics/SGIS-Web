@@ -1,90 +1,73 @@
-.seccion-notificaciones {
-    padding: 20px;
-    background-color: var(--color-fondo);
-  }
-  
-  .cabecera-notificaciones {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-  }
-  
-  .boton-leer-todas {
-    background-color: var(--color-primario);
-    color: var(--color-fondo);
-    border: none;
-    padding: 8px 16px;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-  
-  .boton-leer-todas:hover {
-    background-color: var(--color-hover-primario);
-  }
-  
-  .lista-notificaciones {
-    display: flex;
-    flex-direction: column;
-    gap: 1px;
-  }
+.notification-card {
+  background-color: var(--color-fondo);
+  border-radius: 12px;
+  padding: 0.7rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  width: 100%; /* Ocupa todo el ancho del contenedor */
+}
 
-.tarjeta-notificacion {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px;
-    border-bottom: 1px solid var(--color-hover-blanco);
-    background-color: var(--color-fondo);
-    transition: background-color 0.3s ease;
-    border-radius: 8px;
-  }
-  .content{
-    display: flex;
-    gap: 12px;
-    align-items: center;
-  }
-  .tarjeta-notificacion.no-leida {
-    background-color: var(--color-hover-blanco);
-  }
-  
-  .contenido-notificacion {
-    flex: 1;
-  }
-  
-  .titulo-notificacion {
-    margin: 0;
-    font-size: 1em;
-    font-weight: bold;
-    text-transform: capitalize;
-    color: var(--color-texto-primario);
-  }
-  
-  .mensaje-notificacion {
-    margin: 5px 0;
-    color: var(--color-texto-secundario);
-  }
-  
-  .fecha-notificacion {
-    display: block;
-    color: var(--color-texto-secundario);
-    font-size: 0.85em;
-  }
-  
-  .acciones-notificacion {
-    display: flex;
-    gap: 10px;
-    align-items: center;
-  }
-  
-  .boton-ver-mas {
-    background: none;
-    border: none;
-    color: var(--color-primario);
-    cursor: pointer;
-    padding: 0;
-  }
-  
-  .boton-ver-mas:hover {
-    color: var(--color-hover-primario);
-  }  
+.notification-card:hover {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.notification-card.unread {
+  border-left: 4px solid var(--color-primario);
+}
+
+.notification-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.notification-date {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.date-icon {
+  width: 1rem;
+  height: 1rem;
+  color: var(--color-texto-secundario);
+}
+
+.date-text {
+  font-size: 0.875rem;
+  color: var(--color-texto-secundario);
+}
+
+.notification-title {
+  font-size: 1.125rem;
+  font-weight: 500;
+  color: var(--color-texto-primario);
+  margin-top: 0.5rem;
+  margin-bottom: 0.1rem;
+}
+
+.notification-message {
+  color: var(--color-texto-secundario);
+  line-height: 1.5;
+  margin-top: 0.1rem;
+  margin-bottom: 0.2rem;
+}
+
+.view-more-button {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  margin-top: 0.1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--color-primario);
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.view-more-button:hover {
+  color: var(--color-hover-primario);
+}

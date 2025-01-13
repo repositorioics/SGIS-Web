@@ -34,7 +34,9 @@ const PaginaFormularioSolicitud = ({
   usuarioNombre,
   proximoNumeroSolicitud,
   estadoDeshabilitado,
-  handleRemoveDetail
+  handleRemoveDetail,
+  donanteSeleccionado,
+  onDonanteChange,
 }) => {
   const { t } = useTranslation();
 
@@ -84,12 +86,21 @@ const PaginaFormularioSolicitud = ({
             label={t('formularioSolicitud.donante')}
             name="donanteId"
             value={solicitud.donanteId}
-            onChange={onInputChange}
-            options={donantes.map((donante) => ({ id: donante.id, nombre: donante.nombre }))}
-            error={errors.donanteId}
-            touched={touched.donanteId}
+            onChange={(e) => {
+              if (!donanteSeleccionado) {
+                onDonanteChange(e); // Usar el manejador proporcionado por el contenedor
+              }
+            }}
+            options={donantes.map((donante) => ({
+              id: donante.id,
+              nombre: donante.nombre,
+            }))}
+            disabled={donanteSeleccionado} // Deshabilitar si ya se seleccionó un donante
+            error={errors.donanteId && touched.donanteId}
+            helperText={errors.donanteId && touched.donanteId && errors.donanteId}
           />
         </Grid>
+
         <Grid item xs={12} sm={4}>
           <CustomTextField
             label={t('formularioSolicitud.estado')}
@@ -132,7 +143,7 @@ const PaginaFormularioSolicitud = ({
             onChange={onDetalleChange}
             options={insumos.map((insumo) => ({
               id: insumo.id,
-              nombre: `${insumo.nombre} - ${insumo.unidadMedida.nombre} (${insumo.valorUnidadMedida})`,
+              nombre: `${insumo.nombre} - ${insumo.unidadMedida.nombre}`,
             }))}
             error={errors.insumoId}
             touched={touched.insumoId}

@@ -1,9 +1,9 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import useFetch from '@/hooks/useFetch';
 import PaginaRestablecerContrasena from '@/pages/autenticacion/PaginaRestablecerContrasena';
 import { toast } from 'react-toastify';
 import { useTranslation } from 'react-i18next';
+import { URL } from '@/constants/url';
 
 const ContenedorRestablecerContrasena = () => {
   const navigate = useNavigate();
@@ -11,24 +11,30 @@ const ContenedorRestablecerContrasena = () => {
 
   const manejarRestablecimiento = async (valores) => {
     const { password, confirmPassword } = valores;
-    const token = new URLSearchParams(location.search).get('token');
-  
+    const token = new URLSearchParams(window.location.search).get('token');
+
     if (password !== confirmPassword) {
       toast.error(t('restablecer_contrasena.error_coincidencia'));
       return;
     }
 
-    // Enviar solicitud para restablecer contraseña
-    const { data, error } = await useFetch('http://localhost:8080/api/v1/auth/reset-password', {
-      method: 'POST',
-      body: JSON.stringify({ token, password }),
-    });
+    try {
+      // Realizar la solicitud para restablecer la contraseña
+      const response = await fetch(`${URL}api/v1/auth/reset-password`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ token, password }),
+      });
 
-    if (data) {
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Error al restablecer la contraseña');
+      }
+
       toast.success(t('restablecer_contrasena.exito'));
       navigate('/inicio-sesion');
-    } else if (error) {
-      toast.error(t('restablecer_contrasena.error'));
+    } catch (error) {
+      toast.error(error.message || t('restablecer_contrasena.error'));
     }
   };
 

@@ -46,9 +46,9 @@ const PaginaEntregasRequisas = ({
           pageSize={pageSize}
           setPageSize={setPageSize}
           mostrarCrear={false}
-          manejarRealizarPedido={manejarRealizarPedido} // Pasamos esta función para crear el pedido
-          mostrarSoloVerMas={mostrarSoloVerMas} // Control para mostrar solo el botón de acción
-          getRowId={(row) => row.id} // Especificar el campo `id` para las filas
+          manejarRealizarPedido={manejarRealizarPedido}
+          mostrarSoloVerMas={mostrarSoloVerMas}
+          getRowId={(row) => row.id}
         />
       </div>
     </div>

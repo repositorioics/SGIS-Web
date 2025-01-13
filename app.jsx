@@ -42,6 +42,7 @@ function App() {
     "/inicio-sesion",
     "/ingresar-email",
     "/cambiar-contra",
+    "/activar-cuenta",
     "*",
   ];
 

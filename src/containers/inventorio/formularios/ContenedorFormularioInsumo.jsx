@@ -148,23 +148,35 @@ const ContenedorFormularioInsumo = () => {
 
   const handleAddDetail = (field) => {
     if (field === "marcas" && formik.values.marcaId && formik.values.codigoMarca) {
-      const nombreMarca = marcasData.data.content.find((m) => m.id === formik.values.marcaId)?.nombre || "Sin nombre";
+      const nombreMarca = marcasData?.data?.content?.find((m) => m.id === formik.values.marcaId)?.nombre || "N/A";
+  
       formik.setFieldValue("detallesMarcas", [
         ...formik.values.detallesMarcas,
-        { marcaId: formik.values.marcaId, codigoMarca: formik.values.codigoMarca }
+        { 
+          marcaId: formik.values.marcaId, 
+          nombreMarca, // Incluye el nombre de la marca
+          codigoMarca: formik.values.codigoMarca 
+        }
       ]);
       formik.setFieldValue("marcaId", "");
       formik.setFieldValue("codigoMarca", "");
-    } else if (field === "distribuidores" && formik.values.distribuidorId && formik.values.codigoDistribuidor) {
-      const nombreDistribuidor = distribuidoresData.data.content.find((d) => d.id === formik.values.distribuidorId)?.nombre || "Sin nombre";
+    } 
+    
+    else if (field === "distribuidores" && formik.values.distribuidorId && formik.values.codigoDistribuidor) {
+      const nombreDistribuidor = distribuidoresData?.data?.content?.find((d) => d.id === formik.values.distribuidorId)?.nombre || "N/A";
+  
       formik.setFieldValue("detallesDistribuidores", [
         ...formik.values.detallesDistribuidores,
-        { distribuidorId: formik.values.distribuidorId, codigoDistribuidor: formik.values.codigoDistribuidor }
+        { 
+          distribuidorId: formik.values.distribuidorId, 
+          nombreDistribuidor, // Incluye el nombre del distribuidor
+          codigoDistribuidor: formik.values.codigoDistribuidor 
+        }
       ]);
       formik.setFieldValue("distribuidorId", "");
       formik.setFieldValue("codigoDistribuidor", "");
     }
-  };
+  };  
 
   const handleRemoveDetail = (field, index) => {
     const updatedDetails = [...formik.values[field]];

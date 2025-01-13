@@ -72,4 +72,4 @@ const ContenedorPedidos = () => {
   );
 };
 
-export default ContenedorPedidos;
+export default ContenedorPedidos

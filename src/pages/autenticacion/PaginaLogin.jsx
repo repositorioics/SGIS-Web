@@ -23,6 +23,8 @@ const PaginaLogin = ({ onSubmit }) => {
         textoBoton={t('login.iniciar_sesion')}
         onSubmit={onSubmit}
         mostrarEnlace={true}
+        texto="Do you forgot your password?"
+        url='/ingresar-email'
       />
     </DisAutenticacion>
   );

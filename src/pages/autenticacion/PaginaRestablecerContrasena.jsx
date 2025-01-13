@@ -13,17 +13,29 @@ const PaginaRestablecerContrasena = ({ onSubmit }) => {
       imagenUrl="https://i.ibb.co/jhKYvQk/reset-Password.png"
       imagenAlt={t('restablecer_contrasena.imagenAlt')}
     >
-      <h2 className='dis-autenticacion__titulo'>{t('restablecer_contrasena.introducir_nueva_contrasena')}</h2>
-      <p className='dis-autenticacion__descripcion'>{t('restablecer_contrasena.instruccion_contrasena')}</p>
-      <FormularioGeneral
-        campos={[
-          { name: 'password', type: 'password', placeholder: t('restablecer_contrasena.nueva_contrasena_placeholder') },
-          { name: 'confirmPassword', type: 'password', placeholder: t('restablecer_contrasena.confirmar_contrasena_placeholder') }
-        ]}
-        textoBoton={t('restablecer_contrasena.restablecer_contrasena')}
-        onSubmit={onSubmit}
-        mostrarEnlace={false}
-      />
+      <div className="dis-autenticacion__contenido">
+        <h2 className="dis-autenticacion__titulo">{t('restablecer_contrasena.introducir_nueva_contrasena')}</h2>
+        <p className="dis-autenticacion__descripcion">{t('restablecer_contrasena.instruccion_contrasena')}</p>
+        <FormularioGeneral
+          campos={[
+            {
+              name: 'password',
+              type: 'password',
+              placeholder: t('restablecer_contrasena.nueva_contrasena_placeholder'),
+              required: true,
+            },
+            {
+              name: 'confirmPassword',
+              type: 'password',
+              placeholder: t('restablecer_contrasena.confirmar_contrasena_placeholder'),
+              required: true,
+            },
+          ]}
+          textoBoton={t('restablecer_contrasena.restablecer_contrasena')}
+          onSubmit={onSubmit}
+          mostrarEnlace={false}
+        />
+      </div>
     </DisAutenticacion>
   );
 };

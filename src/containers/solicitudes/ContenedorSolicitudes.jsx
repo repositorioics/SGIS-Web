@@ -6,7 +6,8 @@ import PaginaSolicitudes from '@/pages/solicitudes/PaginaSolicitudes';
 import '@/assets/styles/inventario/estilosInventario.css';
 import { URL } from '@/constants/url'; 
 import useFetch from '@/hooks/useFetch';
-import { useTranslation } from 'react-i18next'; // Importar hook de traducción
+import { useTranslation } from 'react-i18next'; 
+import { FaEye } from 'react-icons/fa';
 
 /**
  * Controlar la lógica de la página de solicitudes, como la creación, actualización y desactivación.
@@ -31,16 +32,21 @@ const ContenedorSolicitudes = () => {
     navigate('/solicitudes/solicitud/crear');
   };
 
-  /**
-   * Navegar a la página de actualización de una solicitud si tiene un ID válido.
-   * @param {object} solicitud - La solicitud seleccionada para actualizar.
-   */
-  const manejarActualizar = (solicitud) => {
-    if (solicitud && solicitud.id) {
-      navigate(`/solicitudes/solicitud/actualizar/${solicitud.id}`);
-    } else {
-      toast.error(t('contenedorSolicitudes.errorActualizar')); // Mensaje traducido
-    }
+  // /**
+  //  * Navegar a la página de actualización de una solicitud si tiene un ID válido.
+  //  * @param {object} solicitud - La solicitud seleccionada para actualizar.
+  //  */
+  // const manejarActualizar = (solicitud) => {
+  //   if (solicitud && solicitud.id) {
+  //     navigate(`/solicitudes/solicitud/actualizar/${solicitud.id}`);
+  //   } else {
+  //     toast.error(t('contenedorSolicitudes.errorActualizar')); // Mensaje traducido
+  //   }
+  // };
+
+  const manejarVerMas = (pedido) => {
+
+      navigate(`/solicitudes/solicitud/vermas/${pedido.id}`);
   };
 
   /**
@@ -66,8 +72,8 @@ const ContenedorSolicitudes = () => {
   // Definir las columnas de la tabla
   const columnas = [
     { field: 'numeroSolicitud', headerName: t('paginaSolicitudes.columnaNumeroSolicitud'), flex: 2 },
-    { field: 'estado', headerName: t('paginaSolicitudes.columnaEstado'), flex: 1 },
     { field: 'observaciones', headerName: t('paginaSolicitudes.columnaObservaciones'), flex: 3 },
+    { field: 'estado', headerName: t('paginaSolicitudes.columnaEstado'), flex: 1 },
     {
       field: 'fechaCreacion',
       headerName: t('paginaSolicitudes.columnaFechaCreacion'),
@@ -83,7 +89,7 @@ const ContenedorSolicitudes = () => {
       sortable: false,
       renderCell: (params) => (
         <>
-          <button onClick={() => manejarActualizar(params.row)}>{t('paginaSolicitudes.botonEditar')}</button>
+          <button onClick={() => manejarVerMas(params.row)}> <FaEye style={{ marginRight: '5px' }} /> {t('paginaSolicitudes.botonVerMas')}</button>
           <button onClick={() => manejarEliminar(params.row)}>{t('paginaSolicitudes.botonEliminar')}</button>
         </>
       ),
@@ -103,8 +109,9 @@ const ContenedorSolicitudes = () => {
         setPaginaActual={setPaginaActual}
         pageSize={pageSize} 
         setPageSize={setPageSize} 
-        manejarActualizar={manejarActualizar}
+        // manejarActualizar={manejarActualizar}
         manejarEliminar={manejarEliminar}
+        manejarVerMas={manejarVerMas}
       />
     </>
   );

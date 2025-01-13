@@ -19,7 +19,7 @@ const ContenedorRequisas = () => {
 
   // Obtener datos de requisas desde la API con paginación y ordenamiento
   const { data, loading, error } = useFetch(
-    `${URL}api/v1/requisas?page=${paginaActual}&size=${pageSize}&sort=estado,fechaCreacion,desc`,
+    `${URL}api/v1/requisas?page=${paginaActual}&size=${pageSize}`,
     {},
     [paginaActual, pageSize]
   );

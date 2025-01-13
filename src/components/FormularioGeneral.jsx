@@ -5,7 +5,7 @@ import * as Yup from 'yup';
 import { validacionEmail, validacionPassword, validacionConfirmarPassword } from '@/utils/validaciones';
 import '@/assets/styles/autenticacion/formulario.css';
 
-const FormularioGeneral = ({ campos, textoBoton, onSubmit, mostrarEnlace }) => {
+const FormularioGeneral = ({ campos, textoBoton, onSubmit, mostrarEnlace, texto, url }) => {
   const validaciones = campos.reduce((esquema, campo) => {
     switch (campo.name) {
       case 'email':
@@ -55,8 +55,8 @@ const FormularioGeneral = ({ campos, textoBoton, onSubmit, mostrarEnlace }) => {
           ))}
           {mostrarEnlace && (
             <div className="formulario-general__enlace-Container">
-              <Link to="/ingresar-email" className="formulario-general__enlace">
-                ¿Olvidaste tu contraseña?
+              <Link to={url} className="formulario-general__enlace">
+               {texto}
               </Link>
             </div>
           )}

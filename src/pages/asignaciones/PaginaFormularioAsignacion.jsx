@@ -1,9 +1,10 @@
 import React from 'react';
-import { Box, Grid, Container, Paper } from '@mui/material';
+import { Box, Grid, Container } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import CustomTextField from '@/components/comun/CustomTextField';
 import CustomButton from '@/components/comun/CustomButton';
 import CustomSelect from '@/components/comun/CustomSelect';
+import CustomTypography from '@/components/comun/CustomTypography';
 import TablaDetalles from '@/components/TablaDetalles';
 
 const PaginaFormularioAsignacion = ({
@@ -18,6 +19,8 @@ const PaginaFormularioAsignacion = ({
   selectedRows,
   setSelectedRows,
   handleRemoveDetail,
+  bioanalistaSeleccionado,
+  setBioanalistaSeleccionado,
 }) => {
   const { t } = useTranslation();
 
@@ -25,7 +28,7 @@ const PaginaFormularioAsignacion = ({
   const columns = [
     { header: t('formularioAsignacion.columnaInsumo'), field: 'insumoNombre' },
     { header: t('formularioAsignacion.columnaCantidad'), field: 'cantidad' },
-    { header: t('formularioAsignacion.columnaObservaciones'), field: 'observaciones' },
+    { header: t('formularioAsignacion.columnaObservaciones'), field: 'observacionesDetalle' },
   ];
 
   // Mapear detalles para incluir el nombre del insumo antes de pasarlo a la tabla
@@ -36,23 +39,41 @@ const PaginaFormularioAsignacion = ({
 
   return (
     <Container maxWidth="md">
-      <Paper elevation={3} sx={{ padding: 4, marginY: 4 }}>
-        <h1 style={{ textAlign: 'center', marginBottom: '1rem' }}>
+      <Box sx={{ padding: 4, marginY: 2 }}>
+        <CustomTypography
+          variant="h4"
+          className="formulario-titulo"
+          textAlign="left"
+        >
           {t('formularioAsignacion.titulo')}
-        </h1>
+        </CustomTypography>
+        <CustomTypography
+          variant="subtitle1"
+          color="textSecondary"
+          className="formulario-subtitulo"
+          textAlign="left"
+        >
+          {t('formularioAsignacion.subtituloDatosGenerales')}
+        </CustomTypography>
 
         {/* Sección de datos principales */}
-        <Grid container spacing={2} mt={2}>
+        <Grid container spacing={2} mt={0}>
           <Grid item xs={12} sm={6}>
             <CustomSelect
               label={t('formularioAsignacion.bioanalista')}
               name="bioanalistaId"
               value={detalleActual.bioanalistaId || ''}
-              onChange={onDetalleChange}
+              onChange={(e) => {
+                if (!bioanalistaSeleccionado) {
+                  onDetalleChange(e);
+                  setBioanalistaSeleccionado(true); // Bloquear después de la selección inicial
+                }
+              }}
               options={bioanalistas.map((bioanalista) => ({
                 id: bioanalista.id,
                 nombre: `${bioanalista.nombre} ${bioanalista.apellido}`,
               }))}
+              disabled={bioanalistaSeleccionado} // Bloquear después de seleccionar
             />
           </Grid>
           <Grid item xs={12} sm={6}>
@@ -67,11 +88,25 @@ const PaginaFormularioAsignacion = ({
           </Grid>
         </Grid>
 
-        {/* Sección de detalles */}
-        <h2 style={{ textAlign: 'center', marginTop: '2rem' }}>
+        <CustomTypography
+          variant="h4"
+          className="formulario-titulo"
+          textAlign="left"
+          sx={{ marginTop: 2 }}
+        >
           {t('formularioAsignacion.detalles')}
-        </h2>
-        <Grid container spacing={2} mt={2}>
+        </CustomTypography>
+        <CustomTypography
+          variant="subtitle1"
+          color="textSecondary"
+          className="formulario-subtitulo"
+          textAlign="left"
+        >
+          {t('formularioAsignacion.subtituloDetalles')}
+        </CustomTypography>
+
+        {/* Sección de detalles */}
+        <Grid container spacing={2} mt={0}>
           <Grid item xs={12} sm={6}>
             <CustomSelect
               label={t('formularioAsignacion.insumo')}
@@ -97,8 +132,8 @@ const PaginaFormularioAsignacion = ({
           <Grid item xs={12} sm={3}>
             <CustomTextField
               label={t('formularioAsignacion.observacionesDetalle')}
-              name="observaciones"
-              value={detalleActual.observaciones}
+              name="observacionesDetalle"
+              value={detalleActual.observacionesDetalle}
               onChange={onDetalleChange}
               fullWidth
             />
@@ -106,7 +141,11 @@ const PaginaFormularioAsignacion = ({
           <Grid item xs={12} sx={{ textAlign: 'center' }}>
             <CustomButton
               label={t('formularioAsignacion.agregarDetalle')}
+              variant="contained"
+              color="secondary"
               onClick={onAgregarDetalle}
+              className="formulario-boton"
+              sx={{ mb: 2 }}
             />
           </Grid>
         </Grid>
@@ -124,13 +163,15 @@ const PaginaFormularioAsignacion = ({
         </Box>
 
         {/* Botón para guardar la asignación */}
-        <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: 4 }}>
+        <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: 2, marginBottom: 4 }}>
           <CustomButton
             label={t('formularioAsignacion.guardar')}
+            variant="contained"
+            color="primary"
             onClick={onGuardarAsignacion}
           />
         </Box>
-      </Paper>
+      </Box>
     </Container>
   );
 };
