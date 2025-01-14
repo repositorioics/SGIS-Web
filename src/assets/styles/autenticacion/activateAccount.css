@@ -51,3 +51,8 @@
 .activate-account__button:hover {
   color : #0056b3;
 }
+
+.reset-password{
+  color: #333;
+  font-weight: bold;
+}

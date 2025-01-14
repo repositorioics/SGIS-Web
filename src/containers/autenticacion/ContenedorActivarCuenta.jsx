@@ -9,12 +9,16 @@ const ContenedorActivarCuenta = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    let isMounted = true; // Bandera para evitar ejecuciones innecesarias si el componente se desmonta
+
     const activarCuenta = async () => {
+      //Token que se recibe y se envia en la peticion de activación de cuenta.
       const token = new URLSearchParams(window.location.search).get('token');
 
       if (!token) {
+        toast.dismiss(); // Elimina mensajes previos
         toast.error('Token no encontrado en la URL');
-        setStatus('error');
+        if (isMounted) setStatus('error');
         return;
       }
 
@@ -27,25 +31,46 @@ const ContenedorActivarCuenta = () => {
 
         if (!response.ok) {
           const errorData = await response.json();
+          toast.dismiss();
           toast.error(errorData.message || 'Error al activar la cuenta');
-          setStatus('error');
+          if (isMounted) setStatus('error');
           return;
         }
 
-        setStatus('success');
-        toast.success('Cuenta activada exitosamente');
+        const responseData = await response.json();
+        if (isMounted) {
+          setStatus('success');
+          toast.dismiss();
+          toast.success(responseData.message);
 
-        // Redirigir automáticamente después de 3 segundos
-        setTimeout(() => {
-          navigate('/inicio-sesion');
-        }, 3000);
+          //Token, que recibe desde la la api, para poder cambiar la contraseña.
+          console.log("Que se recibe en el responseData: " + responseData)
+          console.log("Que se recibe en el responseData.data: " + responseData.data)
+          const token = responseData.data;
+          if (!token) {
+            toast.error('El token para cambiar contraseña no fue recibido.');
+            return;
+          }
+
+          // Redirigir automáticamente después de 3 segundos, enviando el token.
+          setTimeout(() => {
+            navigate(`/cambiar-contra?token=${token}`);
+          }, 3000);
+        }
       } catch (error) {
-        setStatus('error');
-        toast.error('Ocurrió un error al activar la cuenta');
+        if (isMounted) {
+          setStatus('error');
+          toast.dismiss();
+          toast.error('Ocurrió un error al activar la cuenta');
+        }
       }
     };
 
     activarCuenta();
+
+    return () => {
+      isMounted = false;
+    };
   }, [navigate]);
 
   const handleNavigateToLogin = () => {

@@ -19,6 +19,7 @@ const ContenedorRestablecerContrasena = () => {
     }
 
     try {
+      console.log(token);
       // Realizar la solicitud para restablecer la contraseña
       const response = await fetch(`${URL}api/v1/auth/reset-password`, {
         method: 'POST',

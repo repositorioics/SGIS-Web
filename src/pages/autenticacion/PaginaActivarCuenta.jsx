@@ -4,7 +4,7 @@ import successImage from '@/assets/images/success.png';
 import errorImage from '@/assets/images/error.png';
 import '@/assets/styles/autenticacion/ActivateAccount.css';
 
-const PaginaActivarCuenta = ({ status, onNavigateToLogin }) => {
+const PaginaActivarCuenta = ({ status }) => {
   return (
     <div className="activate-account">
       {status === 'loading' && (
@@ -20,11 +20,8 @@ const PaginaActivarCuenta = ({ status, onNavigateToLogin }) => {
             Account Activated!
           </h1>
           <p className="activate-account__description">
-            Your account has been successfully activated. You can now log in to your account.
+            Your account has been successfully activated. You can now <span className='reset-password'>reset your password</span> to your account.
           </p>
-          <button className="activate-account__button" onClick={onNavigateToLogin}>
-            Go to Login
-          </button>
         </div>
       )}
 
@@ -37,9 +34,6 @@ const PaginaActivarCuenta = ({ status, onNavigateToLogin }) => {
           <p className="activate-account__description">
             The activation link is invalid or has expired. Please contact support for assistance.
           </p>
-          <button className="activate-account__button" onClick={onNavigateToLogin}>
-            Go to Login
-          </button>
         </div>
       )}
     </div>

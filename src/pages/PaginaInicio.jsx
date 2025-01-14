@@ -1,4 +1,3 @@
-// src/components/resumen/PaginaInicio.jsx
 import React from 'react';
 import Tarjeta from '@/components/resumen/Tarjeta.jsx';
 import Graficas from '@/components/resumen/Graficas.jsx';
